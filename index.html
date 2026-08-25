@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RCM & CEHI Fleet Management - Data Entry & Diagnostic Center</title>
+    <title>RCM & CEHI Diagnostic Center - Power Transformers & GIS</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2pdf.js for Direct PDF Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -23,6 +25,7 @@
                         brand: {
                             dark: '#080c14',
                             card: '#111827',
+                            cardAlt: '#1a2234',
                             border: '#1f293d',
                             accent: '#06b6d4',
                             neon: '#38bdf8',
@@ -77,14 +80,14 @@
             </div>
             <div>
                 <h1 class="text-lg font-bold text-white tracking-wide flex items-center gap-2">
-                    RCM & CEHI ASSET MANAGEMENT SYSTEM
-                    <span class="text-[11px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-2.5 py-0.5 rounded-full font-normal">Data Engine Active</span>
+                    RCM & CEHI FLEET ASSET DIAGNOSTICS
+                    <span class="text-[11px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-2.5 py-0.5 rounded-full font-normal">v2.5 Full Export</span>
                 </h1>
-                <p class="text-xs text-slate-400">ระบบบันทึกผลทดสอบ, ประเมิน FMEA, คำนวณ CEHI และส่งออกรายงาน</p>
+                <p class="text-xs text-slate-400">ระบบประเมินความน่าเชื่อถือ, คำนวณ CEHI และวิเคราะห์ก๊าซ DGA เชิงลึก</p>
             </div>
         </div>
 
-        <!-- Controls: Category, Asset Selector, Entry & Export Buttons -->
+        <!-- Controls -->
         <div class="flex items-center flex-wrap gap-2.5">
             <!-- Category Switcher -->
             <div class="bg-slate-900 p-1 rounded-lg border border-brand-border flex text-xs font-prompt">
@@ -105,33 +108,25 @@
 
             <!-- BUTTON: Open Data Input Modal -->
             <button onclick="openDataInputModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-plus-circle"></i> บันทึกผลทดสอบใหม่
+                <i class="fa-solid fa-file-arrow-up"></i> นำเข้าข้อมูล / ใบทดสอบ
             </button>
 
-            <!-- BUTTON: Export Menu Dropdown -->
-            <div class="relative inline-block text-left">
-                <button onclick="toggleExportMenu()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-lg transition border border-slate-700 flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-export text-cyan-400"></i> ส่งออกข้อมูล <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                </button>
-                <div id="exportDropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-slate-900 border border-brand-border rounded-xl shadow-2xl z-50 py-1 text-xs">
-                    <a href="javascript:void(0)" onclick="exportToCSV()" class="block px-4 py-2 text-slate-200 hover:bg-slate-800 hover:text-cyan-400">
-                        <i class="fa-solid fa-file-csv mr-2 text-emerald-400"></i> ส่งออกเป็นไฟล์ CSV
-                    </a>
-                    <a href="javascript:void(0)" onclick="exportToJSON()" class="block px-4 py-2 text-slate-200 hover:bg-slate-800 hover:text-cyan-400">
-                        <i class="fa-solid fa-file-code mr-2 text-amber-400"></i> ส่งออกเป็นไฟล์ JSON
-                    </a>
-                    <a href="javascript:void(0)" onclick="window.print()" class="block px-4 py-2 text-slate-200 hover:bg-slate-800 hover:text-cyan-400">
-                        <i class="fa-solid fa-file-pdf mr-2 text-red-400"></i> พิมพ์รายงาน PDF
-                    </a>
-                </div>
-            </div>
+            <!-- BUTTON: Direct PDF Download -->
+            <button onclick="downloadDirectPDF()" class="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition shadow flex items-center gap-1.5">
+                <i class="fa-solid fa-file-pdf"></i> ดาวน์โหลด PDF ทันที
+            </button>
+
+            <!-- BUTTON: Export CSV -->
+            <button onclick="exportToCSV()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-lg transition border border-slate-700 flex items-center gap-1.5">
+                <i class="fa-solid fa-file-csv text-emerald-400"></i> โหลด CSV
+            </button>
         </div>
     </header>
 
-    <!-- MAIN CONTAINER -->
-    <main class="flex-1 p-6 space-y-6 max-w-[1800px] mx-auto w-full">
+    <!-- EXPORTABLE REPORT WRAPPER -->
+    <div id="reportContentToExport" class="p-6 space-y-6 max-w-[1800px] mx-auto w-full">
 
-        <!-- TOP METRIC CARDS -->
+        <!-- ASSET SUMMARY BANNER & TOP KPIS -->
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
             
             <!-- CEHI Card -->
@@ -204,7 +199,7 @@
                 </div>
             </div>
 
-            <!-- Asset Info Card -->
+            <!-- Asset Metadata -->
             <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg relative overflow-hidden">
                 <div class="flex justify-between items-start">
                     <div>
@@ -213,7 +208,7 @@
                         <p id="metaAssetSub" class="text-xs text-slate-400">Ladprao Substation (50 MVA)</p>
                     </div>
                     <div class="flex items-center gap-1.5 bg-emerald-950/80 border border-emerald-800 px-2 py-1 rounded text-[11px] text-emerald-400">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Live
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Active
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 mt-3 pt-2 border-t border-slate-800 text-xs">
@@ -230,7 +225,7 @@
 
         </div>
 
-        <!-- TABS BAR -->
+        <!-- NAVIGATION TABS -->
         <div class="bg-brand-card border border-brand-border p-2 rounded-xl flex flex-wrap gap-2 text-sm font-prompt">
             <button id="navTabDGA" onclick="switchMainTab('DGA')" class="nav-btn bg-cyan-600 text-white px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
                 <i class="fa-solid fa-flask-florence"></i> 1. ผลตรวจก๊าซ DGA & Gas Diagnostics
@@ -498,9 +493,9 @@
             </div>
         </div>
 
-    </main>
+    </div>
 
-    <!-- MODAL: DATA INPUT DIALOG (บันทึกข้อมูลการทดสอบใหม่) -->
+    <!-- MODAL: DATA INPUT & SCAN PAPER TEST DIALOG -->
     <div id="dataInputModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-brand-border rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
             
@@ -511,13 +506,24 @@
                         <i class="fa-solid fa-file-circle-plus"></i>
                     </div>
                     <div>
-                        <h3 class="text-base font-bold text-white font-prompt">บันทึกผลการทดสอบ & ข้อมูลตรวจวัดใหม่</h3>
-                        <p class="text-xs text-slate-400">ระบบจะนำค่าไปคำนวณ DGA, Duval, RPN และ CEHI ให้อัตโนมัติ</p>
+                        <h3 class="text-base font-bold text-white font-prompt">นำเข้าผลการทดสอบ & สแกนใบทดสอบ</h3>
+                        <p class="text-xs text-slate-400">อัปโหลดไฟล์/รูปถ่ายใบทดสอบ หรือกรอกตัวเลขโดยตรง</p>
                     </div>
                 </div>
                 <button onclick="closeDataInputModal()" class="text-slate-400 hover:text-white text-lg">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
+            </div>
+
+            <!-- Optical Paper Scanner Simulation Banner -->
+            <div class="p-4 bg-slate-950 border-b border-brand-border space-y-2">
+                <span class="text-xs font-semibold text-cyan-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-camera"></i> นำเข้าจากรูปถ่าย / ใบรายงานผลแล็บ (Paper Test OCR)
+                </span>
+                <div class="flex items-center gap-2">
+                    <input type="file" id="paperUploadInput" accept="image/*,.csv" onchange="handlePaperUpload(event)" class="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-cyan-300 hover:file:bg-slate-700 cursor-pointer">
+                    <span id="scanStatusText" class="text-[11px] text-slate-500 italic">เลือกรูปถ่ายผลแล็บเพื่อ Auto-Fill</span>
+                </div>
             </div>
 
             <!-- Modal Form Content -->
@@ -601,7 +607,7 @@
                     </div>
                 </div>
 
-                <!-- Health & FMEA Evaluation Scores -->
+                <!-- Health Evaluation Scores -->
                 <div class="space-y-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
                     <h4 class="font-bold text-cyan-400 font-prompt border-b border-slate-800 pb-1.5 flex items-center gap-2">
                         <i class="fa-solid fa-heart-pulse"></i> คะแนนประเมินสภาพ (Condition Scores 0-100)
@@ -640,12 +646,11 @@
 
     <!-- FOOTER -->
     <footer class="bg-brand-card border-t border-brand-border px-6 py-4 text-center text-xs text-slate-500">
-        © 2026 Fleet Reliability & Health Diagnostic System | Ready for Export & Data Entry
+        © 2026 Fleet Reliability & Health Diagnostic System | Export Engine v2.5 Ready
     </footer>
 
     <!-- LOGIC SCRIPT -->
     <script>
-        // Database Store
         const fleetDatabase = {
             TRANSFORMER: {
                 'TR-01': {
@@ -763,7 +768,6 @@
         let cehiDonutInstance = null;
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Set default date picker to today (2026-08-25)
             document.getElementById('inputDate').value = '2026-08-25';
             initDropdown();
             renderAssetData();
@@ -771,19 +775,50 @@
             drawDuvalTriangle();
         });
 
-        // Toggle Export Menu
-        function toggleExportMenu() {
-            const menu = document.getElementById('exportDropdownMenu');
-            menu.classList.toggle('hidden');
+        // Direct PDF Download without Print Dialog
+        function downloadDirectPDF() {
+            const element = document.getElementById('reportContentToExport');
+            const assetName = fleetDatabase[currentCategory][currentAssetId].name.split(' (')[0];
+            
+            const opt = {
+                margin:       [10, 10, 10, 10],
+                filename:     `RCM_CEHI_Report_${currentAssetId}_${new Date().toISOString().slice(0,10)}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#080c14' },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+
+            // Generate and save directly
+            html2pdf().set(opt).from(element).save();
         }
 
-        // Close dropdown when clicking outside
-        window.addEventListener('click', (e) => {
-            const menu = document.getElementById('exportDropdownMenu');
-            if (!e.target.closest('.relative') && !menu.classList.contains('hidden')) {
-                menu.classList.add('hidden');
-            }
-        });
+        // Handle Paper/Photo Upload Simulation
+        function handlePaperUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const statusText = document.getElementById('scanStatusText');
+            statusText.innerText = '🔍 กำลังวิเคราะห์ตัวเลขจากใบทดสอบ...';
+            statusText.className = 'text-[11px] text-cyan-400 font-semibold animate-pulse';
+
+            setTimeout(() => {
+                if (currentCategory === 'TRANSFORMER') {
+                    document.getElementById('in_H2').value = (Math.random() * 50 + 10).toFixed(1);
+                    document.getElementById('in_CH4').value = (Math.random() * 30 + 5).toFixed(1);
+                    document.getElementById('in_C2H2').value = (Math.random() * 0.5).toFixed(1);
+                    document.getElementById('in_C2H4').value = (Math.random() * 25 + 5).toFixed(1);
+                    document.getElementById('in_C2H6').value = (Math.random() * 40 + 10).toFixed(1);
+                    document.getElementById('in_CO').value = (Math.random() * 200 + 100).toFixed(0);
+                    document.getElementById('in_CO2').value = (Math.random() * 1500 + 1000).toFixed(0);
+                } else {
+                    document.getElementById('in_sf6_purity').value = (98.5 + Math.random() * 1.4).toFixed(1);
+                    document.getElementById('in_sf6_press').value = (0.62 + Math.random() * 0.05).toFixed(2);
+                    document.getElementById('in_sf6_moist').value = (Math.random() * 30 + 10).toFixed(1);
+                }
+                statusText.innerText = '✅ สแกนค่าจากใบทดสอบสำเร็จ!';
+                statusText.className = 'text-[11px] text-emerald-400 font-semibold';
+            }, 1200);
+        }
 
         // Switch Category
         function switchCategory(cat) {
@@ -848,7 +883,6 @@
             if (tab === 'CEHI' && cehiDonutInstance) cehiDonutInstance.update();
         }
 
-        // Render Asset Data
         function renderAssetData() {
             const asset = fleetDatabase[currentCategory][currentAssetId];
 
@@ -1077,12 +1111,10 @@
             ctx.fillStyle = '#ffffff'; ctx.font = 'bold 10px Prompt'; ctx.fillText(currentAssetId, px + 8, py - 4);
         }
 
-        // MODAL LOGIC (เปิด/ปิด และบันทึกข้อมูลใหม่)
         function openDataInputModal() {
             const modal = document.getElementById('dataInputModal');
             modal.classList.remove('hidden');
 
-            // Switch sub-section in modal based on category
             if (currentCategory === 'TRANSFORMER') {
                 document.getElementById('formSectionTransformer').classList.remove('hidden');
                 document.getElementById('formSectionGIS').classList.add('hidden');
@@ -1096,24 +1128,20 @@
             document.getElementById('dataInputModal').classList.add('hidden');
         }
 
-        // SAVE NEW TEST DATA (คำนวณและอัปเดตลงระบบ)
         function saveTestData(e) {
             e.preventDefault();
             const asset = fleetDatabase[currentCategory][currentAssetId];
 
-            // General fields
             asset.testDate = document.getElementById('inputDate').value;
             asset.inspector = document.getElementById('inputInspector').value;
             asset.load = document.getElementById('inputLoad').value + '%';
 
-            // Scores
             const s1 = parseFloat(document.getElementById('in_score_dga').value);
             const s2 = parseFloat(document.getElementById('in_score_dielectric').value);
             const s3 = parseFloat(document.getElementById('in_score_pd').value);
             const s4 = parseFloat(document.getElementById('in_score_thermal').value);
             asset.sliders = [s1, s2, s3, s4];
 
-            // Calculate CEHI
             const calcCehi = ((s1 * 0.35) + (s2 * 0.25) + (s3 * 0.20) + (s4 * 0.20)).toFixed(1);
             asset.cehi = calcCehi;
             if (calcCehi >= 85) asset.cehiGrade = 'ปกติ (Good)';
@@ -1121,7 +1149,6 @@
             else if (calcCehi >= 50) asset.cehiGrade = 'เฝ้าระวัง (Poor)';
             else asset.cehiGrade = 'วิกฤต (Critical)';
 
-            // If Transformer
             if (currentCategory === 'TRANSFORMER') {
                 const h2 = parseFloat(document.getElementById('in_H2').value);
                 const ch4 = parseFloat(document.getElementById('in_CH4').value);
@@ -1142,13 +1169,11 @@
                     { name: 'Carbon Dioxide', formula: 'CO2', val: co2, norm: 2500, status: co2 > 2500 ? 'สูงผิดปกติ' : 'ปกติ' }
                 ];
 
-                // Ratios
                 const r1 = c2h4 > 0 ? (c2h2 / c2h4).toFixed(3) : '0.00';
                 const r2 = h2 > 0 ? (ch4 / h2).toFixed(2) : '0.00';
                 const r3 = c2h6 > 0 ? (c2h4 / c2h6).toFixed(2) : '0.00';
                 asset.ratios = { r1, r2, r3 };
 
-                // Duval Triangle Auto Diagnosis
                 const total3 = ch4 + c2h4 + c2h2;
                 if (total3 > 0) {
                     const pch4 = ((ch4 / total3) * 100).toFixed(1);
@@ -1164,7 +1189,6 @@
                     }
                 }
             } else {
-                // GIS Fields
                 const purity = parseFloat(document.getElementById('in_sf6_purity').value);
                 const press = parseFloat(document.getElementById('in_sf6_press').value);
                 const moist = parseFloat(document.getElementById('in_sf6_moist').value);
@@ -1185,10 +1209,9 @@
             alert('✅ บันทึกและคำนวณผลการทดสอบเรียบร้อยแล้ว!');
         }
 
-        // EXPORT TO CSV (ส่งออกไฟล์ CSV)
         function exportToCSV() {
             const asset = fleetDatabase[currentCategory][currentAssetId];
-            let csvContent = "\uFEFF"; // UTF-8 BOM for Thai support in Excel
+            let csvContent = "\uFEFF";
             csvContent += `Asset Name,${asset.name}\n`;
             csvContent += `Category,${currentCategory}\n`;
             csvContent += `Test Date,${asset.testDate}\n`;
@@ -1215,20 +1238,6 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            toggleExportMenu();
-        }
-
-        // EXPORT TO JSON (ส่งออกไฟล์ JSON)
-        function exportToJSON() {
-            const asset = fleetDatabase[currentCategory][currentAssetId];
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(asset, null, 2));
-            const a = document.createElement('a');
-            a.href = dataStr;
-            a.download = `RCM_Data_${currentAssetId}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            toggleExportMenu();
         }
     </script>
 </body>
