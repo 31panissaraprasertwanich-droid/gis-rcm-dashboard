@@ -58,21 +58,15 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
-        .duval-triangle-canvas {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 1rem;
-        }
     </style>
 </head>
 <body class="min-h-screen flex bg-slate-50 text-slate-800 antialiased font-sarabun">
 
     <!-- ========================================================= -->
-    <!-- LEFT SIDEBAR NAVIGATION (แถบเมนูด้านซ้าย สะอาดตา ไม่รก) -->
+    <!-- LEFT SIDEBAR NAVIGATION -->
     <!-- ========================================================= -->
     <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 sticky top-0 h-screen z-40 shadow-sm">
         
-        <!-- Brand Logo & Header -->
         <div>
             <div class="p-5 border-b border-slate-100 flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white shadow-md">
@@ -137,7 +131,6 @@
             </nav>
         </div>
 
-        <!-- Sidebar Footer Status -->
         <div class="p-4 border-t border-slate-100 bg-slate-50/50">
             <div class="flex items-center gap-2 text-xs">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -151,7 +144,7 @@
     <!-- ========================================================= -->
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto custom-scrollbar">
         
-        <!-- TOPBAR (สะอาดตา โฟกัสเฉพาะการเลือกอุปกรณ์และคำสั่งด่วน) -->
+        <!-- TOPBAR -->
         <header class="bg-white/95 backdrop-blur border-b border-slate-200 sticky top-0 z-30 px-6 py-3 flex flex-wrap items-center justify-between gap-4 shadow-sm">
             <div class="flex items-center gap-2">
                 <span id="currentPageBadge" class="text-xs bg-sky-50 text-sky-700 border border-sky-200 px-3 py-1 rounded-full font-prompt font-semibold">หน้าหลัก (Portal Overview)</span>
@@ -159,15 +152,12 @@
 
             <!-- Right Quick Action Controls -->
             <div class="flex items-center flex-wrap gap-2">
-                <!-- Asset Dropdown Selector -->
                 <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg text-xs font-prompt shadow-sm">
                     <span class="text-slate-500 font-medium"><i class="fa-solid fa-industry text-sky-600 mr-1"></i>อุปกรณ์:</span>
                     <select id="assetSelectDropdown" onchange="onAssetChange(this.value)" class="bg-transparent text-sky-700 font-bold focus:outline-none cursor-pointer">
-                        <!-- Populated dynamically -->
                     </select>
                 </div>
 
-                <!-- Action Buttons -->
                 <button onclick="openMaintModal()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
                     <i class="fa-solid fa-screwdriver-wrench"></i> บันทึกซ่อม
                 </button>
@@ -245,7 +235,7 @@
                     </div>
                 </div>
 
-                <!-- PM / PdM PRIORITY RANKING TABLE -->
+                <!-- PM / PdM PRIORITY RANKING TABLE (จัดลำดับความเร่งด่วน) -->
                 <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-4">
                     <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-100 pb-4">
                         <div>
@@ -276,15 +266,13 @@
                                     <th class="p-3 text-center font-semibold">ดัชนีสุขภาพ CEHI</th>
                                     <th class="p-3 text-center font-semibold">ค่า RPN สูงสุด</th>
                                     <th class="p-3 font-semibold">สาเหตุความเสี่ยงหลัก (Primary Concern)</th>
-                                    <th class="p-3 font-semibold">กลยุทธ์ RCM แนะนำ</th>
-                                    <th class="p-3 font-semibold">กำหนดการเข้าทำ (Target Date)</th>
+                                    <th class="p-3 font-semibold">ขั้นตอนงาน (Stage)</th>
+                                    <th class="p-3 font-semibold">กำหนดการเข้าทำ</th>
                                     <th class="p-3 text-center font-semibold">รูปถ่ายสภาพ</th>
                                     <th class="p-3 text-center font-semibold">การกระทำ</th>
                                 </tr>
                             </thead>
-                            <tbody id="pmPriorityTableBody" class="divide-y divide-slate-100 text-slate-700">
-                                <!-- Populated dynamically -->
-                            </tbody>
+                            <tbody id="pmPriorityTableBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
                         </table>
                     </div>
                 </div>
@@ -296,7 +284,7 @@
             <!-- ========================================================= -->
             <div id="subpage-wrapper" class="hidden space-y-6">
 
-                <!-- Active Subpage Target Status Banner -->
+                <!-- 1. Active Subpage Target Status Banner -->
                 <div class="flex flex-wrap justify-between items-center gap-4 bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
                     <div class="flex items-center gap-3">
                         <button onclick="navigateTo('PORTAL')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition flex items-center gap-1.5 border border-slate-200">
@@ -320,10 +308,43 @@
                     </div>
                 </div>
 
+                <!-- 2. WORKFLOW STAGE & PROGRESS TIMELINE (สเกลขั้นตอนการดำเนินงาน) -->
+                <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-3">
+                    <div class="flex flex-wrap justify-between items-center border-b border-slate-100 pb-2">
+                        <h4 class="text-xs font-bold text-slate-800 font-prompt flex items-center gap-1.5">
+                            <i class="fa-solid fa-bars-progress text-sky-600"></i> ขั้นตอนการดำเนินงานซ่อมบำรุง (Maintenance Workflow Stage)
+                        </h4>
+                        <span id="workflowProgressPercent" class="text-xs font-bold text-sky-700 font-mono">ความคืบหน้า: 40%</span>
+                    </div>
+
+                    <!-- Stage Step Indicator -->
+                    <div class="grid grid-cols-5 gap-2 text-center text-[11px] pt-1" id="workflowStepContainer">
+                        <div id="step-1" class="p-2 rounded-xl border border-sky-300 bg-sky-50 text-sky-700 font-bold">1. ตรวจพบความผิดปกติ</div>
+                        <div id="step-2" class="p-2 rounded-xl border border-sky-300 bg-sky-50 text-sky-700 font-bold">2. วินิจฉัย & FMEA</div>
+                        <div id="step-3" class="p-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-400">3. วางแผนจัดสรรอะไหล่</div>
+                        <div id="step-4" class="p-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-400">4. กำลังเข้าทำหน้างาน</div>
+                        <div id="step-5" class="p-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-400">5. ตรวจสอบ & ปิดงาน</div>
+                    </div>
+                </div>
+
+                <!-- 3. ACTIONABLE ENGINEERING ADVICE BANNER (ระบบแนะนำแนวทางแก้ปัญหา) -->
+                <div class="bg-gradient-to-r from-amber-50 via-white to-sky-50 border border-amber-200 p-5 rounded-2xl shadow-sm flex gap-4 items-start">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 border border-amber-300 text-amber-700 flex items-center justify-center shrink-0 text-lg">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <h4 class="font-bold text-slate-800 font-prompt text-sm flex items-center gap-2">
+                            ข้อแนะนำการแก้ไขปัญหา & แผนงานเชิงวิศวกรรม (Engineering Mitigation Advice)
+                        </h4>
+                        <p id="adviceMainText" class="text-slate-600 leading-relaxed font-medium">กำลังประมวลผลคำแนะนำจากผลการทดสอบ...</p>
+                        <div class="pt-2 flex flex-wrap gap-2 text-[11px]" id="adviceTagsContainer"></div>
+                    </div>
+                </div>
+
                 <!-- EXPORTABLE REPORT WRAPPER -->
                 <div id="reportContentToExport" class="space-y-6">
 
-                    <!-- SUB-PAGE 1: DGA REPORT VIEW -->
+                    <!-- SUB-PAGE 1: DGA REPORT VIEW (WITH WORKING DUVAL TRIANGLE) -->
                     <div id="view-DGA" class="subview space-y-6 hidden">
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <div class="lg:col-span-2 bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-4">
@@ -346,7 +367,7 @@
                                 </div>
                             </div>
 
-                            <!-- Duval Canvas -->
+                            <!-- Duval Triangle Canvas Card (แสดงผลชัดเจน 100%) -->
                             <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex flex-col justify-between space-y-4">
                                 <div class="border-b border-slate-100 pb-2">
                                     <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
@@ -355,13 +376,13 @@
                                     <p class="text-[11px] text-slate-400">พิกัดสัดส่วน %CH4, %C2H4, %C2H2 (IEC 60599)</p>
                                 </div>
 
-                                <div class="relative w-full aspect-square max-w-[320px] mx-auto duval-triangle-canvas p-2 flex items-center justify-center shadow-inner">
-                                    <canvas id="subpageDuvalCanvas" width="300" height="270"></canvas>
+                                <div class="w-full aspect-square max-w-[320px] mx-auto bg-slate-50 rounded-2xl p-2 flex items-center justify-center border border-slate-200 shadow-inner">
+                                    <canvas id="subpageDuvalCanvas" width="300" height="280"></canvas>
                                 </div>
 
                                 <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-slate-500 font-medium">ผลการวินิจฉัย Duval:</span>
+                                        <span class="text-slate-500 font-medium">ผลวินิจฉัย Duval:</span>
                                         <span id="subpageDuvalResult" class="text-sky-700 font-bold text-sm">PD: Partial Discharge</span>
                                     </div>
                                     <p id="subpageDuvalCoords" class="text-[11px] text-slate-400 font-mono pt-1 border-t border-slate-200 flex justify-between">
@@ -816,22 +837,22 @@
         </div>
     </div>
 
-    <!-- LOGIC SCRIPT (SIDEBAR ROUTER & ACTIVE HIGHLIGHT) -->
+    <!-- LOGIC SCRIPT (COMPLETE DATASTORE WITH DUVAL, ADVICE, AND STAGES) -->
     <script>
         const fleetDatabase = {
             'TR-01': {
                 id: 'TR-01', name: 'TR-115/22kV No.1 (Ladprao)', station: 'Ladprao Substation (50 MVA)', type: 'Transformer', age: '14 ปี',
                 cehi: 88.4, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 168, testDate: '25/08/2026',
                 concern: 'OLTC Contact Wear & Carbonization', rcmStrat: 'PM: Overhaul ชุดขับเคลื่อน OLTC', targetDate: '15/10/2026',
+                stage: 3, stageText: '3. วางแผนจัดสรรอะไหล่', progressPercent: '60%',
+                adviceText: 'หน้าสัมผัส OLTC สึกหรอจากการสลับแท็ปบ่อย แนะนำวางแผนหยุดจ่ายไฟรอบถัดไปเพื่อตรวจเช็ก Diverter Switch, กรองน้ำมัน OLTC และวัดค่า Contact Resistance',
+                adviceTags: ['วางแผนอะไหล่หน้าสัมผัส', 'กรองน้ำมัน Diverter', 'ตรวจเช็กกลไกสปริง'],
                 dga: [{ name: 'Hydrogen', formula: 'H2', val: 25, norm: 100, status: 'ปกติ' }, { name: 'Methane', formula: 'CH4', val: 12, norm: 120, status: 'ปกติ' }, { name: 'Acetylene', formula: 'C2H2', val: 0.0, norm: 1.0, status: 'ปกติ' }, { name: 'Ethylene', formula: 'C2H4', val: 15, norm: 50, status: 'ปกติ' }, { name: 'Ethane', formula: 'C2H6', val: 90, norm: 65, status: 'เฝ้าระวัง' }],
                 simFactors: [90, 85, 80, 85],
                 duval: { ch4: 12, c2h4: 15, c2h2: 0.0, result: 'PD (Partial Discharge)' },
                 fmea: [{ sub: 'OLTC Mechanism', mode: 'Contact Wear', cause: 'สลับแท็ปบ่อย', s: 7, o: 6, d: 4, rpn: 168, strat: 'PM: Overhaul OLTC' }],
                 photos: [{ location: 'OLTC Diverter Switch Tank', desc: 'พบคราบเขม่าสะสมระดับปานกลางบริเวณหน้าสัมผัส', date: '25/08/2026', src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60' }],
-                maintHistory: [
-                    { id: 'WO-2025-102', type: 'PM', activity: 'เปลี่ยนสารดูดความชื้น Silica Gel & กรองน้ำมัน OLTC', parts: 'Silica Gel 5kg, Oil Filter', downtime: '3.0 ชม.', team: 'Substation Team A', date: '10/11/2025', status: 'Completed' },
-                    { id: 'WO-2024-044', type: 'PdM', activity: 'ตรวจวัดคลื่น Partial Discharge ออนไลน์', parts: '-', downtime: '0 ชม.', team: 'Diagnostic Team', date: '15/05/2024', status: 'Completed' }
-                ],
+                maintHistory: [{ id: 'WO-2025-102', type: 'PM', activity: 'เปลี่ยนสารดูดความชื้น Silica Gel & กรองน้ำมัน OLTC', parts: 'Silica Gel 5kg, Oil Filter', downtime: '3.0 ชม.', team: 'Substation Team A', date: '10/11/2025', status: 'Completed' }],
                 elecTests: { meggerRes: '2,850 MΩ', meggerPi: '2.45 (ดี)', tanDelta: '0.35% (ปกติ)', capDrift: '+0.5%', furanPpm: '0.12 ppm', paperDp: '720 DP (แข็งแรง)', oilBdv: '68 kV', contactRes: '35.4 μΩ' },
                 reliability: { mtbf: '1,850 ชม.', mttr: '3.5 ชม.', avail: '99.91%', rul: '16.0 ปี' }
             },
@@ -839,80 +860,83 @@
                 id: 'TR-02', name: 'TR-230/115kV No.2 (Chidlom)', station: 'Chidlom Substation (200 MVA)', type: 'Transformer', age: '22 ปี',
                 cehi: 58.0, cehiGrade: 'วิกฤต (Critical)', statusCategory: 'CRITICAL', maxRpn: 216, testDate: '20/08/2026',
                 concern: 'Winding Overheating > 700°C (C2H4 พุ่งสูง)', rcmStrat: 'ด่วน: สุ่มตรวจก๊าซ DGA ซ้ำใน 15 วัน + IR Scan', targetDate: '01/09/2026',
+                stage: 4, stageText: '4. กำลังเข้าทำหน้างาน', progressPercent: '75%',
+                adviceText: 'ก๊าซ Ethylene (C2H4) สูงวิกฤต บ่งชี้จุดต่อภายในหรือแกนเหล็กร้อนจัดเกิน 700°C แนะนำจำกัดโหลดไม่เกิน 75% โดยด่วน สแกนกล้องอินฟราเรด (IR) และเตรียมแผนสับถ่ายโหลดไปยังหม้อแปลงสำรอง',
+                adviceTags: ['ลดภาระโหลดด่วน', 'ตรวจจับความร้อน IR Scan', 'เก็บตัวอย่าง DGA ยืนยัน'],
                 dga: [{ name: 'Hydrogen', formula: 'H2', val: 95, norm: 100, status: 'ปกติ' }, { name: 'Methane', formula: 'CH4', val: 240, norm: 120, status: 'สูงผิดปกติ' }, { name: 'Acetylene', formula: 'C2H2', val: 2.8, norm: 1.0, status: 'เฝ้าระวัง' }, { name: 'Ethylene', formula: 'C2H4', val: 680, norm: 50, status: 'วิกฤต' }],
                 simFactors: [50, 60, 65, 55],
                 duval: { ch4: 240, c2h4: 680, c2h2: 2.8, result: 'T3: Thermal Fault > 700°C' },
                 fmea: [{ sub: 'Winding Joint', mode: 'Thermal Overheating (T3)', cause: 'จุดต่อภายในหลวม', s: 9, o: 6, d: 4, rpn: 216, strat: 'PdM: DGA Sampling ทุกเดือน' }],
                 photos: [{ location: 'HV Bushing Phase B Base', desc: 'ตรวจพบคราบน้ำมันรั่วซึมจากปะเก็นฝาถังและรอย Overheating', date: '20/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }],
-                maintHistory: [{ id: 'WO-2026-012', type: 'CM', activity: 'ขันแน่นปะเก็นฐาน Bushing Phase B และเปลี่ยนซีลยาง Viton', parts: 'Viton Gasket Set', downtime: '8.0 ชม.', team: 'Special Maintenance', date: '12/01/2026', status: 'Completed' }],
+                maintHistory: [{ id: 'WO-2026-012', type: 'CM', activity: 'ขันแน่นปะเก็นฐาน Bushing Phase B', parts: 'Viton Gasket Set', downtime: '8.0 ชม.', team: 'Special Maintenance', date: '12/01/2026', status: 'Completed' }],
                 elecTests: { meggerRes: '1,120 MΩ', meggerPi: '1.45 (เฝ้าระวัง)', tanDelta: '0.82% (สูง)', capDrift: '+2.4%', furanPpm: '1.85 ppm', paperDp: '380 DP (เสื่อมสภาพ)', oilBdv: '42 kV', contactRes: '62.0 μΩ' },
                 reliability: { mtbf: '620 ชม.', mttr: '8.2 ชม.', avail: '98.50%', rul: '4.5 ปี' }
             },
-            'TR-03': {
-                id: 'TR-03', name: 'TR-500/230kV No.3 (Bangkok South)', station: 'Bangkok South Terminal (300 MVA)', type: 'Transformer', age: '6 ปี',
-                cehi: 94.2, cehiGrade: 'ดีเยี่ยม (Excellent)', statusCategory: 'NORMAL', maxRpn: 64, testDate: '22/08/2026',
-                concern: 'การสั่นสะเทือนมอเตอร์พัดลมระบายความร้อน', rcmStrat: 'Routine PM ประจำปี', targetDate: '20/12/2026',
-                dga: [{ name: 'Hydrogen', formula: 'H2', val: 10, norm: 100, status: 'ปกติ' }, { name: 'Ethylene', formula: 'C2H4', val: 2, norm: 50, status: 'ปกติ' }],
-                simFactors: [95, 95, 90, 95],
-                duval: { ch4: 5, c2h4: 2, c2h2: 0.0, result: 'Normal Condition' },
-                fmea: [{ sub: 'Cooling Radiator', mode: 'Fan Motor Vibration', cause: 'ตลับลูกปืนสึกหรอ', s: 4, o: 4, d: 4, rpn: 64, strat: 'Routine PM' }], photos: [],
-                maintHistory: [{ id: 'WO-2025-201', type: 'PM', activity: 'เปลี่ยนตลับลูกปืนตู้พัดลมระบายความร้อน Radiator #1', parts: 'Bearing SKF', downtime: '2.0 ชม.', team: 'Substation B', date: '05/06/2025', status: 'Completed' }],
-                elecTests: { meggerRes: '4,200 MΩ', meggerPi: '3.10 (ดีเยี่ยม)', tanDelta: '0.22%', capDrift: '+0.1%', furanPpm: '0.05 ppm', paperDp: '910 DP', oilBdv: '75 kV', contactRes: '28.0 μΩ' },
-                reliability: { mtbf: '3,200 ชม.', mttr: '2.0 ชม.', avail: '99.98%', rul: '24.0 ปี' }
-            },
-            'GIS-01': {
-                id: 'GIS-01', name: 'GIS 115kV Bay 01 (Feeder Ladprao-1)', station: 'Ladprao GIS Station', type: 'GIS Bay', age: '8 ปี',
-                cehi: 92.5, cehiGrade: 'ดีเยี่ยม (Excellent)', statusCategory: 'NORMAL', maxRpn: 120, testDate: '24/08/2026',
-                concern: 'ความดันก๊าซ SF6 อยู่ในเกณฑ์ปกติ', rcmStrat: 'PdM: ติดตามค่าเซนเซอร์ Density Switch', targetDate: '15/12/2026',
-                sf6Purity: '99.8%', sf6Pressure: '0.65 MPa', sf6Moisture: '18 ppmv', sf6So2: '0.8 ppmv',
-                simFactors: [95, 95, 90, 90],
-                fmea: [{ sub: 'SF6 Compartment', mode: 'Slow Gas Leakage', cause: 'ซีลเสื่อมสภาพ', s: 8, o: 5, d: 3, rpn: 120, strat: 'PdM: Density Switch' }],
-                photos: [{ location: 'GIS Gas Compartment 1 Valve', desc: 'สภาพทั่วไปสะอาด ไม่มีสัญญาณรั่วซึม', date: '24/08/2026', src: 'https://images.unsplash.com/photo-1544725121-be3bf52e2dc8?w=500&auto=format&fit=crop&q=60' }],
-                maintHistory: [{ id: 'WO-2025-088', type: 'PM', activity: 'อัดเติมก๊าซ SF6 เข้า Compartment 1 เพิ่ม 0.02 MPa', parts: 'SF6 Gas 2kg', downtime: '1.5 ชม.', team: 'GIS Team', date: '18/09/2025', status: 'Completed' }],
-                elecTests: { meggerRes: '5,000 MΩ', meggerPi: '3.50', tanDelta: 'N/A', capDrift: 'N/A', furanPpm: 'N/A', paperDp: 'N/A', oilBdv: 'N/A', contactRes: '24.5 μΩ' },
-                reliability: { mtbf: '2,800 ชม.', mttr: '1.5 ชม.', avail: '99.95%', rul: '22.0 ปี' }
+            'TR-08': {
+                id: 'TR-08', name: 'TR-230/22kV No.2 (Rama 9)', station: 'Rama 9 Substation (80 MVA)', type: 'Transformer', age: '25 ปี',
+                cehi: 52.4, cehiGrade: 'วิกฤต (Critical)', statusCategory: 'CRITICAL', maxRpn: 240, testDate: '10/08/2026',
+                concern: 'ตรวจพบก๊าซ Acetylene (C2H2) ชี้เกิด Arcing พลังงานสูง', rcmStrat: 'ด่วนที่สุด: ตรวจหาตำแหน่ง Partial Discharge / Arcing', targetDate: '28/08/2026',
+                stage: 2, stageText: '2. วินิจฉัย & FMEA', progressPercent: '30%',
+                adviceText: 'ตรวจพบก๊าซอะเซทิลีน (C2H2) 12.5 ppm เกินเกณฑ์มาตรฐาน บ่งบอกถึงการอาร์กไฟฟ้าพลังงานสูงในถังหลัก แนะนำใช้เซนเซอร์ Acoustic และ UHF สแกนหาพิกัดจุดอาร์กทันทีเพื่อป้องกันการระเบิด',
+                adviceTags: ['อาร์กพลังงานสูง', 'เฝ้าระวังแรงดันถัง PRV', 'สแกนหาตำแหน่ง Acoustic PD'],
+                dga: [{ name: 'Acetylene', formula: 'C2H2', val: 12.5, norm: 1.0, status: 'วิกฤต' }, { name: 'Hydrogen', formula: 'H2', val: 310, norm: 100, status: 'วิกฤต' }],
+                simFactors: [45, 55, 55, 60],
+                duval: { ch4: 80, c2h4: 90, c2h2: 45.0, result: 'D2: High Energy Arcing' },
+                fmea: [{ sub: 'Core & Winding', mode: 'High Energy Arcing', cause: 'ฉนวนทะลวงระหว่างชั้นขดลวด', s: 10, o: 6, d: 4, rpn: 240, strat: 'Emergency Inspection' }],
+                photos: [{ location: 'Main Tank Pressure Relief Valve', desc: 'PRV มีการปลดปล่อยแรงดันและพบคราบน้ำมันกระจายรอบตัวถัง', date: '10/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }],
+                maintHistory: [], elecTests: { meggerRes: '950 MΩ', meggerPi: '1.30', tanDelta: '0.95%', capDrift: '+3.1%', furanPpm: '2.10 ppm', paperDp: '320 DP', oilBdv: '38 kV', contactRes: '75.0 μΩ' },
+                reliability: { mtbf: '410 ชม.', mttr: '14.0 ชม.', avail: '96.80%', rul: '2.5 ปี' }
             },
             'GIS-05': {
                 id: 'GIS-05', name: 'GIS 230kV Bay 05 (Main Bus 1 Section)', station: 'Bangkok South GIS', type: 'GIS Bay', age: '24 ปี',
                 cehi: 49.0, cehiGrade: 'วิกฤต (Critical)', statusCategory: 'CRITICAL', maxRpn: 225, testDate: '11/08/2026',
                 concern: 'แรงดันก๊าซ SF6 ต่ำผิดปกติ (0.58 MPa) & SO2 พุ่งสูง 6.8 ppmv', rcmStrat: 'ด่วนที่สุด: ตรวจสอบจุดรั่วซึม & ปลดถ่ายก๊าซเพื่อซ่อมเปลี่ยนซีล', targetDate: '29/08/2026',
+                stage: 4, stageText: '4. กำลังเข้าทำหน้างาน', progressPercent: '80%',
+                adviceText: 'ก๊าซ SF6 รั่วซึมและตรวจพบ SO2 สูงเกินเกณฑ์ 5.0 ppmv บ่งบอกว่ามีการอาร์กภายในกัดกร่อนก๊าซฉนวน แนะนำดูดเก็บก๊าซเพื่อนำไปบำบัด เปลี่ยนชุดซีลหน้าแปลน Bus Duct และทำความสะอาดคราบผงโลหะ',
+                adviceTags: ['เปลี่ยนซีลหน้าแปลน', 'บำบัดก๊าซ SO2', 'ทดสอบแรงดันก๊าซ SF6'],
                 sf6Purity: '96.2%', sf6Pressure: '0.58 MPa', sf6Moisture: '160 ppmv', sf6So2: '6.8 ppmv',
                 simFactors: [40, 50, 55, 55],
                 fmea: [{ sub: 'SF6 Bus Duct', mode: 'Gas Leak & Internal Arc Byproduct', cause: 'ปะเก็นหน้าแปลนแตกร้าว', s: 9, o: 5, d: 5, rpn: 225, strat: 'Emergency Seal Repair' }],
                 photos: [{ location: 'Main Busbar Flange Junction', desc: 'ตรวจพบคราบน้ำมันหล่อลื่นและฟองสบู่จากการทดสอบรั่วที่หน้าแปลน', date: '11/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }],
-                maintHistory: [{ id: 'WO-2026-005', type: 'CM', activity: 'อัดเติมก๊าซ SF6 ชั่วคราว และฉีดน้ำยาทดสอบจุดรั่วหน้าแปลน', parts: 'SF6 Gas 10kg', downtime: '4.0 ชม.', team: 'Emergency GIS', date: '11/08/2026', status: 'In Progress' }],
+                maintHistory: [{ id: 'WO-2026-005', type: 'CM', activity: 'อัดเติมก๊าซ SF6 ชั่วคราว', parts: 'SF6 Gas 10kg', downtime: '4.0 ชม.', team: 'Emergency GIS', date: '11/08/2026', status: 'In Progress' }],
                 elecTests: { meggerRes: '850 MΩ', meggerPi: '1.20', tanDelta: 'N/A', capDrift: 'N/A', furanPpm: 'N/A', paperDp: 'N/A', oilBdv: 'N/A', contactRes: '88.5 μΩ' },
                 reliability: { mtbf: '450 ชม.', mttr: '12.0 ชม.', avail: '97.20%', rul: '3.0 ปี' }
             }
         };
 
-        // Populate Remaining 15 Assets
-        for (let i = 4; i <= 10; i++) {
+        // Populate Remaining Assets
+        for (let i = 3; i <= 10; i++) {
             const id = `TR-0${i}`.replace('010', '10');
             if (!fleetDatabase[id]) {
                 fleetDatabase[id] = {
                     id: id, name: `TR-115/22kV No.${i} (Substation Zone ${i})`, station: `Substation Area ${i}`, type: 'Transformer', age: `${10+i} ปี`,
-                    cehi: 75.0 + (i % 3) * 5, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 90 + i * 5, testDate: '15/08/2026',
-                    concern: 'ตรวจสอบสภาพตามแผนปกติ', rcmStrat: 'Routine PM', targetDate: `10/${i}/2026`,
-                    dga: [{ name: 'Hydrogen', formula: 'H2', val: 15 + i, norm: 100, status: 'ปกติ' }], simFactors: [80, 80, 80, 80],
-                    duval: { ch4: 10, c2h4: 5, c2h2: 0.0, result: 'Normal Condition' },
-                    fmea: [{ sub: 'Cooling Radiator', mode: 'Dust Accumulation', cause: 'ฝุ่นเกาะ', s: 5, o: 4, d: 3, rpn: 60, strat: 'Routine PM' }],
-                    photos: [], maintHistory: [], elecTests: { meggerRes: '2,100 MΩ', meggerPi: '2.10', tanDelta: '0.40%', capDrift: '0.0%', furanPpm: '0.20 ppm', paperDp: '650 DP', oilBdv: '62 kV', contactRes: '40.0 μΩ' },
-                    reliability: { mtbf: '1,500 ชม.', mttr: '3.0 ชม.', avail: '99.80%', rul: '15.0 ปี' }
+                    cehi: 75.0 + (i % 3) * 6, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 80 + i * 6, testDate: '18/08/2026',
+                    concern: 'สภาวะการทำงานทั่วไปอยู่ในเกณฑ์ปกติ', rcmStrat: 'Routine PM ประจำปี', targetDate: `10/${i}/2026`,
+                    stage: 1, stageText: '1. ตรวจพบความผิดปกติ (ปกติ)', progressPercent: '20%',
+                    adviceText: 'อุปกรณ์อยู่ในเกณฑ์ปกติ ดำเนินการตรวจสอบสภาพประจำปีตามแผนบำรุงรักษาเชิงป้องกัน (Routine PM) และตรวจวัด DGA ตามรอบ 6 เดือน',
+                    adviceTags: ['บำรุงรักษาตามรอบ', 'ตรวจวัด DGA ปกติ'],
+                    dga: [{ name: 'Hydrogen', formula: 'H2', val: 12 + i, norm: 100, status: 'ปกติ' }, { name: 'Methane', formula: 'CH4', val: 8 + i, norm: 120, status: 'ปกติ' }, { name: 'Ethylene', formula: 'C2H4', val: 4 + i, norm: 50, status: 'ปกติ' }],
+                    simFactors: [85, 85, 85, 85], duval: { ch4: 15, c2h4: 5, c2h2: 0.0, result: 'Normal Condition' },
+                    fmea: [{ sub: 'Cooling System', mode: 'Radiator Dust', cause: 'ฝุ่นสะสม', s: 4, o: 4, d: 3, rpn: 48, strat: 'Routine PM' }],
+                    photos: [], maintHistory: [], elecTests: { meggerRes: '2,800 MΩ', meggerPi: '2.50', tanDelta: '0.35%', capDrift: '0.0%', furanPpm: '0.15 ppm', paperDp: '700 DP', oilBdv: '65 kV', contactRes: '35.0 μΩ' },
+                    reliability: { mtbf: '1,800 ชม.', mttr: '2.5 ชม.', avail: '99.90%', rul: '18.0 ปี' }
                 };
             }
         }
-        for (let i = 2; i <= 10; i++) {
+        for (let i = 1; i <= 10; i++) {
             const id = `GIS-0${i}`.replace('010', '10');
             if (!fleetDatabase[id]) {
                 fleetDatabase[id] = {
-                    id: id, name: `GIS 115kV Bay 0${i} (Feeder Zone ${i})`.replace('010', '10'), station: `GIS Substation Area ${i}`, type: 'GIS Bay', age: `${5+i} ปี`,
-                    cehi: 78.0 + (i % 4) * 4, cehiGrade: 'ปกติ (Good)', statusCategory: (i === 2 || i === 5) ? 'WARNING' : 'NORMAL', maxRpn: 100 + i * 8, testDate: '18/08/2026',
-                    concern: 'สภาวะความดัน SF6 ปกติ', rcmStrat: 'PdM Monitoring', targetDate: `20/${i}/2026`,
-                    sf6Purity: '98.5%', sf6Pressure: '0.64 MPa', sf6Moisture: '35 ppmv', sf6So2: '1.2 ppmv',
-                    simFactors: [85, 85, 80, 85], fmea: [{ sub: 'SF6 Compartment', mode: 'Slow Leak', cause: 'ซีลยาง', s: 7, o: 4, d: 3, rpn: 84, strat: 'PdM' }],
-                    photos: [], maintHistory: [], elecTests: { meggerRes: '3,500 MΩ', meggerPi: '2.80', tanDelta: 'N/A', capDrift: 'N/A', furanPpm: 'N/A', paperDp: 'N/A', oilBdv: 'N/A', contactRes: '32.0 μΩ' },
-                    reliability: { mtbf: '2,100 ชม.', mttr: '2.5 ชม.', avail: '99.90%', rul: '18.0 ปี' }
+                    id: id, name: `GIS 115kV Bay 0${i} (Feeder Zone ${i})`.replace('010', '10'), station: `GIS Station Area ${i}`, type: 'GIS Bay', age: `${6+i} ปี`,
+                    cehi: 80.0 + (i % 4) * 4, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 75 + i * 5, testDate: '20/08/2026',
+                    concern: 'แรงดันและความบริสุทธิ์ SF6 อยู่ในเกณฑ์มาตรฐาน', rcmStrat: 'PdM Sensor Monitoring', targetDate: `15/${i}/2026`,
+                    stage: 1, stageText: '1. ตรวจพบความผิดปกติ (ปกติ)', progressPercent: '20%',
+                    adviceText: 'สภาวะก๊าซฉนวน SF6 และกลไกสวิตช์ทำงานราบรื่น ติดตามระดับแรงดันผ่านเซนเซอร์ Density Switch ต่อเนื่องตามแผนงาน PdM',
+                    adviceTags: ['ติดตามเซนเซอร์ออนไลน์', 'ตรวจสภาพกลไก CB'],
+                    sf6Purity: '99.2%', sf6Pressure: '0.65 MPa', sf6Moisture: '25 ppmv', sf6So2: '0.6 ppmv',
+                    simFactors: [90, 90, 85, 90], fmea: [{ sub: 'SF6 System', mode: 'Gasket Aging', cause: 'เสื่อมตามอายุ', s: 6, o: 3, d: 3, rpn: 54, strat: 'PdM' }],
+                    photos: [], maintHistory: [], elecTests: { meggerRes: '4,500 MΩ', meggerPi: '3.10', tanDelta: 'N/A', capDrift: 'N/A', furanPpm: 'N/A', paperDp: 'N/A', oilBdv: 'N/A', contactRes: '28.0 μΩ' },
+                    reliability: { mtbf: '2,500 ชม.', mttr: '2.0 ชม.', avail: '99.95%', rul: '20.0 ปี' }
                 };
             }
         }
@@ -978,7 +1002,7 @@
                     <td class="p-3 text-center font-mono ${cehiClass}">${a.cehi}%</td>
                     <td class="p-3 text-center font-mono font-bold text-amber-600">${a.maxRpn}</td>
                     <td class="p-3 text-slate-600 font-medium max-w-xs truncate" title="${a.concern}">${a.concern}</td>
-                    <td class="p-3 text-sky-700 font-medium">${a.rcmStrat}</td>
+                    <td class="p-3 font-medium text-sky-700 font-prompt"><span class="px-2 py-0.5 bg-sky-50 border border-sky-200 rounded">${a.stageText || '1. ตรวจพบ'}</span></td>
                     <td class="p-3 font-mono text-slate-600 font-semibold">${a.targetDate}</td>
                     <td class="p-3 text-center">${photoBtn}</td>
                     <td class="p-3 text-center">
@@ -1017,14 +1041,12 @@
             if (currentRoute !== 'PORTAL') navigateTo(currentRoute);
         }
 
-        // SPA Navigation Router with Sidebar Active Class Highlights
         function navigateTo(pageKey) {
             currentRoute = pageKey;
             const portalPage = document.getElementById('page-PORTAL');
             const subpageWrapper = document.getElementById('subpage-wrapper');
             const badge = document.getElementById('currentPageBadge');
 
-            // Update Sidebar Active State
             document.querySelectorAll('.sidebar-btn').forEach(btn => {
                 btn.className = 'sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-sky-600';
             });
@@ -1050,6 +1072,9 @@
 
             document.getElementById('subpageTargetName').innerText = `${asset.id} - ${asset.name}`;
             document.getElementById('subpageTargetCehi').innerText = asset.cehi + '%';
+
+            // Update Advice & Workflow Stages Banner
+            updateWorkflowAndAdvice(asset);
 
             if (pageKey === 'PAGE_DGA') {
                 document.getElementById('view-DGA').classList.remove('hidden');
@@ -1102,6 +1127,32 @@
             }
         }
 
+        // Workflow & Advice Updater
+        function updateWorkflowAndAdvice(asset) {
+            document.getElementById('adviceMainText').innerText = asset.adviceText || 'ดำเนินการตรวจสอบตามแผนบำรุงรักษาเชิงป้องกันปกติ';
+            document.getElementById('workflowProgressPercent').innerText = `ความคืบหน้า: ${asset.progressPercent || '20%'}`;
+
+            const tagsContainer = document.getElementById('adviceTagsContainer');
+            tagsContainer.innerHTML = '';
+            (asset.adviceTags || ['บำรุงรักษาตามรอบ']).forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'px-2.5 py-1 bg-amber-100 text-amber-800 font-semibold rounded-lg border border-amber-300';
+                span.innerHTML = `<i class="fa-solid fa-check text-amber-600 mr-1"></i> ${tag}`;
+                tagsContainer.appendChild(span);
+            });
+
+            // Update Stage 1-5 Indicators
+            const currentStage = asset.stage || 1;
+            for (let s = 1; s <= 5; s++) {
+                const el = document.getElementById(`step-${s}`);
+                if (s <= currentStage) {
+                    el.className = 'p-2 rounded-xl border border-sky-400 bg-sky-50 text-sky-800 font-bold shadow-sm';
+                } else {
+                    el.className = 'p-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-400';
+                }
+            }
+        }
+
         function renderDgaSubpage() {
             const asset = fleetDatabase[currentActiveAsset];
             const tbody = document.getElementById('subpageDgaTableBody');
@@ -1122,36 +1173,90 @@
                 tbody.appendChild(tr);
             });
             document.getElementById('subpageDuvalResult').innerText = asset.duval ? asset.duval.result : 'Normal Condition';
-            drawSubDuvalTriangle();
+            drawDuvalTriangleCanvas();
         }
 
-        function drawSubDuvalTriangle() {
+        // Duval Triangle 1 Rendering with Real Zone Coloring (วาดโซนและลงสีสมบูรณ์)
+        function drawDuvalTriangleCanvas() {
             const canvas = document.getElementById('subpageDuvalCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const top = { x: 150, y: 30 }; left = { x: 30, y: 240 }; right = { x: 270, y: 240 };
+            const top = { x: 150, y: 35 };    // 100% CH4
+            const left = { x: 30, y: 245 };   // 100% C2H4
+            const right = { x: 270, y: 245 }; // 100% C2H2
+
+            // 1. Draw Triangle Background Zones with Colors
             ctx.beginPath();
             ctx.moveTo(top.x, top.y); ctx.lineTo(left.x, left.y); ctx.lineTo(right.x, right.y); ctx.closePath();
-            ctx.fillStyle = '#f8fafc'; ctx.fill(); ctx.strokeStyle = '#0284c7'; ctx.lineWidth = 2; ctx.stroke();
+            ctx.fillStyle = '#f1f5f9'; ctx.fill();
 
+            // Thermal Zones (T1, T2, T3) - Light Amber
+            ctx.fillStyle = 'rgba(251, 191, 36, 0.25)';
+            ctx.beginPath(); ctx.moveTo(100, 120); ctx.lineTo(190, 120); ctx.lineTo(150, 245); ctx.lineTo(30, 245); ctx.closePath(); ctx.fill();
+
+            // Arcing Zones (D1, D2) - Light Red/Rose
+            ctx.fillStyle = 'rgba(244, 63, 94, 0.2)';
+            ctx.beginPath(); ctx.moveTo(150, 120); ctx.lineTo(190, 120); ctx.lineTo(270, 245); ctx.lineTo(150, 245); ctx.closePath(); ctx.fill();
+
+            // Triangle Outline
+            ctx.strokeStyle = '#0284c7'; ctx.lineWidth = 2; ctx.stroke();
+
+            // Partition Lines
+            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1; ctx.setLineDash([2, 2]);
+            ctx.beginPath();
+            ctx.moveTo(135, 60); ctx.lineTo(165, 60); // PD line
+            ctx.moveTo(100, 120); ctx.lineTo(190, 120); // T1/T2 line
+            ctx.moveTo(70, 175); ctx.lineTo(215, 175); // T2/T3 line
+            ctx.moveTo(150, 120); ctx.lineTo(150, 245); // D1/D2 separator
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Zone Labels
+            ctx.font = 'bold 9px Prompt';
+            ctx.fillStyle = '#0369a1'; ctx.fillText('PD', 143, 52);
+            ctx.fillStyle = '#b45309'; ctx.fillText('T1 (<300°)', 125, 100);
+            ctx.fillStyle = '#b45309'; ctx.fillText('T2 (300-700°)', 115, 150);
+            ctx.fillStyle = '#be123c'; ctx.fillText('T3 (>700°)', 70, 210);
+            ctx.fillStyle = '#9f1239'; ctx.fillText('D1 (Low Arc)', 160, 195);
+            ctx.fillStyle = '#9f1239'; ctx.fillText('D2 (High Arc)', 205, 230);
+
+            // Axis Corner Labels
+            ctx.font = 'bold 10px Prompt'; ctx.fillStyle = '#0f172a';
+            ctx.fillText('%CH4 (บน)', 125, 20);
+            ctx.fillText('%C2H4 (ซ้าย)', 5, 260);
+            ctx.fillText('%C2H2 (ขวา)', 230, 260);
+
+            // Calculate Coordinates for Selected Asset
             const asset = fleetDatabase[currentActiveAsset];
             let ch4 = 15, c2h4 = 10, c2h2 = 0;
-            if (asset.duval && asset.duval.ch4 !== undefined) { ch4 = asset.duval.ch4; c2h4 = asset.duval.c2h4; c2h2 = asset.duval.c2h2; }
+            if (asset.duval && asset.duval.ch4 !== undefined) {
+                ch4 = asset.duval.ch4; c2h4 = asset.duval.c2h4; c2h2 = asset.duval.c2h2;
+            }
             const total = ch4 + c2h4 + c2h2;
             let pch4 = total > 0 ? (ch4 / total) * 100 : 90;
             let pc2h4 = total > 0 ? (c2h4 / total) * 100 : 10;
             let pc2h2 = total > 0 ? (c2h2 / total) * 100 : 0;
 
-            document.getElementById('subpageDuvalCoords').innerHTML = `<span>%CH4=${pch4.toFixed(1)}%</span><span>%C2H4=${pc2h4.toFixed(1)}%</span><span>%C2H2=${pc2h2.toFixed(1)}%</span>`;
+            document.getElementById('subpageDuvalCoords').innerHTML = `
+                <span>%CH4 = ${pch4.toFixed(1)}%</span>
+                <span>%C2H4 = ${pc2h4.toFixed(1)}%</span>
+                <span>%C2H2 = ${pc2h2.toFixed(1)}%</span>
+            `;
 
+            // Convert to 2D Canvas Coordinate
             const x = (pc2h4 * left.x + pc2h2 * right.x + pch4 * top.x) / 100;
             const y = (pc2h4 * left.y + pc2h2 * right.y + pch4 * top.y) / 100;
 
+            // Plot Point
             ctx.beginPath(); ctx.arc(x, y, 6, 0, 2 * Math.PI);
-            ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
-            ctx.fillStyle = '#1e293b'; ctx.font = 'bold 11px Prompt'; ctx.fillText(asset.id, x + 8, y - 4);
+            ctx.fillStyle = '#ef4444'; ctx.fill();
+            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
+
+            // Point Asset Tag
+            ctx.fillStyle = '#0f172a'; ctx.font = 'bold 11px Prompt';
+            ctx.fillText(asset.id, x + 8, y - 4);
         }
 
         function renderSf6Subpage() {
