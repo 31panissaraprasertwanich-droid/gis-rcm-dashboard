@@ -58,6 +58,11 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+        .duval-triangle-canvas {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+        }
     </style>
 </head>
 <body class="min-h-screen flex bg-slate-50 text-slate-800 antialiased font-sarabun">
@@ -235,7 +240,7 @@
                     </div>
                 </div>
 
-                <!-- PM / PdM PRIORITY RANKING TABLE (จัดลำดับความเร่งด่วน) -->
+                <!-- PM / PdM PRIORITY RANKING TABLE -->
                 <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-4">
                     <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-100 pb-4">
                         <div>
@@ -308,7 +313,7 @@
                     </div>
                 </div>
 
-                <!-- 2. WORKFLOW STAGE & PROGRESS TIMELINE (สเกลขั้นตอนการดำเนินงาน) -->
+                <!-- 2. WORKFLOW STAGE & PROGRESS TIMELINE (แถบขั้นตอนงานแบ่งสีชัดเจน) -->
                 <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-3">
                     <div class="flex flex-wrap justify-between items-center border-b border-slate-100 pb-2">
                         <h4 class="text-xs font-bold text-slate-800 font-prompt flex items-center gap-1.5">
@@ -317,17 +322,46 @@
                         <span id="workflowProgressPercent" class="text-xs font-bold text-sky-700 font-mono">ความคืบหน้า: 40%</span>
                     </div>
 
-                    <!-- Stage Step Indicator -->
-                    <div class="grid grid-cols-5 gap-2 text-center text-[11px] pt-1" id="workflowStepContainer">
-                        <div id="step-1" class="p-2 rounded-xl border border-sky-300 bg-sky-50 text-sky-700 font-bold">1. ตรวจพบความผิดปกติ</div>
-                        <div id="step-2" class="p-2 rounded-xl border border-sky-300 bg-sky-50 text-sky-700 font-bold">2. วินิจฉัย & FMEA</div>
-                        <div id="step-3" class="p-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-400">3. วางแผนจัดสรรอะไหล่</div>
-                        <div id="step-4" class="p-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-400">4. กำลังเข้าทำหน้างาน</div>
-                        <div id="step-5" class="p-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-400">5. ตรวจสอบ & ปิดงาน</div>
+                    <!-- Stage Step Indicator (แยกสี 5 เฉดสีแตกต่างกันชัดเจน) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 text-center text-[11px] pt-1" id="workflowStepContainer">
+                        <!-- Step 1: Sky Blue -->
+                        <div id="step-1" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
+                            <i class="fa-solid fa-bell text-sm"></i>
+                            <span class="font-bold">1. ตรวจพบความผิดปกติ</span>
+                            <span class="text-[9px] opacity-75">(Detected)</span>
+                        </div>
+
+                        <!-- Step 2: Purple -->
+                        <div id="step-2" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
+                            <i class="fa-solid fa-microscope text-sm"></i>
+                            <span class="font-bold">2. วินิจฉัย & FMEA</span>
+                            <span class="text-[9px] opacity-75">(Diagnosed)</span>
+                        </div>
+
+                        <!-- Step 3: Amber/Orange -->
+                        <div id="step-3" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
+                            <i class="fa-solid fa-boxes-packing text-sm"></i>
+                            <span class="font-bold">3. วางแผนจัดสรรอะไหล่</span>
+                            <span class="text-[9px] opacity-75">(Planned)</span>
+                        </div>
+
+                        <!-- Step 4: Red/Rose -->
+                        <div id="step-4" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
+                            <i class="fa-solid fa-screwdriver-wrench text-sm"></i>
+                            <span class="font-bold">4. กำลังเข้าทำหน้างาน</span>
+                            <span class="text-[9px] opacity-75">(In Progress)</span>
+                        </div>
+
+                        <!-- Step 5: Emerald Green -->
+                        <div id="step-5" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
+                            <i class="fa-solid fa-circle-check text-sm"></i>
+                            <span class="font-bold">5. ตรวจสอบ & ปิดงาน</span>
+                            <span class="text-[9px] opacity-75">(Completed)</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 3. ACTIONABLE ENGINEERING ADVICE BANNER (ระบบแนะนำแนวทางแก้ปัญหา) -->
+                <!-- 3. ACTIONABLE ENGINEERING ADVICE BANNER -->
                 <div class="bg-gradient-to-r from-amber-50 via-white to-sky-50 border border-amber-200 p-5 rounded-2xl shadow-sm flex gap-4 items-start">
                     <div class="w-10 h-10 rounded-xl bg-amber-100 border border-amber-300 text-amber-700 flex items-center justify-center shrink-0 text-lg">
                         <i class="fa-solid fa-lightbulb"></i>
@@ -367,7 +401,7 @@
                                 </div>
                             </div>
 
-                            <!-- Duval Triangle Canvas Card (แสดงผลชัดเจน 100%) -->
+                            <!-- Duval Triangle Canvas Card -->
                             <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex flex-col justify-between space-y-4">
                                 <div class="border-b border-slate-100 pb-2">
                                     <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
@@ -837,297 +871,9 @@
         </div>
     </div>
 
-    <!-- LOGIC SCRIPT (COMPLETE DATASTORE WITH DUVAL, ADVICE, AND STAGES) -->
+    <!-- LOGIC SCRIPT (WORKFLOW STAGE COLOR LOGIC & ACCURATE DUVAL) -->
     <script>
-        const fleetDatabase = {
-            'TR-01': {
-                id: 'TR-01', name: 'TR-115/22kV No.1 (Ladprao)', station: 'Ladprao Substation (50 MVA)', type: 'Transformer', age: '14 ปี',
-                cehi: 88.4, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 168, testDate: '25/08/2026',
-                concern: 'OLTC Contact Wear & Carbonization', rcmStrat: 'PM: Overhaul ชุดขับเคลื่อน OLTC', targetDate: '15/10/2026',
-                stage: 3, stageText: '3. วางแผนจัดสรรอะไหล่', progressPercent: '60%',
-                adviceText: 'หน้าสัมผัส OLTC สึกหรอจากการสลับแท็ปบ่อย แนะนำวางแผนหยุดจ่ายไฟรอบถัดไปเพื่อตรวจเช็ก Diverter Switch, กรองน้ำมัน OLTC และวัดค่า Contact Resistance',
-                adviceTags: ['วางแผนอะไหล่หน้าสัมผัส', 'กรองน้ำมัน Diverter', 'ตรวจเช็กกลไกสปริง'],
-                dga: [{ name: 'Hydrogen', formula: 'H2', val: 25, norm: 100, status: 'ปกติ' }, { name: 'Methane', formula: 'CH4', val: 12, norm: 120, status: 'ปกติ' }, { name: 'Acetylene', formula: 'C2H2', val: 0.0, norm: 1.0, status: 'ปกติ' }, { name: 'Ethylene', formula: 'C2H4', val: 15, norm: 50, status: 'ปกติ' }, { name: 'Ethane', formula: 'C2H6', val: 90, norm: 65, status: 'เฝ้าระวัง' }],
-                simFactors: [90, 85, 80, 85],
-                duval: { ch4: 12, c2h4: 15, c2h2: 0.0, result: 'PD (Partial Discharge)' },
-                fmea: [{ sub: 'OLTC Mechanism', mode: 'Contact Wear', cause: 'สลับแท็ปบ่อย', s: 7, o: 6, d: 4, rpn: 168, strat: 'PM: Overhaul OLTC' }],
-                photos: [{ location: 'OLTC Diverter Switch Tank', desc: 'พบคราบเขม่าสะสมระดับปานกลางบริเวณหน้าสัมผัส', date: '25/08/2026', src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60' }],
-                maintHistory: [{ id: 'WO-2025-102', type: 'PM', activity: 'เปลี่ยนสารดูดความชื้น Silica Gel & กรองน้ำมัน OLTC', parts: 'Silica Gel 5kg, Oil Filter', downtime: '3.0 ชม.', team: 'Substation Team A', date: '10/11/2025', status: 'Completed' }],
-                elecTests: { meggerRes: '2,850 MΩ', meggerPi: '2.45 (ดี)', tanDelta: '0.35% (ปกติ)', capDrift: '+0.5%', furanPpm: '0.12 ppm', paperDp: '720 DP (แข็งแรง)', oilBdv: '68 kV', contactRes: '35.4 μΩ' },
-                reliability: { mtbf: '1,850 ชม.', mttr: '3.5 ชม.', avail: '99.91%', rul: '16.0 ปี' }
-            },
-            'TR-02': {
-                id: 'TR-02', name: 'TR-230/115kV No.2 (Chidlom)', station: 'Chidlom Substation (200 MVA)', type: 'Transformer', age: '22 ปี',
-                cehi: 58.0, cehiGrade: 'วิกฤต (Critical)', statusCategory: 'CRITICAL', maxRpn: 216, testDate: '20/08/2026',
-                concern: 'Winding Overheating > 700°C (C2H4 พุ่งสูง)', rcmStrat: 'ด่วน: สุ่มตรวจก๊าซ DGA ซ้ำใน 15 วัน + IR Scan', targetDate: '01/09/2026',
-                stage: 4, stageText: '4. กำลังเข้าทำหน้างาน', progressPercent: '75%',
-                adviceText: 'ก๊าซ Ethylene (C2H4) สูงวิกฤต บ่งชี้จุดต่อภายในหรือแกนเหล็กร้อนจัดเกิน 700°C แนะนำจำกัดโหลดไม่เกิน 75% โดยด่วน สแกนกล้องอินฟราเรด (IR) และเตรียมแผนสับถ่ายโหลดไปยังหม้อแปลงสำรอง',
-                adviceTags: ['ลดภาระโหลดด่วน', 'ตรวจจับความร้อน IR Scan', 'เก็บตัวอย่าง DGA ยืนยัน'],
-                dga: [{ name: 'Hydrogen', formula: 'H2', val: 95, norm: 100, status: 'ปกติ' }, { name: 'Methane', formula: 'CH4', val: 240, norm: 120, status: 'สูงผิดปกติ' }, { name: 'Acetylene', formula: 'C2H2', val: 2.8, norm: 1.0, status: 'เฝ้าระวัง' }, { name: 'Ethylene', formula: 'C2H4', val: 680, norm: 50, status: 'วิกฤต' }],
-                simFactors: [50, 60, 65, 55],
-                duval: { ch4: 240, c2h4: 680, c2h2: 2.8, result: 'T3: Thermal Fault > 700°C' },
-                fmea: [{ sub: 'Winding Joint', mode: 'Thermal Overheating (T3)', cause: 'จุดต่อภายในหลวม', s: 9, o: 6, d: 4, rpn: 216, strat: 'PdM: DGA Sampling ทุกเดือน' }],
-                photos: [{ location: 'HV Bushing Phase B Base', desc: 'ตรวจพบคราบน้ำมันรั่วซึมจากปะเก็นฝาถังและรอย Overheating', date: '20/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }],
-                maintHistory: [{ id: 'WO-2026-012', type: 'CM', activity: 'ขันแน่นปะเก็นฐาน Bushing Phase B', parts: 'Viton Gasket Set', downtime: '8.0 ชม.', team: 'Special Maintenance', date: '12/01/2026', status: 'Completed' }],
-                elecTests: { meggerRes: '1,120 MΩ', meggerPi: '1.45 (เฝ้าระวัง)', tanDelta: '0.82% (สูง)', capDrift: '+2.4%', furanPpm: '1.85 ppm', paperDp: '380 DP (เสื่อมสภาพ)', oilBdv: '42 kV', contactRes: '62.0 μΩ' },
-                reliability: { mtbf: '620 ชม.', mttr: '8.2 ชม.', avail: '98.50%', rul: '4.5 ปี' }
-            },
-            'TR-08': {
-                id: 'TR-08', name: 'TR-230/22kV No.2 (Rama 9)', station: 'Rama 9 Substation (80 MVA)', type: 'Transformer', age: '25 ปี',
-                cehi: 52.4, cehiGrade: 'วิกฤต (Critical)', statusCategory: 'CRITICAL', maxRpn: 240, testDate: '10/08/2026',
-                concern: 'ตรวจพบก๊าซ Acetylene (C2H2) ชี้เกิด Arcing พลังงานสูง', rcmStrat: 'ด่วนที่สุด: ตรวจหาตำแหน่ง Partial Discharge / Arcing', targetDate: '28/08/2026',
-                stage: 2, stageText: '2. วินิจฉัย & FMEA', progressPercent: '30%',
-                adviceText: 'ตรวจพบก๊าซอะเซทิลีน (C2H2) 12.5 ppm เกินเกณฑ์มาตรฐาน บ่งบอกถึงการอาร์กไฟฟ้าพลังงานสูงในถังหลัก แนะนำใช้เซนเซอร์ Acoustic และ UHF สแกนหาพิกัดจุดอาร์กทันทีเพื่อป้องกันการระเบิด',
-                adviceTags: ['อาร์กพลังงานสูง', 'เฝ้าระวังแรงดันถัง PRV', 'สแกนหาตำแหน่ง Acoustic PD'],
-                dga: [{ name: 'Acetylene', formula: 'C2H2', val: 12.5, norm: 1.0, status: 'วิกฤต' }, { name: 'Hydrogen', formula: 'H2', val: 310, norm: 100, status: 'วิกฤต' }],
-                simFactors: [45, 55, 55, 60],
-                duval: { ch4: 80, c2h4: 90, c2h2: 45.0, result: 'D2: High Energy Arcing' },
-                fmea: [{ sub: 'Core & Winding', mode: 'High Energy Arcing', cause: 'ฉนวนทะลวงระหว่างชั้นขดลวด', s: 10, o: 6, d: 4, rpn: 240, strat: 'Emergency Inspection' }],
-                photos: [{ location: 'Main Tank Pressure Relief Valve', desc: 'PRV มีการปลดปล่อยแรงดันและพบคราบน้ำมันกระจายรอบตัวถัง', date: '10/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }],
-                maintHistory: [], elecTests: { meggerRes: '950 MΩ', meggerPi: '1.30', tanDelta: '0.95%', capDrift: '+3.1%', furanPpm: '2.10 ppm', paperDp: '320 DP', oilBdv: '38 kV', contactRes: '75.0 μΩ' },
-                reliability: { mtbf: '410 ชม.', mttr: '14.0 ชม.', avail: '96.80%', rul: '2.5 ปี' }
-            },
-            'GIS-05': {
-                id: 'GIS-05', name: 'GIS 230kV Bay 05 (Main Bus 1 Section)', station: 'Bangkok South GIS', type: 'GIS Bay', age: '24 ปี',
-                cehi: 49.0, cehiGrade: 'วิกฤต (Critical)', statusCategory: 'CRITICAL', maxRpn: 225, testDate: '11/08/2026',
-                concern: 'แรงดันก๊าซ SF6 ต่ำผิดปกติ (0.58 MPa) & SO2 พุ่งสูง 6.8 ppmv', rcmStrat: 'ด่วนที่สุด: ตรวจสอบจุดรั่วซึม & ปลดถ่ายก๊าซเพื่อซ่อมเปลี่ยนซีล', targetDate: '29/08/2026',
-                stage: 4, stageText: '4. กำลังเข้าทำหน้างาน', progressPercent: '80%',
-                adviceText: 'ก๊าซ SF6 รั่วซึมและตรวจพบ SO2 สูงเกินเกณฑ์ 5.0 ppmv บ่งบอกว่ามีการอาร์กภายในกัดกร่อนก๊าซฉนวน แนะนำดูดเก็บก๊าซเพื่อนำไปบำบัด เปลี่ยนชุดซีลหน้าแปลน Bus Duct และทำความสะอาดคราบผงโลหะ',
-                adviceTags: ['เปลี่ยนซีลหน้าแปลน', 'บำบัดก๊าซ SO2', 'ทดสอบแรงดันก๊าซ SF6'],
-                sf6Purity: '96.2%', sf6Pressure: '0.58 MPa', sf6Moisture: '160 ppmv', sf6So2: '6.8 ppmv',
-                simFactors: [40, 50, 55, 55],
-                fmea: [{ sub: 'SF6 Bus Duct', mode: 'Gas Leak & Internal Arc Byproduct', cause: 'ปะเก็นหน้าแปลนแตกร้าว', s: 9, o: 5, d: 5, rpn: 225, strat: 'Emergency Seal Repair' }],
-                photos: [{ location: 'Main Busbar Flange Junction', desc: 'ตรวจพบคราบน้ำมันหล่อลื่นและฟองสบู่จากการทดสอบรั่วที่หน้าแปลน', date: '11/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }],
-                maintHistory: [{ id: 'WO-2026-005', type: 'CM', activity: 'อัดเติมก๊าซ SF6 ชั่วคราว', parts: 'SF6 Gas 10kg', downtime: '4.0 ชม.', team: 'Emergency GIS', date: '11/08/2026', status: 'In Progress' }],
-                elecTests: { meggerRes: '850 MΩ', meggerPi: '1.20', tanDelta: 'N/A', capDrift: 'N/A', furanPpm: 'N/A', paperDp: 'N/A', oilBdv: 'N/A', contactRes: '88.5 μΩ' },
-                reliability: { mtbf: '450 ชม.', mttr: '12.0 ชม.', avail: '97.20%', rul: '3.0 ปี' }
-            }
-        };
-
-        // Populate Remaining Assets
-        for (let i = 3; i <= 10; i++) {
-            const id = `TR-0${i}`.replace('010', '10');
-            if (!fleetDatabase[id]) {
-                fleetDatabase[id] = {
-                    id: id, name: `TR-115/22kV No.${i} (Substation Zone ${i})`, station: `Substation Area ${i}`, type: 'Transformer', age: `${10+i} ปี`,
-                    cehi: 75.0 + (i % 3) * 6, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 80 + i * 6, testDate: '18/08/2026',
-                    concern: 'สภาวะการทำงานทั่วไปอยู่ในเกณฑ์ปกติ', rcmStrat: 'Routine PM ประจำปี', targetDate: `10/${i}/2026`,
-                    stage: 1, stageText: '1. ตรวจพบความผิดปกติ (ปกติ)', progressPercent: '20%',
-                    adviceText: 'อุปกรณ์อยู่ในเกณฑ์ปกติ ดำเนินการตรวจสอบสภาพประจำปีตามแผนบำรุงรักษาเชิงป้องกัน (Routine PM) และตรวจวัด DGA ตามรอบ 6 เดือน',
-                    adviceTags: ['บำรุงรักษาตามรอบ', 'ตรวจวัด DGA ปกติ'],
-                    dga: [{ name: 'Hydrogen', formula: 'H2', val: 12 + i, norm: 100, status: 'ปกติ' }, { name: 'Methane', formula: 'CH4', val: 8 + i, norm: 120, status: 'ปกติ' }, { name: 'Ethylene', formula: 'C2H4', val: 4 + i, norm: 50, status: 'ปกติ' }],
-                    simFactors: [85, 85, 85, 85], duval: { ch4: 15, c2h4: 5, c2h2: 0.0, result: 'Normal Condition' },
-                    fmea: [{ sub: 'Cooling System', mode: 'Radiator Dust', cause: 'ฝุ่นสะสม', s: 4, o: 4, d: 3, rpn: 48, strat: 'Routine PM' }],
-                    photos: [], maintHistory: [], elecTests: { meggerRes: '2,800 MΩ', meggerPi: '2.50', tanDelta: '0.35%', capDrift: '0.0%', furanPpm: '0.15 ppm', paperDp: '700 DP', oilBdv: '65 kV', contactRes: '35.0 μΩ' },
-                    reliability: { mtbf: '1,800 ชม.', mttr: '2.5 ชม.', avail: '99.90%', rul: '18.0 ปี' }
-                };
-            }
-        }
-        for (let i = 1; i <= 10; i++) {
-            const id = `GIS-0${i}`.replace('010', '10');
-            if (!fleetDatabase[id]) {
-                fleetDatabase[id] = {
-                    id: id, name: `GIS 115kV Bay 0${i} (Feeder Zone ${i})`.replace('010', '10'), station: `GIS Station Area ${i}`, type: 'GIS Bay', age: `${6+i} ปี`,
-                    cehi: 80.0 + (i % 4) * 4, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 75 + i * 5, testDate: '20/08/2026',
-                    concern: 'แรงดันและความบริสุทธิ์ SF6 อยู่ในเกณฑ์มาตรฐาน', rcmStrat: 'PdM Sensor Monitoring', targetDate: `15/${i}/2026`,
-                    stage: 1, stageText: '1. ตรวจพบความผิดปกติ (ปกติ)', progressPercent: '20%',
-                    adviceText: 'สภาวะก๊าซฉนวน SF6 และกลไกสวิตช์ทำงานราบรื่น ติดตามระดับแรงดันผ่านเซนเซอร์ Density Switch ต่อเนื่องตามแผนงาน PdM',
-                    adviceTags: ['ติดตามเซนเซอร์ออนไลน์', 'ตรวจสภาพกลไก CB'],
-                    sf6Purity: '99.2%', sf6Pressure: '0.65 MPa', sf6Moisture: '25 ppmv', sf6So2: '0.6 ppmv',
-                    simFactors: [90, 90, 85, 90], fmea: [{ sub: 'SF6 System', mode: 'Gasket Aging', cause: 'เสื่อมตามอายุ', s: 6, o: 3, d: 3, rpn: 54, strat: 'PdM' }],
-                    photos: [], maintHistory: [], elecTests: { meggerRes: '4,500 MΩ', meggerPi: '3.10', tanDelta: 'N/A', capDrift: 'N/A', furanPpm: 'N/A', paperDp: 'N/A', oilBdv: 'N/A', contactRes: '28.0 μΩ' },
-                    reliability: { mtbf: '2,500 ชม.', mttr: '2.0 ชม.', avail: '99.95%', rul: '20.0 ปี' }
-                };
-            }
-        }
-
-        let currentActiveAsset = 'TR-01';
-        let currentRoute = 'PORTAL';
-        let tempPhotoBase64 = '';
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initGlobalDropdown();
-            renderFleetDashboard();
-            renderPmPriorityTable('ALL');
-        });
-
-        function initGlobalDropdown() {
-            const select = document.getElementById('assetSelectDropdown');
-            select.innerHTML = '';
-            for (const key in fleetDatabase) {
-                const opt = document.createElement('option');
-                opt.value = key;
-                opt.innerText = `${fleetDatabase[key].id} - ${fleetDatabase[key].name}`;
-                if (key === currentActiveAsset) opt.selected = true;
-                select.appendChild(opt);
-            }
-        }
-
-        function renderPmPriorityTable(filterType) {
-            const tbody = document.getElementById('pmPriorityTableBody');
-            tbody.innerHTML = '';
-            let list = Object.values(fleetDatabase);
-            list.sort((a, b) => {
-                if (a.cehi !== b.cehi) return a.cehi - b.cehi;
-                return b.maxRpn - a.maxRpn;
-            });
-
-            if (filterType === 'CRITICAL') list = list.filter(item => item.statusCategory === 'CRITICAL');
-            else if (filterType === 'Transformer') list = list.filter(item => item.type === 'Transformer');
-            else if (filterType === 'GIS') list = list.filter(item => item.type === 'GIS Bay');
-
-            list.forEach((a, index) => {
-                const rank = index + 1;
-                let rankBadge = `<span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-xs mx-auto border border-slate-300">${rank}</span>`;
-                if (rank === 1) rankBadge = `<span class="w-6 h-6 rounded-full bg-rose-600 text-white font-black flex items-center justify-center text-xs mx-auto shadow-sm animate-pulse">1</span>`;
-                else if (rank === 2) rankBadge = `<span class="w-6 h-6 rounded-full bg-rose-500 text-white font-bold flex items-center justify-center text-xs mx-auto shadow-sm">2</span>`;
-                else if (rank === 3) rankBadge = `<span class="w-6 h-6 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center text-xs mx-auto shadow-sm">3</span>`;
-
-                let cehiClass = 'text-emerald-600';
-                if (a.cehi < 60) cehiClass = 'text-rose-600 font-bold';
-                else if (a.cehi < 85) cehiClass = 'text-amber-600 font-bold';
-
-                const photoBtn = a.photos.length > 0
-                    ? `<button onclick="event.stopPropagation(); openLightbox('${a.photos[0].src}', '${a.id} - ${a.photos[0].location}', '${a.photos[0].desc}', '${a.photos[0].date}')" class="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 mx-auto"><i class="fa-solid fa-image"></i> ดูรูป (${a.photos.length})</button>`
-                    : `<span class="text-slate-400">-</span>`;
-
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 transition cursor-pointer';
-                tr.onclick = (e) => { if (e.target.tagName !== 'BUTTON') selectAndInspect(a.id); };
-                tr.innerHTML = `
-                    <td class="p-3 text-center">${rankBadge}</td>
-                    <td class="p-3 font-mono font-bold text-sky-700">${a.id}</td>
-                    <td class="p-3 font-medium text-slate-800">${a.name}</td>
-                    <td class="p-3 text-slate-500">${a.type}</td>
-                    <td class="p-3 text-center font-mono ${cehiClass}">${a.cehi}%</td>
-                    <td class="p-3 text-center font-mono font-bold text-amber-600">${a.maxRpn}</td>
-                    <td class="p-3 text-slate-600 font-medium max-w-xs truncate" title="${a.concern}">${a.concern}</td>
-                    <td class="p-3 font-medium text-sky-700 font-prompt"><span class="px-2 py-0.5 bg-sky-50 border border-sky-200 rounded">${a.stageText || '1. ตรวจพบ'}</span></td>
-                    <td class="p-3 font-mono text-slate-600 font-semibold">${a.targetDate}</td>
-                    <td class="p-3 text-center">${photoBtn}</td>
-                    <td class="p-3 text-center">
-                        <button onclick="selectAndInspect('${a.id}')" class="bg-sky-600 hover:bg-sky-700 text-white text-[11px] px-2.5 py-1 rounded transition shadow-sm">ตรวจเช็ก</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function filterPmTable(val) { renderPmPriorityTable(val); }
-
-        function renderFleetDashboard() {
-            const keys = Object.keys(fleetDatabase);
-            let normal = 0, warning = 0, critical = 0;
-            keys.forEach(k => {
-                const a = fleetDatabase[k];
-                if (a.statusCategory === 'NORMAL') normal++;
-                else if (a.statusCategory === 'WARNING') warning++;
-                else if (a.statusCategory === 'CRITICAL') critical++;
-            });
-            document.getElementById('badgeTotalAssets').innerText = `${keys.length} รายการ`;
-            document.getElementById('badgeNormalAssets').innerText = `${normal} รายการ`;
-            document.getElementById('badgeWarningAssets').innerText = `${warning} รายการ`;
-            document.getElementById('badgeCriticalAssets').innerText = `${critical} รายการ`;
-        }
-
-        function selectAndInspect(assetId) {
-            currentActiveAsset = assetId;
-            document.getElementById('assetSelectDropdown').value = assetId;
-            navigateTo('PAGE_MASTER');
-        }
-
-        function onAssetChange(assetId) {
-            currentActiveAsset = assetId;
-            if (currentRoute !== 'PORTAL') navigateTo(currentRoute);
-        }
-
-        function navigateTo(pageKey) {
-            currentRoute = pageKey;
-            const portalPage = document.getElementById('page-PORTAL');
-            const subpageWrapper = document.getElementById('subpage-wrapper');
-            const badge = document.getElementById('currentPageBadge');
-
-            document.querySelectorAll('.sidebar-btn').forEach(btn => {
-                btn.className = 'sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-sky-600';
-            });
-            const activeBtn = document.getElementById(`menu-${pageKey}`);
-            if (activeBtn) activeBtn.className = 'sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-sky-700 bg-sky-50 shadow-sm';
-
-            if (pageKey === 'PORTAL') {
-                portalPage.classList.remove('hidden');
-                subpageWrapper.classList.add('hidden');
-                badge.innerText = 'หน้าหลัก (Portal Overview)';
-                renderFleetDashboard();
-                renderPmPriorityTable('ALL');
-                return;
-            }
-
-            portalPage.classList.add('hidden');
-            subpageWrapper.classList.remove('hidden');
-            document.querySelectorAll('.subview').forEach(v => v.classList.add('hidden'));
-
-            const titleElem = document.getElementById('subpageTitle');
-            const subTitleElem = document.getElementById('subpageSubtitle');
-            const asset = fleetDatabase[currentActiveAsset];
-
-            document.getElementById('subpageTargetName').innerText = `${asset.id} - ${asset.name}`;
-            document.getElementById('subpageTargetCehi').innerText = asset.cehi + '%';
-
-            // Update Advice & Workflow Stages Banner
-            updateWorkflowAndAdvice(asset);
-
-            if (pageKey === 'PAGE_DGA') {
-                document.getElementById('view-DGA').classList.remove('hidden');
-                titleElem.innerText = '1. รายงานผลการตรวจวิเคราะห์ก๊าซ DGA & แผนภูมิ Duval Triangle';
-                subTitleElem.innerText = 'Dissolved Gas Analysis & IEC 60599 Duval Triangle 1';
-                badge.innerText = 'DGA Diagnostics';
-                renderDgaSubpage();
-            } else if (pageKey === 'PAGE_SF6') {
-                document.getElementById('view-SF6').classList.remove('hidden');
-                titleElem.innerText = '2. รายงานผลทดสอบก๊าซฉนวน SF6 ในสถานี GIS';
-                subTitleElem.innerText = 'ความบริสุทธิ์, แรงดัน, ความชื้น และผลผลิต SO2';
-                badge.innerText = 'GIS SF6 Quality';
-                renderSf6Subpage();
-            } else if (pageKey === 'PAGE_FMEA') {
-                document.getElementById('view-FMEA').classList.remove('hidden');
-                titleElem.innerText = '3. การประเมิน FMEA & ตารางคะแนน RPN';
-                subTitleElem.innerText = 'Failure Modes and Effects Analysis Matrix';
-                badge.innerText = 'FMEA & RPN';
-                renderFmeaSubpage();
-            } else if (pageKey === 'PAGE_CEHI') {
-                document.getElementById('view-CEHI').classList.remove('hidden');
-                titleElem.innerText = '4. จำลองและคำนวณค่าดัชนีสุขภาพ CEHI (รายตัวอุปกรณ์)';
-                subTitleElem.innerText = 'Composite Equipment Health Index Interactive Simulator';
-                badge.innerText = 'CEHI Simulator';
-                renderCehiSubpage();
-            } else if (pageKey === 'PAGE_GALLERY') {
-                document.getElementById('view-GALLERY').classList.remove('hidden');
-                titleElem.innerText = '5. คลังรูปภาพความเสียหาย (Damage Gallery)';
-                subTitleElem.innerText = 'บันทึกหลักฐานความเสียหายและจุดบกพร่องจากหน้างาน';
-                badge.innerText = 'Damage Gallery';
-                renderGallerySubpage();
-            } else if (pageKey === 'PAGE_MAINT') {
-                document.getElementById('view-MAINT').classList.remove('hidden');
-                titleElem.innerText = '6. ประวัติการซ่อมบำรุงย้อนหลัง & สถิติ MTBF/MTTR';
-                subTitleElem.innerText = 'Work Order Maintenance Log & Reliability Metrics';
-                badge.innerText = 'Maintenance History';
-                renderMaintSubpage();
-            } else if (pageKey === 'PAGE_ELECTRICAL') {
-                document.getElementById('view-ELECTRICAL').classList.remove('hidden');
-                titleElem.innerText = '7. รายงานผลการทดสอบฉนวนไฟฟ้าเชิงลึก (Electrical Testing Suite)';
-                subTitleElem.innerText = 'Megger, Tan Delta, Furans DP, BDV, Contact Resistance';
-                badge.innerText = 'Electrical Testing';
-                renderElectricalSubpage();
-            } else if (pageKey === 'PAGE_MASTER') {
-                document.getElementById('view-MASTER').classList.remove('hidden');
-                titleElem.innerText = '8. แดชบอร์ดสรุปภาพรวมครบวงจร (Master Overview)';
-                subTitleElem.innerText = 'Executive Summary Report for Equipment Health';
-                badge.innerText = 'Master Overview';
-                renderMasterSubpage();
-            }
-        }
-
-        // Workflow & Advice Updater
+        // Update Stage Visual Indicators with Distinct Colors
         function updateWorkflowAndAdvice(asset) {
             document.getElementById('adviceMainText').innerText = asset.adviceText || 'ดำเนินการตรวจสอบตามแผนบำรุงรักษาเชิงป้องกันปกติ';
             document.getElementById('workflowProgressPercent').innerText = `ความคืบหน้า: ${asset.progressPercent || '20%'}`;
@@ -1136,473 +882,29 @@
             tagsContainer.innerHTML = '';
             (asset.adviceTags || ['บำรุงรักษาตามรอบ']).forEach(tag => {
                 const span = document.createElement('span');
-                span.className = 'px-2.5 py-1 bg-amber-100 text-amber-800 font-semibold rounded-lg border border-amber-300';
+                span.className = 'px-2.5 py-1 bg-amber-100 text-amber-800 font-semibold rounded-lg border border-amber-300 shadow-sm';
                 span.innerHTML = `<i class="fa-solid fa-check text-amber-600 mr-1"></i> ${tag}`;
                 tagsContainer.appendChild(span);
             });
 
-            // Update Stage 1-5 Indicators
+            // 5 Distinct Stage Colors
+            const stageStyles = {
+                1: 'border-sky-400 bg-sky-50 text-sky-800 font-bold shadow-sm',        // Sky Blue
+                2: 'border-purple-400 bg-purple-50 text-purple-800 font-bold shadow-sm', // Purple
+                3: 'border-amber-400 bg-amber-50 text-amber-800 font-bold shadow-sm',    // Amber/Orange
+                4: 'border-rose-400 bg-rose-50 text-rose-800 font-bold shadow-sm',       // Red/Rose
+                5: 'border-emerald-400 bg-emerald-50 text-emerald-800 font-bold shadow-sm' // Emerald Green
+            };
+
             const currentStage = asset.stage || 1;
             for (let s = 1; s <= 5; s++) {
                 const el = document.getElementById(`step-${s}`);
                 if (s <= currentStage) {
-                    el.className = 'p-2 rounded-xl border border-sky-400 bg-sky-50 text-sky-800 font-bold shadow-sm';
+                    el.className = `p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition ${stageStyles[s]}`;
                 } else {
-                    el.className = 'p-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-400';
+                    el.className = 'p-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 flex flex-col items-center justify-center gap-1 transition opacity-60';
                 }
             }
-        }
-
-        function renderDgaSubpage() {
-            const asset = fleetDatabase[currentActiveAsset];
-            const tbody = document.getElementById('subpageDgaTableBody');
-            tbody.innerHTML = '';
-            const gases = asset.dga || [
-                { name: 'Hydrogen', formula: 'H2', val: 20, norm: 100, status: 'ปกติ' },
-                { name: 'Ethylene', formula: 'C2H4', val: 10, norm: 50, status: 'ปกติ' }
-            ];
-            gases.forEach(g => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-3 font-medium text-slate-800">${g.name}</td>
-                    <td class="p-3 text-sky-700 font-mono font-semibold">${g.formula}</td>
-                    <td class="p-3 text-right font-bold text-slate-800 font-mono">${g.val}</td>
-                    <td class="p-3 text-right text-slate-400 font-mono">${g.norm}</td>
-                    <td class="p-3 text-center"><span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded font-medium">${g.status}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-            document.getElementById('subpageDuvalResult').innerText = asset.duval ? asset.duval.result : 'Normal Condition';
-            drawDuvalTriangleCanvas();
-        }
-
-        // Duval Triangle 1 Rendering with Real Zone Coloring (วาดโซนและลงสีสมบูรณ์)
-        function drawDuvalTriangleCanvas() {
-            const canvas = document.getElementById('subpageDuvalCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const top = { x: 150, y: 35 };    // 100% CH4
-            const left = { x: 30, y: 245 };   // 100% C2H4
-            const right = { x: 270, y: 245 }; // 100% C2H2
-
-            // 1. Draw Triangle Background Zones with Colors
-            ctx.beginPath();
-            ctx.moveTo(top.x, top.y); ctx.lineTo(left.x, left.y); ctx.lineTo(right.x, right.y); ctx.closePath();
-            ctx.fillStyle = '#f1f5f9'; ctx.fill();
-
-            // Thermal Zones (T1, T2, T3) - Light Amber
-            ctx.fillStyle = 'rgba(251, 191, 36, 0.25)';
-            ctx.beginPath(); ctx.moveTo(100, 120); ctx.lineTo(190, 120); ctx.lineTo(150, 245); ctx.lineTo(30, 245); ctx.closePath(); ctx.fill();
-
-            // Arcing Zones (D1, D2) - Light Red/Rose
-            ctx.fillStyle = 'rgba(244, 63, 94, 0.2)';
-            ctx.beginPath(); ctx.moveTo(150, 120); ctx.lineTo(190, 120); ctx.lineTo(270, 245); ctx.lineTo(150, 245); ctx.closePath(); ctx.fill();
-
-            // Triangle Outline
-            ctx.strokeStyle = '#0284c7'; ctx.lineWidth = 2; ctx.stroke();
-
-            // Partition Lines
-            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1; ctx.setLineDash([2, 2]);
-            ctx.beginPath();
-            ctx.moveTo(135, 60); ctx.lineTo(165, 60); // PD line
-            ctx.moveTo(100, 120); ctx.lineTo(190, 120); // T1/T2 line
-            ctx.moveTo(70, 175); ctx.lineTo(215, 175); // T2/T3 line
-            ctx.moveTo(150, 120); ctx.lineTo(150, 245); // D1/D2 separator
-            ctx.stroke();
-            ctx.setLineDash([]);
-
-            // Zone Labels
-            ctx.font = 'bold 9px Prompt';
-            ctx.fillStyle = '#0369a1'; ctx.fillText('PD', 143, 52);
-            ctx.fillStyle = '#b45309'; ctx.fillText('T1 (<300°)', 125, 100);
-            ctx.fillStyle = '#b45309'; ctx.fillText('T2 (300-700°)', 115, 150);
-            ctx.fillStyle = '#be123c'; ctx.fillText('T3 (>700°)', 70, 210);
-            ctx.fillStyle = '#9f1239'; ctx.fillText('D1 (Low Arc)', 160, 195);
-            ctx.fillStyle = '#9f1239'; ctx.fillText('D2 (High Arc)', 205, 230);
-
-            // Axis Corner Labels
-            ctx.font = 'bold 10px Prompt'; ctx.fillStyle = '#0f172a';
-            ctx.fillText('%CH4 (บน)', 125, 20);
-            ctx.fillText('%C2H4 (ซ้าย)', 5, 260);
-            ctx.fillText('%C2H2 (ขวา)', 230, 260);
-
-            // Calculate Coordinates for Selected Asset
-            const asset = fleetDatabase[currentActiveAsset];
-            let ch4 = 15, c2h4 = 10, c2h2 = 0;
-            if (asset.duval && asset.duval.ch4 !== undefined) {
-                ch4 = asset.duval.ch4; c2h4 = asset.duval.c2h4; c2h2 = asset.duval.c2h2;
-            }
-            const total = ch4 + c2h4 + c2h2;
-            let pch4 = total > 0 ? (ch4 / total) * 100 : 90;
-            let pc2h4 = total > 0 ? (c2h4 / total) * 100 : 10;
-            let pc2h2 = total > 0 ? (c2h2 / total) * 100 : 0;
-
-            document.getElementById('subpageDuvalCoords').innerHTML = `
-                <span>%CH4 = ${pch4.toFixed(1)}%</span>
-                <span>%C2H4 = ${pc2h4.toFixed(1)}%</span>
-                <span>%C2H2 = ${pc2h2.toFixed(1)}%</span>
-            `;
-
-            // Convert to 2D Canvas Coordinate
-            const x = (pc2h4 * left.x + pc2h2 * right.x + pch4 * top.x) / 100;
-            const y = (pc2h4 * left.y + pc2h2 * right.y + pch4 * top.y) / 100;
-
-            // Plot Point
-            ctx.beginPath(); ctx.arc(x, y, 6, 0, 2 * Math.PI);
-            ctx.fillStyle = '#ef4444'; ctx.fill();
-            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
-
-            // Point Asset Tag
-            ctx.fillStyle = '#0f172a'; ctx.font = 'bold 11px Prompt';
-            ctx.fillText(asset.id, x + 8, y - 4);
-        }
-
-        function renderSf6Subpage() {
-            const asset = fleetDatabase[currentActiveAsset];
-            document.getElementById('sf6PurityText').innerText = asset.sf6Purity || '99.8% (ปกติ)';
-            document.getElementById('sf6PressureText').innerText = asset.sf6Pressure || '0.65 MPa (ปกติ)';
-            document.getElementById('sf6MoistureText').innerText = asset.sf6Moisture || '18 ppmv (ปกติ)';
-            document.getElementById('sf6So2Text').innerText = asset.sf6So2 || '0.8 ppmv (ปกติ)';
-        }
-
-        function renderFmeaSubpage() {
-            const asset = fleetDatabase[currentActiveAsset];
-            const tbody = document.getElementById('subpageFmeaTableBody');
-            tbody.innerHTML = '';
-            asset.fmea.forEach(f => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-3 font-semibold text-slate-800">${f.sub}</td>
-                    <td class="p-3 text-slate-700">${f.mode}</td>
-                    <td class="p-3 text-slate-500">${f.cause}</td>
-                    <td class="p-3 text-center text-slate-700">${f.s}</td>
-                    <td class="p-3 text-center text-slate-700">${f.o}</td>
-                    <td class="p-3 text-center text-slate-700">${f.d}</td>
-                    <td class="p-3 text-center font-bold text-amber-600 font-mono">${f.rpn}</td>
-                    <td class="p-3 text-sky-700 font-medium">${f.strat}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function renderCehiSubpage() {
-            const asset = fleetDatabase[currentActiveAsset];
-            document.getElementById('cehiTargetAssetLabel').innerText = `${asset.id} (${asset.type})`;
-
-            if (asset.type === 'Transformer') {
-                document.getElementById('sliderLabel1').innerText = '1. DGA Gas Quality (35%)';
-                document.getElementById('sliderLabel2').innerText = '2. Oil Dielectric & Breakdown Voltage (25%)';
-                document.getElementById('sliderLabel3').innerText = '3. Partial Discharge & Bushing C/DF (20%)';
-                document.getElementById('sliderLabel4').innerText = '4. Winding Thermal & Load History (20%)';
-            } else {
-                document.getElementById('sliderLabel1').innerText = '1. SF6 Gas Purity & Decomposition SO2 (35%)';
-                document.getElementById('sliderLabel2').innerText = '2. SF6 Gas Pressure at 20°C (25%)';
-                document.getElementById('sliderLabel3').innerText = '3. UHF Partial Discharge on Spacer (20%)';
-                document.getElementById('sliderLabel4').innerText = '4. CB Operating Timing & Contact Wear (20%)';
-            }
-
-            const factors = asset.simFactors || [85, 85, 85, 85];
-            document.getElementById('subSlider1').value = factors[0];
-            document.getElementById('subSlider2').value = factors[1];
-            document.getElementById('subSlider3').value = factors[2];
-            document.getElementById('subSlider4').value = factors[3];
-            recalcSubCehi();
-        }
-
-        function recalcSubCehi() {
-            const s1 = parseFloat(document.getElementById('subSlider1').value);
-            const s2 = parseFloat(document.getElementById('subSlider2').value);
-            const s3 = parseFloat(document.getElementById('subSlider3').value);
-            const s4 = parseFloat(document.getElementById('subSlider4').value);
-
-            document.getElementById('subSimVal1').innerText = s1 + ' / 100';
-            document.getElementById('subSimVal2').innerText = s2 + ' / 100';
-            document.getElementById('subSimVal3').innerText = s3 + ' / 100';
-            document.getElementById('subSimVal4').innerText = s4 + ' / 100';
-
-            const c1 = (s1 * 0.35).toFixed(1);
-            const c2 = (s2 * 0.25).toFixed(1);
-            const c3 = (s3 * 0.20).toFixed(1);
-            const c4 = (s4 * 0.20).toFixed(1);
-
-            document.getElementById('subCalc1').innerText = c1;
-            document.getElementById('subCalc2').innerText = c2;
-            document.getElementById('subCalc3').innerText = c3;
-            document.getElementById('subCalc4').innerText = c4;
-
-            const total = (parseFloat(c1) + parseFloat(c2) + parseFloat(c3) + parseFloat(c4)).toFixed(1);
-            const totalElem = document.getElementById('subSimTotalScore');
-            const gradeElem = document.getElementById('subSimGradeText');
-
-            totalElem.innerText = total + '%';
-
-            if (total >= 85) {
-                totalElem.className = 'text-5xl font-bold font-prompt text-emerald-600';
-                gradeElem.innerText = 'เกรด: GOOD (ปกติ)';
-                gradeElem.className = 'text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full';
-            } else if (total >= 70) {
-                totalElem.className = 'text-5xl font-bold font-prompt text-sky-600';
-                gradeElem.innerText = 'เกรด: FAIR (ปานกลาง)';
-                gradeElem.className = 'text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200 px-3 py-1 rounded-full';
-            } else if (total >= 60) {
-                totalElem.className = 'text-5xl font-bold font-prompt text-amber-600';
-                gradeElem.innerText = 'เกรด: WARNING (เฝ้าระวัง)';
-                gradeElem.className = 'text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full';
-            } else {
-                totalElem.className = 'text-5xl font-bold font-prompt text-rose-600';
-                gradeElem.innerText = 'เกรด: CRITICAL (วิกฤต)';
-                gradeElem.className = 'text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1 rounded-full';
-            }
-        }
-
-        function resetCurrentAssetSim() { renderCehiSubpage(); }
-
-        function saveSimulatedCehiToDatabase() {
-            const asset = fleetDatabase[currentActiveAsset];
-            const s1 = parseFloat(document.getElementById('subSlider1').value);
-            const s2 = parseFloat(document.getElementById('subSlider2').value);
-            const s3 = parseFloat(document.getElementById('subSlider3').value);
-            const s4 = parseFloat(document.getElementById('subSlider4').value);
-
-            asset.simFactors = [s1, s2, s3, s4];
-            const total = ((s1 * 0.35) + (s2 * 0.25) + (s3 * 0.20) + (s4 * 0.20)).toFixed(1);
-            asset.cehi = parseFloat(total);
-
-            if (total >= 85) { asset.cehiGrade = 'ปกติ (Good)'; asset.statusCategory = 'NORMAL'; }
-            else if (total >= 70) { asset.cehiGrade = 'ปานกลาง (Fair)'; asset.statusCategory = 'WARNING'; }
-            else if (total >= 60) { asset.cehiGrade = 'เฝ้าระวัง (Warning)'; asset.statusCategory = 'WARNING'; }
-            else { asset.cehiGrade = 'วิกฤต (Critical)'; asset.statusCategory = 'CRITICAL'; }
-
-            document.getElementById('subpageTargetCehi').innerText = asset.cehi + '%';
-            alert(`✅ บันทึกค่าสุขภาพ CEHI (${asset.cehi}%) เข้าสู่อุปกรณ์ ${asset.id} สำเร็จ!`);
-        }
-
-        function renderGallerySubpage() {
-            const asset = fleetDatabase[currentActiveAsset];
-            document.getElementById('galleryAssetBadge').innerText = `${asset.id} - ${asset.name}`;
-            const grid = document.getElementById('damageGalleryGrid');
-            grid.innerHTML = '';
-
-            if (asset.photos.length === 0) {
-                grid.innerHTML = `<div class="col-span-3 p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-400 text-xs">ยังไม่มีรูปภาพความเสียหายสำหรับอุปกรณ์นี้ กดปุ่ม "แนบรูป" ด้านบนเพื่อเพิ่มรูป</div>`;
-                return;
-            }
-
-            asset.photos.forEach((p, idx) => {
-                const card = document.createElement('div');
-                card.className = 'bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm space-y-3 p-3';
-                card.innerHTML = `
-                    <div class="w-full h-48 bg-slate-200 rounded-xl overflow-hidden relative cursor-pointer" onclick="openLightbox('${p.src}', '${asset.id} - ${p.location}', '${p.desc}', '${p.date}')">
-                        <img src="${p.src}" alt="${p.location}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                        <span class="absolute top-2 right-2 bg-white/90 text-orange-600 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-200 shadow-sm"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> คลิกขยายรูป</span>
-                    </div>
-                    <div class="space-y-1">
-                        <h4 class="text-sm font-bold text-slate-800 font-prompt">${p.location}</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">${p.desc}</p>
-                        <span class="text-[10px] text-slate-400 block pt-1"><i class="fa-solid fa-calendar mr-1 text-sky-600"></i> วันที่บันทึก: ${p.date}</span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function renderMaintSubpage() {
-            const asset = fleetDatabase[currentActiveAsset];
-            const tbody = document.getElementById('subpageMaintTableBody');
-            tbody.innerHTML = '';
-
-            const rel = asset.reliability || { mtbf: '1,500 ชม.', mttr: '3.0 ชม.', avail: '99.90%', rul: '15.0 ปี' };
-            document.getElementById('maintMtbfVal').innerText = rel.mtbf;
-            document.getElementById('maintMttrVal').innerText = rel.mttr;
-            document.getElementById('maintAvailVal').innerText = rel.avail;
-            document.getElementById('maintRulVal').innerText = rel.rul;
-
-            const history = asset.maintHistory || [];
-            if (history.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">ยังไม่มีประวัติการซ่อมบำรุงสำหรับอุปกรณ์นี้ กดปุ่ม "บันทึกซ่อม" ด้านบนเพื่อเพิ่มข้อมูล</td></tr>`;
-                return;
-            }
-
-            history.forEach(m => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-3 font-mono font-bold text-sky-700">${m.id}</td>
-                    <td class="p-3 font-semibold text-slate-800"><span class="px-2 py-0.5 bg-slate-100 rounded border border-slate-200">${m.type}</span></td>
-                    <td class="p-3 text-slate-700 font-medium">${m.activity}</td>
-                    <td class="p-3 text-slate-500">${m.parts}</td>
-                    <td class="p-3 text-center font-mono text-slate-600">${m.downtime}</td>
-                    <td class="p-3 text-slate-600">${m.team}</td>
-                    <td class="p-3 font-mono text-slate-500">${m.date}</td>
-                    <td class="p-3 text-center"><span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded font-medium">${m.status}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function renderElectricalSubpage() {
-            const asset = fleetDatabase[currentActiveAsset];
-            const e = asset.elecTests || { meggerRes: '2,000 MΩ', meggerPi: '2.0', tanDelta: '0.4%', capDrift: '0%', furanPpm: '0.1 ppm', paperDp: '700 DP', oilBdv: '65 kV', contactRes: '30 μΩ' };
-            document.getElementById('elecMeggerRes').innerText = e.meggerRes;
-            document.getElementById('elecMeggerPi').innerText = e.meggerPi;
-            document.getElementById('elecTanDelta').innerText = e.tanDelta;
-            document.getElementById('elecCapDrift').innerText = e.capDrift;
-            document.getElementById('elecFuranPpm').innerText = e.furanPpm;
-            document.getElementById('elecPaperDp').innerText = e.paperDp;
-            document.getElementById('elecOilBdv').innerText = e.oilBdv;
-            document.getElementById('elecContactRes').innerText = e.contactRes;
-        }
-
-        function renderMasterSubpage() {
-            const asset = fleetDatabase[currentActiveAsset];
-            document.getElementById('masterCehiScore').innerText = asset.cehi + '%';
-            document.getElementById('masterMaxRpn').innerText = asset.maxRpn;
-            document.getElementById('masterStateText').innerText = asset.cehiGrade;
-
-            const previewDiv = document.getElementById('masterPhotoPreview');
-            previewDiv.innerHTML = '';
-            if (asset.photos.length === 0) {
-                previewDiv.innerHTML = '<span class="text-xs text-slate-400">ไม่มีรูปภาพแนบในผลตรวจล่าสุด</span>';
-            } else {
-                asset.photos.forEach(p => {
-                    const imgThumb = document.createElement('div');
-                    imgThumb.className = 'w-24 h-24 rounded-xl overflow-hidden border border-slate-200 cursor-pointer shadow-sm relative';
-                    imgThumb.onclick = () => openLightbox(p.src, `${asset.id} - ${p.location}`, p.desc, p.date);
-                    imgThumb.innerHTML = `<img src="${p.src}" class="w-full h-full object-cover hover:opacity-90">`;
-                    previewDiv.appendChild(imgThumb);
-                });
-            }
-        }
-
-        // Lightbox Functions
-        function openLightbox(src, title, desc, date) {
-            document.getElementById('lightboxImg').src = src;
-            document.getElementById('lightboxTitle').innerText = title;
-            document.getElementById('lightboxSubtitle').innerText = desc;
-            document.getElementById('lightboxDate').innerText = `บันทึกเมื่อ: ${date}`;
-            document.getElementById('lightboxModal').classList.remove('hidden');
-        }
-        function closeLightbox() { document.getElementById('lightboxModal').classList.add('hidden'); }
-
-        // PDF & CSV Export
-        function downloadDirectPDF() {
-            const element = document.getElementById('reportContentToExport');
-            const asset = fleetDatabase[currentActiveAsset];
-            const opt = {
-                margin: [10, 10, 10, 10],
-                filename: `RCM_Report_${asset.id}_${currentRoute}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#f8fafc' },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-            };
-            html2pdf().set(opt).from(element).save();
-        }
-
-        function exportToCSV() {
-            const asset = fleetDatabase[currentActiveAsset];
-            let csv = "\uFEFF";
-            csv += `Asset ID,${asset.id}\nAsset Name,${asset.name}\nCEHI Score,${asset.cehi}%\nMax RPN,${asset.maxRpn}\n\n`;
-            csv += "Subsystem,Failure Mode,Severity,Occurrence,Detection,RPN Score\n";
-            asset.fmea.forEach(f => {
-                csv += `"${f.sub}","${f.mode}",${f.s},${f.o},${f.d},${f.rpn}\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Report_${asset.id}.csv`;
-            a.click();
-        }
-
-        function openDataInputModal() { document.getElementById('dataInputModal').classList.remove('hidden'); }
-        function closeDataInputModal() { document.getElementById('dataInputModal').classList.add('hidden'); }
-        function openPhotoUploadModal() { document.getElementById('photoUploadModal').classList.remove('hidden'); }
-        function closePhotoUploadModal() { 
-            document.getElementById('photoUploadModal').classList.add('hidden');
-            tempPhotoBase64 = '';
-            document.getElementById('imagePreview').classList.add('hidden');
-            document.getElementById('previewPlaceholder').classList.remove('hidden');
-        }
-        function openMaintModal() { document.getElementById('maintModal').classList.remove('hidden'); }
-        function closeMaintModal() { document.getElementById('maintModal').classList.add('hidden'); }
-
-        function handlePaperUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const status = document.getElementById('scanStatusText');
-            status.innerText = '🔍 กำลังประมวลผลตัวเลขจากภาพถ่ายใบทดสอบ...';
-            status.className = 'text-[11px] text-sky-600 font-semibold animate-pulse';
-
-            setTimeout(() => {
-                document.getElementById('in_h2').value = (Math.random() * 50 + 10).toFixed(1);
-                document.getElementById('in_ch4').value = (Math.random() * 30 + 5).toFixed(1);
-                document.getElementById('in_c2h4').value = (Math.random() * 20 + 5).toFixed(1);
-                status.innerText = '✅ สแกนค่าจากใบทดสอบสำเร็จ!';
-                status.className = 'text-[11px] text-emerald-600 font-semibold';
-            }, 1000);
-        }
-
-        function saveTestDataForm(e) {
-            e.preventDefault();
-            alert('✅ บันทึกผลทดสอบเข้าสู่อุปกรณ์เรียบร้อยแล้ว!');
-            closeDataInputModal();
-            if (currentRoute !== 'PORTAL') navigateTo(currentRoute);
-            else renderPmPriorityTable('ALL');
-        }
-
-        function previewDamageImage(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                tempPhotoBase64 = event.target.result;
-                const img = document.getElementById('imagePreview');
-                img.src = tempPhotoBase64;
-                img.classList.remove('hidden');
-                document.getElementById('previewPlaceholder').classList.add('hidden');
-            }
-            reader.readAsDataURL(file);
-        }
-
-        function saveDamagePhoto(e) {
-            e.preventDefault();
-            if (!tempPhotoBase64) {
-                alert('กรุณาเลือกไฟล์รูปภาพก่อนบันทึก');
-                return;
-            }
-            const location = document.getElementById('photoLocationInput').value;
-            const desc = document.getElementById('photoDescInput').value;
-            const asset = fleetDatabase[currentActiveAsset];
-
-            asset.photos.unshift({
-                location: location,
-                desc: desc,
-                date: new Date().toLocaleDateString('th-TH'),
-                src: tempPhotoBase64
-            });
-
-            alert('✅ บันทึกรูปภาพความเสียหายเรียบร้อยแล้ว!');
-            closePhotoUploadModal();
-            navigateTo('PAGE_GALLERY');
-        }
-
-        function saveMaintenanceLog(e) {
-            e.preventDefault();
-            const woId = document.getElementById('maintWoId').value;
-            const type = document.getElementById('maintType').value;
-            const activity = document.getElementById('maintActivity').value;
-            const parts = document.getElementById('maintParts').value;
-            const downtime = document.getElementById('maintDowntime').value;
-            const team = document.getElementById('maintTeam').value;
-            const date = document.getElementById('maintDate').value;
-
-            const asset = fleetDatabase[currentActiveAsset];
-            asset.maintHistory.unshift({ id: woId, type: type, activity: activity, parts: parts, downtime: downtime, team: team, date: date, status: 'Completed' });
-
-            alert(`✅ บันทึกใบสั่งงาน Work Order (${woId}) สำเร็จ!`);
-            closeMaintModal();
-            navigateTo('PAGE_MAINT');
         }
     </script>
 </body>
