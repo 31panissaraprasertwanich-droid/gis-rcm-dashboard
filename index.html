@@ -240,7 +240,7 @@
                     </div>
                 </div>
 
-                <!-- PM / PdM PRIORITY RANKING TABLE -->
+                <!-- PM / PdM PRIORITY RANKING TABLE (จัดลำดับความเร่งด่วน) -->
                 <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-4">
                     <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-100 pb-4">
                         <div>
@@ -271,7 +271,7 @@
                                     <th class="p-3 text-center font-semibold">ดัชนีสุขภาพ CEHI</th>
                                     <th class="p-3 text-center font-semibold">ค่า RPN สูงสุด</th>
                                     <th class="p-3 font-semibold">สาเหตุความเสี่ยงหลัก (Primary Concern)</th>
-                                    <th class="p-3 font-semibold">ขั้นตอนงาน (Stage)</th>
+                                    <th class="p-3 font-semibold text-center">ขั้นตอนงาน (Stage)</th>
                                     <th class="p-3 font-semibold">กำหนดการเข้าทำ</th>
                                     <th class="p-3 text-center font-semibold">รูปถ่ายสภาพ</th>
                                     <th class="p-3 text-center font-semibold">การกระทำ</th>
@@ -313,7 +313,7 @@
                     </div>
                 </div>
 
-                <!-- 2. WORKFLOW STAGE & PROGRESS TIMELINE (แถบขั้นตอนงานแบ่งสีชัดเจน) -->
+                <!-- 2. WORKFLOW STAGE & PROGRESS TIMELINE (แบ่งโค้ดสี 5 ขั้นตอนตามสถานะจริง) -->
                 <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-3">
                     <div class="flex flex-wrap justify-between items-center border-b border-slate-100 pb-2">
                         <h4 class="text-xs font-bold text-slate-800 font-prompt flex items-center gap-1.5">
@@ -322,41 +322,32 @@
                         <span id="workflowProgressPercent" class="text-xs font-bold text-sky-700 font-mono">ความคืบหน้า: 40%</span>
                     </div>
 
-                    <!-- Stage Step Indicator (แยกสี 5 เฉดสีแตกต่างกันชัดเจน) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 text-center text-[11px] pt-1" id="workflowStepContainer">
-                        <!-- Step 1: Sky Blue -->
-                        <div id="step-1" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
-                            <i class="fa-solid fa-bell text-sm"></i>
-                            <span class="font-bold">1. ตรวจพบความผิดปกติ</span>
-                            <span class="text-[9px] opacity-75">(Detected)</span>
+                    <!-- Stage Step Indicator with Custom Distinct Colors per Step -->
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 text-center text-xs pt-1 font-prompt" id="workflowStepContainer">
+                        <!-- Step 1: Rose / Red (ตรวจพบ) -->
+                        <div id="step-1" class="p-2.5 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 font-bold transition flex flex-col justify-center items-center shadow-xs">
+                            <span class="text-[10px] text-rose-400 font-normal">Stage 1</span>
+                            <span>1. ตรวจพบความผิดปกติ</span>
                         </div>
-
-                        <!-- Step 2: Purple -->
-                        <div id="step-2" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
-                            <i class="fa-solid fa-microscope text-sm"></i>
-                            <span class="font-bold">2. วินิจฉัย & FMEA</span>
-                            <span class="text-[9px] opacity-75">(Diagnosed)</span>
+                        <!-- Step 2: Amber / Orange (วินิจฉัย) -->
+                        <div id="step-2" class="p-2.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-700 font-bold transition flex flex-col justify-center items-center shadow-xs">
+                            <span class="text-[10px] text-amber-400 font-normal">Stage 2</span>
+                            <span>2. วินิจฉัย & FMEA</span>
                         </div>
-
-                        <!-- Step 3: Amber/Orange -->
-                        <div id="step-3" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
-                            <i class="fa-solid fa-boxes-packing text-sm"></i>
-                            <span class="font-bold">3. วางแผนจัดสรรอะไหล่</span>
-                            <span class="text-[9px] opacity-75">(Planned)</span>
+                        <!-- Step 3: Blue / Sky (วางแผนอะไหล่) -->
+                        <div id="step-3" class="p-2.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 font-bold transition flex flex-col justify-center items-center shadow-xs">
+                            <span class="text-[10px] text-sky-400 font-normal">Stage 3</span>
+                            <span>3. วางแผนจัดสรรอะไหล่</span>
                         </div>
-
-                        <!-- Step 4: Red/Rose -->
-                        <div id="step-4" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
-                            <i class="fa-solid fa-screwdriver-wrench text-sm"></i>
-                            <span class="font-bold">4. กำลังเข้าทำหน้างาน</span>
-                            <span class="text-[9px] opacity-75">(In Progress)</span>
+                        <!-- Step 4: Purple / Violet (เข้าทำหน้างาน) -->
+                        <div id="step-4" class="p-2.5 rounded-xl border border-purple-200 bg-purple-50 text-purple-700 font-bold transition flex flex-col justify-center items-center shadow-xs">
+                            <span class="text-[10px] text-purple-400 font-normal">Stage 4</span>
+                            <span>4. กำลังเข้าทำหน้างาน</span>
                         </div>
-
-                        <!-- Step 5: Emerald Green -->
-                        <div id="step-5" class="p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition">
-                            <i class="fa-solid fa-circle-check text-sm"></i>
-                            <span class="font-bold">5. ตรวจสอบ & ปิดงาน</span>
-                            <span class="text-[9px] opacity-75">(Completed)</span>
+                        <!-- Step 5: Emerald / Green (ปิดงาน) -->
+                        <div id="step-5" class="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold transition flex flex-col justify-center items-center shadow-xs">
+                            <span class="text-[10px] text-emerald-400 font-normal">Stage 5</span>
+                            <span>5. ตรวจสอบ & ปิดงาน</span>
                         </div>
                     </div>
                 </div>
@@ -871,41 +862,36 @@
         </div>
     </div>
 
-    <!-- LOGIC SCRIPT (WORKFLOW STAGE COLOR LOGIC & ACCURATE DUVAL) -->
+    <!-- LOGIC SCRIPT (COMPLETE DATASTORE WITH DUVAL, ADVICE, AND STAGES) -->
     <script>
-        // Update Stage Visual Indicators with Distinct Colors
-        function updateWorkflowAndAdvice(asset) {
-            document.getElementById('adviceMainText').innerText = asset.adviceText || 'ดำเนินการตรวจสอบตามแผนบำรุงรักษาเชิงป้องกันปกติ';
-            document.getElementById('workflowProgressPercent').innerText = `ความคืบหน้า: ${asset.progressPercent || '20%'}`;
-
-            const tagsContainer = document.getElementById('adviceTagsContainer');
-            tagsContainer.innerHTML = '';
-            (asset.adviceTags || ['บำรุงรักษาตามรอบ']).forEach(tag => {
-                const span = document.createElement('span');
-                span.className = 'px-2.5 py-1 bg-amber-100 text-amber-800 font-semibold rounded-lg border border-amber-300 shadow-sm';
-                span.innerHTML = `<i class="fa-solid fa-check text-amber-600 mr-1"></i> ${tag}`;
-                tagsContainer.appendChild(span);
-            });
-
-            // 5 Distinct Stage Colors
+        // Update Stage Step Colors based on Progress
+        function updateStageStepStyles(currentStage) {
             const stageStyles = {
-                1: 'border-sky-400 bg-sky-50 text-sky-800 font-bold shadow-sm',        // Sky Blue
-                2: 'border-purple-400 bg-purple-50 text-purple-800 font-bold shadow-sm', // Purple
-                3: 'border-amber-400 bg-amber-50 text-amber-800 font-bold shadow-sm',    // Amber/Orange
-                4: 'border-rose-400 bg-rose-50 text-rose-800 font-bold shadow-sm',       // Red/Rose
-                5: 'border-emerald-400 bg-emerald-50 text-emerald-800 font-bold shadow-sm' // Emerald Green
+                1: { active: 'p-2.5 rounded-xl border border-rose-300 bg-rose-50 text-rose-700 font-bold shadow-xs', muted: 'p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 font-medium' },
+                2: { active: 'p-2.5 rounded-xl border border-amber-300 bg-amber-50 text-amber-700 font-bold shadow-xs', muted: 'p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 font-medium' },
+                3: { active: 'p-2.5 rounded-xl border border-sky-300 bg-sky-50 text-sky-700 font-bold shadow-xs', muted: 'p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 font-medium' },
+                4: { active: 'p-2.5 rounded-xl border border-purple-300 bg-purple-50 text-purple-700 font-bold shadow-xs', muted: 'p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 font-medium' },
+                5: { active: 'p-2.5 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-700 font-bold shadow-xs', muted: 'p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 font-medium' }
             };
 
-            const currentStage = asset.stage || 1;
             for (let s = 1; s <= 5; s++) {
                 const el = document.getElementById(`step-${s}`);
-                if (s <= currentStage) {
-                    el.className = `p-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition ${stageStyles[s]}`;
-                } else {
-                    el.className = 'p-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 flex flex-col items-center justify-center gap-1 transition opacity-60';
+                if (el) {
+                    if (s <= currentStage) {
+                        el.className = stageStyles[s].active;
+                    } else {
+                        el.className = stageStyles[s].muted;
+                    }
                 }
             }
         }
+
+        // Hooked into updateWorkflowAndAdvice
+        const originalUpdateWorkflowAndAdvice = updateWorkflowAndAdvice;
+        updateWorkflowAndAdvice = function(asset) {
+            originalUpdateWorkflowAndAdvice(asset);
+            updateStageStepStyles(asset.stage || 1);
+        };
     </script>
 </body>
 </html>
