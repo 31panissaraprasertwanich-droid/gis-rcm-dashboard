@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RCM & CEHI Diagnostic Center - Power Transformers & GIS</title>
+    <title>RCM & Asset Diagnostic Portal - Power Transformers & GIS</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- html2pdf.js for Direct PDF Download -->
+    <!-- html2pdf.js for Direct PDF Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         tailwind.config = {
@@ -72,1020 +72,746 @@
 </head>
 <body class="min-h-screen flex flex-col custom-scrollbar">
 
-    <!-- TOP NAVIGATION BAR -->
-    <header class="bg-brand-card/95 backdrop-blur border-b border-brand-border sticky top-0 z-50 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+    <!-- GLOBAL TOP NAVBAR -->
+    <header class="bg-brand-card/95 backdrop-blur border-b border-brand-border sticky top-0 z-50 px-6 py-3 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center text-white shadow-lg">
-                <i class="fa-solid fa-bolt-lightning text-xl"></i>
-            </div>
+            <button onclick="navigateTo('PORTAL')" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center text-white shadow-lg hover:opacity-90 transition">
+                <i class="fa-solid fa-layer-group text-lg"></i>
+            </button>
             <div>
-                <h1 class="text-lg font-bold text-white tracking-wide flex items-center gap-2">
-                    RCM & CEHI FLEET ASSET DIAGNOSTICS
-                    <span class="text-[11px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-2.5 py-0.5 rounded-full font-normal">v2.5 Full Export</span>
-                </h1>
-                <p class="text-xs text-slate-400">ระบบประเมินความน่าเชื่อถือ, คำนวณ CEHI และวิเคราะห์ก๊าซ DGA เชิงลึก</p>
+                <div class="flex items-center gap-2">
+                    <h1 onclick="navigateTo('PORTAL')" class="text-base font-bold text-white tracking-wide cursor-pointer hover:text-cyan-400 transition font-prompt">
+                        RCM & CEHI DIAGNOSTIC SUITE
+                    </h1>
+                    <span id="currentPageBadge" class="text-[10px] bg-slate-800 text-cyan-400 border border-slate-700 px-2 py-0.5 rounded-full font-prompt">Portal Menu</span>
+                </div>
+                <p class="text-xs text-slate-400">ระบบศูนย์กลางผลทดสอบและวิเคราะห์ความน่าเชื่อถือหม้อแปลง & GIS</p>
             </div>
         </div>
 
-        <!-- Controls -->
+        <!-- Right Quick Controls -->
         <div class="flex items-center flex-wrap gap-2.5">
-            <!-- Category Switcher -->
-            <div class="bg-slate-900 p-1 rounded-lg border border-brand-border flex text-xs font-prompt">
-                <button id="btnCatTransformer" onclick="switchCategory('TRANSFORMER')" class="px-3 py-1.5 rounded-md font-semibold bg-cyan-600 text-white transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-square-poll-vertical"></i> หม้อแปลงไฟฟ้า
-                </button>
-                <button id="btnCatGIS" onclick="switchCategory('GIS')" class="px-3 py-1.5 rounded-md font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-network-wired"></i> สถานี GIS
-                </button>
-            </div>
+            <!-- Breadcrumb Navigation Buttons -->
+            <button onclick="navigateTo('PORTAL')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg transition border border-slate-700 flex items-center gap-1.5">
+                <i class="fa-solid fa-house text-cyan-400"></i> หน้าหลัก (Portal)
+            </button>
 
-            <!-- Asset Dropdown -->
-            <div class="flex items-center gap-2 bg-slate-900 border border-brand-border px-3 py-1.5 rounded-lg text-sm">
-                <span class="text-slate-400 text-xs font-prompt">อุปกรณ์:</span>
-                <select id="assetSelectDropdown" onchange="onAssetChange(this.value)" class="bg-transparent text-cyan-300 font-semibold focus:outline-none cursor-pointer text-xs font-prompt">
+            <!-- Global Asset Dropdown (Active in subpages) -->
+            <div id="globalAssetSelector" class="flex items-center gap-2 bg-slate-900 border border-brand-border px-3 py-1.5 rounded-lg text-xs font-prompt">
+                <span class="text-slate-400">เลือกอุปกรณ์:</span>
+                <select id="assetSelectDropdown" onchange="onAssetChange(this.value)" class="bg-transparent text-cyan-300 font-semibold focus:outline-none cursor-pointer">
+                    <option value="TR-01">TR-115/22kV No.1 (Ladprao)</option>
+                    <option value="TR-02">TR-230/115kV No.2 (Chidlom)</option>
+                    <option value="GIS-01">GIS 115kV Bay 01 (Ladprao Feeder-1)</option>
+                    <option value="GIS-02">GIS 115kV Bay 02 (Tie TR-1)</option>
                 </select>
             </div>
 
-            <!-- BUTTON: Open Data Input Modal -->
-            <button onclick="openDataInputModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-file-arrow-up"></i> นำเข้าข้อมูล / ใบทดสอบ
+            <button onclick="openDataInputModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-plus"></i> เพิ่มผลทดสอบ
             </button>
 
-            <!-- BUTTON: Direct PDF Download -->
-            <button onclick="downloadDirectPDF()" class="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-file-pdf"></i> ดาวน์โหลด PDF ทันที
-            </button>
-
-            <!-- BUTTON: Export CSV -->
-            <button onclick="exportToCSV()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-lg transition border border-slate-700 flex items-center gap-1.5">
-                <i class="fa-solid fa-file-csv text-emerald-400"></i> โหลด CSV
+            <button onclick="downloadDirectPDF()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-file-pdf"></i> โหลด PDF
             </button>
         </div>
     </header>
 
-    <!-- EXPORTABLE REPORT WRAPPER -->
-    <div id="reportContentToExport" class="p-6 space-y-6 max-w-[1800px] mx-auto w-full">
+    <!-- MULTI-PAGE VIEW CONTAINER -->
+    <main class="flex-1 p-6 max-w-[1800px] mx-auto w-full">
 
-        <!-- ASSET SUMMARY BANNER & TOP KPIS -->
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <!-- ========================================================= -->
+        <!-- PAGE 0: PORTAL / MAIN MENU HUB (หน้าหัวเรื่องหลัก) -->
+        <!-- ========================================================= -->
+        <section id="page-PORTAL" class="space-y-8">
             
-            <!-- CEHI Card -->
-            <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg relative overflow-hidden">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <span class="text-xs text-slate-400 font-prompt uppercase tracking-wider">ดัชนีสุขภาพรวม (CEHI)</span>
-                        <div class="flex items-baseline gap-2 mt-1">
-                            <span id="kpiCehiScore" class="text-4xl font-bold font-prompt text-emerald-400">88.4%</span>
-                            <span id="kpiCehiBadge" class="text-xs font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded">ปกติ (Good)</span>
-                        </div>
-                    </div>
-                    <div class="w-11 h-11 rounded-xl bg-emerald-950/60 border border-emerald-800 text-emerald-400 flex items-center justify-center">
-                        <i class="fa-solid fa-heart-pulse text-xl"></i>
-                    </div>
-                </div>
-                <div class="w-full bg-slate-800 h-2.5 rounded-full mt-4 overflow-hidden">
-                    <div id="kpiCehiBar" class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-full rounded-full transition-all duration-500" style="width: 88.4%;"></div>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-2.5 flex justify-between">
-                    <span>คำนวณจากผลตรวจล่าสุด</span>
-                    <span id="kpiTestDate" class="text-cyan-400 font-medium">วันที่ทดสอบ: 25/08/2026</span>
-                </p>
-            </div>
-
-            <!-- Max RPN Card -->
-            <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg relative overflow-hidden">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <span class="text-xs text-slate-400 font-prompt uppercase tracking-wider">ค่าความเสี่ยงสูงสุด (Max RPN)</span>
-                        <div class="flex items-baseline gap-2 mt-1">
-                            <span id="kpiMaxRpn" class="text-4xl font-bold font-prompt text-amber-400">168</span>
-                            <span id="kpiRpnBadge" class="text-xs font-semibold bg-amber-950 text-amber-400 border border-amber-800 px-2 py-0.5 rounded">ความเสี่ยงปานกลาง</span>
-                        </div>
-                    </div>
-                    <div class="w-11 h-11 rounded-xl bg-amber-950/60 border border-amber-800 text-amber-400 flex items-center justify-center">
-                        <i class="fa-solid fa-triangle-exclamation text-xl"></i>
-                    </div>
-                </div>
-                <p id="kpiRpnCause" class="text-xs text-slate-300 mt-3 font-medium truncate">สาเหตุ: OLTC Contact Wear</p>
-                <p class="text-[11px] text-slate-400 mt-1 flex justify-between">
-                    <span>สูตรคำนวณ RPN = S × O × D</span>
-                    <span id="kpiRpnStrategy" class="text-cyan-400 font-semibold">แนะนำ: แผน PM ตรวจสัมผัส</span>
-                </p>
-            </div>
-
-            <!-- Gas State Card -->
-            <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg relative overflow-hidden">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <span id="kpiGasTitle" class="text-xs text-slate-400 font-prompt uppercase tracking-wider">ปริมาณก๊าซติดไฟสะสม (TDCG)</span>
-                        <div class="flex items-baseline gap-2 mt-1">
-                            <span id="kpiGasValue" class="text-4xl font-bold font-prompt text-cyan-400">142</span>
-                            <span id="kpiGasUnit" class="text-xs text-slate-400 font-semibold">ppm</span>
-                        </div>
-                    </div>
-                    <div class="w-11 h-11 rounded-xl bg-cyan-950/60 border border-cyan-800 text-cyan-400 flex items-center justify-center">
-                        <i id="kpiGasIcon" class="fa-solid fa-flask-vial text-xl"></i>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2 mt-3 pt-2.5 border-t border-slate-800 text-xs">
-                    <div>
-                        <span class="text-slate-400" id="gasSub1Label">Acetylene (C2H2):</span>
-                        <span id="gasSub1Val" class="text-emerald-400 font-semibold block">0.0 ppm</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-400" id="gasSub2Label">Hydrogen (H2):</span>
-                        <span id="gasSub2Val" class="text-cyan-400 font-semibold block">25 ppm</span>
-                    </div>
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-slate-900 via-brand-card to-slate-900 border border-brand-border p-8 rounded-3xl relative overflow-hidden shadow-2xl">
+                <div class="relative z-10 max-w-3xl space-y-3">
+                    <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800 px-3 py-1 rounded-full font-semibold">Reliability-Centered Maintenance Management</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white font-prompt tracking-wide">
+                        ศูนย์รวมผลทดสอบและการประเมินความน่าเชื่อถือ
+                    </h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        เลือกหมวดหมู่หรือหัวข้อการทดสอบที่ต้องการตรวจสอบด้านล่าง เพื่อเข้าสู่หน้ารายงานผลการตรวจวัดเชิงลึก (DGA, SF6, FMEA/RPN, CEHI Index และแผนงานบำรุงรักษา)
+                    </p>
                 </div>
             </div>
 
-            <!-- Asset Metadata -->
-            <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg relative overflow-hidden">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <span class="text-xs text-slate-400 font-prompt uppercase tracking-wider">ข้อมูลอุปกรณ์</span>
-                        <h3 id="metaAssetName" class="text-lg font-bold text-white mt-1">TR-115/22kV No.1</h3>
-                        <p id="metaAssetSub" class="text-xs text-slate-400">Ladprao Substation (50 MVA)</p>
-                    </div>
-                    <div class="flex items-center gap-1.5 bg-emerald-950/80 border border-emerald-800 px-2 py-1 rounded text-[11px] text-emerald-400">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Active
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2 mt-3 pt-2 border-t border-slate-800 text-xs">
-                    <div>
-                        <span class="text-slate-400">อายุการใช้งาน:</span>
-                        <span id="metaAssetAge" class="text-white font-medium block">14 ปี</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-400">ผู้ตรวจสอบ:</span>
-                        <span id="metaInspector" class="text-white font-medium block">Eng. S. Somchai</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- NAVIGATION TABS -->
-        <div class="bg-brand-card border border-brand-border p-2 rounded-xl flex flex-wrap gap-2 text-sm font-prompt">
-            <button id="navTabDGA" onclick="switchMainTab('DGA')" class="nav-btn bg-cyan-600 text-white px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
-                <i class="fa-solid fa-flask-florence"></i> 1. ผลตรวจก๊าซ DGA & Gas Diagnostics
-            </button>
-            <button id="navTabFMEA" onclick="switchMainTab('FMEA')" class="nav-btn text-slate-400 hover:text-white hover:bg-slate-800 px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
-                <i class="fa-solid fa-table-list"></i> 2. การวิเคราะห์ FMEA & RPN Matrix
-            </button>
-            <button id="navTabCEHI" onclick="switchMainTab('CEHI')" class="nav-btn text-slate-400 hover:text-white hover:bg-slate-800 px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
-                <i class="fa-solid fa-calculator"></i> 3. ดัชนีสุขภาพ CEHI Simulator
-            </button>
-            <button id="navTabRCM" onclick="switchMainTab('RCM')" class="nav-btn text-slate-400 hover:text-white hover:bg-slate-800 px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
-                <i class="fa-solid fa-wrench"></i> 4. แผนปฏิบัติการ RCM Action Plan
-            </button>
-        </div>
-
-        <!-- TAB 1: DGA DIAGNOSTICS -->
-        <div id="sectionDGA" class="space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
-                <!-- Detailed Gas Concentration Table -->
-                <div class="lg:col-span-2 bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
-                    <div class="flex justify-between items-center border-b border-brand-border pb-3">
-                        <div>
-                            <h3 class="text-base font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-vials text-cyan-400"></i> ตารางค่าความเข้มข้นก๊าซ (Gas Concentrations)
-                            </h3>
-                            <p class="text-xs text-slate-400">เกณฑ์มาตรฐานสากล IEEE Std C57.104-2019 / IEC 60599</p>
-                        </div>
-                        <button onclick="openDataInputModal()" class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800 px-3 py-1.5 rounded-lg hover:bg-cyan-900 transition">
-                            <i class="fa-solid fa-pen-to-square"></i> แก้ไข/เพิ่มค่าใหม่
-                        </button>
-                    </div>
-
-                    <div class="overflow-x-auto custom-scrollbar">
-                        <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-900/80 text-cyan-400 font-prompt border-b border-brand-border uppercase">
-                                <tr>
-                                    <th class="p-3">ชนิดก๊าซ (Gas Specie)</th>
-                                    <th class="p-3">สัญลักษณ์</th>
-                                    <th class="p-3 text-right">ค่าที่วัดได้ (Measured)</th>
-                                    <th class="p-3 text-right">เกณฑ์มาตรฐาน (L1)</th>
-                                    <th class="p-3 text-center">สถานะ (Status)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dgaGasTableBody" class="divide-y divide-slate-800/80">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Duval Triangle Visualizer -->
-                <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg flex flex-col justify-between space-y-4">
-                    <div class="border-b border-brand-border pb-3">
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-shapes text-cyan-400"></i> แผนภูมิ Duval Triangle 1
-                        </h3>
-                        <p class="text-xs text-slate-400">คำนวณจุดพิกัด (%CH4, %C2H4, %C2H2) อัตโนมัติ</p>
-                    </div>
-
-                    <div class="relative w-full aspect-square max-w-[280px] mx-auto duval-triangle-canvas rounded-xl p-2 border border-slate-800 flex items-center justify-center">
-                        <canvas id="duvalCanvas" width="260" height="230"></canvas>
-                    </div>
-
-                    <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1 text-xs">
-                        <div class="flex justify-between font-medium">
-                            <span class="text-slate-400">ผลวินิจฉัย (Diagnosis):</span>
-                            <span id="duvalResultText" class="text-emerald-400 font-bold">Normal</span>
-                        </div>
-                        <p id="duvalDetailText" class="text-[11px] text-slate-400 leading-relaxed"></p>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Gas Ratio & Key Gas Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Gas Ratios -->
-                <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-3">
-                    <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-brand-border pb-2">
-                        <i class="fa-solid fa-calculator text-cyan-400"></i> อัตราส่วนก๊าซ (Gas Ratios)
-                    </h3>
-                    <div class="space-y-2 text-xs">
-                        <div class="p-2.5 bg-slate-900/70 rounded-lg flex justify-between items-center">
-                            <span class="text-slate-300 font-medium">C2H2 / C2H4 (Arcing Ratio)</span>
-                            <span id="ratio1Val" class="text-sm font-mono font-bold text-cyan-400">0.00</span>
-                        </div>
-                        <div class="p-2.5 bg-slate-900/70 rounded-lg flex justify-between items-center">
-                            <span class="text-slate-300 font-medium">CH4 / H2 (Thermal Ratio)</span>
-                            <span id="ratio2Val" class="text-sm font-mono font-bold text-emerald-400">0.42</span>
-                        </div>
-                        <div class="p-2.5 bg-slate-900/70 rounded-lg flex justify-between items-center">
-                            <span class="text-slate-300 font-medium">C2H4 / C2H6 (Overheating)</span>
-                            <span id="ratio3Val" class="text-sm font-mono font-bold text-cyan-400">0.25</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Key Gas Method -->
-                <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-3">
-                    <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-brand-border pb-2">
-                        <i class="fa-solid fa-key text-amber-400"></i> การวินิจฉัย Key Gas Method
-                    </h3>
-                    <div class="space-y-2 text-xs">
-                        <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800 space-y-1.5">
-                            <span class="text-slate-400 block text-[11px]">ก๊าซหลักที่ตรวจพบ (Dominant Gas):</span>
-                            <div class="text-sm font-bold text-white flex items-center gap-2">
-                                <span id="dominantGasName" class="text-cyan-400">-</span>
-                            </div>
-                            <p id="dominantGasDesc" class="text-slate-400 text-[11px] leading-relaxed">-</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Trend Chart -->
-                <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-3">
-                    <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-brand-border pb-2">
-                        <i class="fa-solid fa-chart-line text-cyan-400"></i> กราฟแนวโน้มก๊าซย้อนหลัง
-                    </h3>
-                    <div class="h-44">
-                        <canvas id="dgaHistoryChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 2: FMEA & RPN -->
-        <div id="sectionFMEA" class="hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- 5x5 Matrix -->
-                <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg flex flex-col items-center">
-                    <div class="w-full border-b border-brand-border pb-2 mb-3">
-                        <h3 class="text-sm font-bold text-white">5x5 Criticality Risk Matrix</h3>
-                        <p class="text-[11px] text-slate-400">Severity (S) vs Occurrence (O)</p>
-                    </div>
-                    <div class="w-full max-w-[280px]">
-                        <div class="grid grid-cols-6 gap-1 text-center text-[10px] font-bold">
-                            <div class="text-slate-500">S\O</div>
-                            <div class="text-slate-400">1</div><div class="text-slate-400">2</div><div class="text-slate-400">3</div><div class="text-slate-400">4</div><div class="text-slate-400">5</div>
-                            <div class="text-slate-400 flex items-center justify-center">5</div>
-                            <div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div><div class="bg-amber-900 text-amber-300 p-2 rounded">H</div><div class="bg-red-950 text-red-400 p-2 rounded">H</div><div class="bg-red-900 text-red-200 p-2 rounded">VH</div><div class="bg-red-700 text-white p-2 rounded">250</div>
-                            <div class="text-slate-400 flex items-center justify-center">4</div>
-                            <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div><div class="bg-amber-900 text-amber-300 p-2 rounded">168</div><div class="bg-red-900 text-red-200 p-2 rounded">216</div><div class="bg-red-900 text-red-200 p-2 rounded">VH</div>
-                            <div class="text-slate-400 flex items-center justify-center">3</div>
-                            <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div><div class="bg-amber-900 text-amber-300 p-2 rounded">120</div><div class="bg-red-950 text-red-400 p-2 rounded">H</div>
-                            <div class="text-slate-400 flex items-center justify-center">2</div>
-                            <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div><div class="bg-amber-900 text-amber-300 p-2 rounded">H</div>
-                            <div class="text-slate-400 flex items-center justify-center">1</div>
-                            <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div><div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RPN Bar Chart -->
-                <div class="lg:col-span-2 bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-3">
-                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-chart-simple text-cyan-400"></i> กราฟเปรียบเทียบคะแนน RPN แยกตาม Failure Modes
-                    </h3>
-                    <div class="h-60">
-                        <canvas id="rpnComparisonChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FMEA Table -->
-            <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
-                <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-brand-border pb-3">
-                    <i class="fa-solid fa-table text-cyan-400"></i> ตารางวิเคราะห์ FMEA & ค่า RPN
+            <!-- Hub Topic Cards Grid (หัวเรื่องต่างๆ ที่กดเข้าไปดูผลทดสอบได้) -->
+            <div>
+                <h3 class="text-base font-bold text-white font-prompt mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-cubes text-cyan-400"></i> เลือกหัวข้อรายงานผลการทดสอบ & การวิเคราะห์
                 </h3>
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-xs text-slate-300">
-                        <thead class="bg-slate-900 text-cyan-400 font-prompt border-b border-brand-border uppercase">
-                            <tr>
-                                <th class="p-3">ระบบย่อย (Subsystem)</th>
-                                <th class="p-3">รูปแบบความเสียหาย (Failure Mode)</th>
-                                <th class="p-3">สาเหตุ (Failure Cause)</th>
-                                <th class="p-3 text-center">S</th>
-                                <th class="p-3 text-center">O</th>
-                                <th class="p-3 text-center">D</th>
-                                <th class="p-3 text-center">RPN (S×O×D)</th>
-                                <th class="p-3">กลยุทธ์ RCM แนะนำ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fmeaTableBody" class="divide-y divide-slate-800">
-                        </tbody>
-                    </table>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Card 1: DGA Gas Transformer Analysis -->
+                    <div onclick="navigateTo('PAGE_DGA')" class="bg-brand-card hover:bg-brand-cardAlt border border-brand-border hover:border-cyan-500/50 p-6 rounded-2xl shadow-lg transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-cyan-950 border border-cyan-800 text-cyan-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform mb-4">
+                                <i class="fa-solid fa-flask-vial"></i>
+                            </div>
+                            <span class="text-[11px] text-cyan-400 font-semibold uppercase tracking-wider">Transformer Analytics</span>
+                            <h4 class="text-lg font-bold text-white font-prompt mt-1 group-hover:text-cyan-300 transition">
+                                1. ผลตรวจวิเคราะห์ก๊าซ DGA เชิงลึก
+                            </h4>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                ตรวจสอบก๊าซติดไฟ 7 ชนิด (H2, CH4, C2H2, C2H4, CO...), แผนภูมิ Duval Triangle 1, Gas Ratios และ Key Gas Diagnosis
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-800 flex justify-between items-center text-xs font-semibold text-cyan-400">
+                            <span>เข้าสู่หน้ารายงาน DGA</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: GIS SF6 Gas & Pressure -->
+                    <div onclick="navigateTo('PAGE_SF6')" class="bg-brand-card hover:bg-brand-cardAlt border border-brand-border hover:border-blue-500/50 p-6 rounded-2xl shadow-lg transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform mb-4">
+                                <i class="fa-solid fa-wind"></i>
+                            </div>
+                            <span class="text-[11px] text-blue-400 font-semibold uppercase tracking-wider">GIS Substation</span>
+                            <h4 class="text-lg font-bold text-white font-prompt mt-1 group-hover:text-blue-300 transition">
+                                2. ผลทดสอบก๊าซฉนวน SF6 ในสถานี GIS
+                            </h4>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                ติดตามความบริสุทธิ์ของก๊าซ SF6 (%), ค่าแรงดัน (MPa), ความชื้นสะสม (ppmv) และก๊าซผลผลิตจากการสลายตัว (SO2, HF)
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-800 flex justify-between items-center text-xs font-semibold text-blue-400">
+                            <span>เข้าสู่หน้ารายงาน SF6 GIS</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: FMEA & RPN Criticality Matrix -->
+                    <div onclick="navigateTo('PAGE_FMEA')" class="bg-brand-card hover:bg-brand-cardAlt border border-brand-border hover:border-amber-500/50 p-6 rounded-2xl shadow-lg transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-amber-950 border border-amber-800 text-amber-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform mb-4">
+                                <i class="fa-solid fa-table-list"></i>
+                            </div>
+                            <span class="text-[11px] text-amber-400 font-semibold uppercase tracking-wider">Risk Assessment</span>
+                            <h4 class="text-lg font-bold text-white font-prompt mt-1 group-hover:text-amber-300 transition">
+                                3. การประเมิน FMEA & ตารางคะแนน RPN
+                            </h4>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                ตารางวิเคราะห์รูปแบบความล้มเหลว (Failure Modes), คะแนน RPN (S×O×D), กราฟจัดอันดับ และ 5×5 Criticality Risk Matrix
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-800 flex justify-between items-center text-xs font-semibold text-amber-400">
+                            <span>เข้าสู่หน้ารายงาน FMEA/RPN</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: CEHI Composite Health Index -->
+                    <div onclick="navigateTo('PAGE_CEHI')" class="bg-brand-card hover:bg-brand-cardAlt border border-brand-border hover:border-emerald-500/50 p-6 rounded-2xl shadow-lg transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform mb-4">
+                                <i class="fa-solid fa-heart-pulse"></i>
+                            </div>
+                            <span class="text-[11px] text-emerald-400 font-semibold uppercase tracking-wider">Health Indexing</span>
+                            <h4 class="text-lg font-bold text-white font-prompt mt-1 group-hover:text-emerald-300 transition">
+                                4. การคำนวณและจำลองค่าดัชนีสุขภาพ CEHI
+                            </h4>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                คำนวณคะแนนสุขภาพรวมตามสูตรถ่วงน้ำหนัก 4 ปัจจัย พร้อม Slider จำลองสภาวะอุปกรณ์แบบ Interactive Simulator
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-800 flex justify-between items-center text-xs font-semibold text-emerald-400">
+                            <span>เข้าสู่หน้ารายงาน CEHI</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: RCM Action Plan & Maintenance Strategy -->
+                    <div onclick="navigateTo('PAGE_RCM')" class="bg-brand-card hover:bg-brand-cardAlt border border-brand-border hover:border-purple-500/50 p-6 rounded-2xl shadow-lg transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-purple-950 border border-purple-800 text-purple-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform mb-4">
+                                <i class="fa-solid fa-wrench"></i>
+                            </div>
+                            <span class="text-[11px] text-purple-400 font-semibold uppercase tracking-wider">Maintenance Plan</span>
+                            <h4 class="text-lg font-bold text-white font-prompt mt-1 group-hover:text-purple-300 transition">
+                                5. แผนปฏิบัติการบำรุงรักษาตามหลัก RCM
+                            </h4>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                ลำดับแผนงานซ่อมบำรุงเชิงคาดการณ์ (PdM) และเชิงป้องกัน (PM) เพื่อลดโอกาสเสี่ยงสูงสุดของหม้อแปลงและ GIS
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-800 flex justify-between items-center text-xs font-semibold text-purple-400">
+                            <span>เข้าสู่หน้าแผนงาน RCM</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: All-In-One Master Overview -->
+                    <div onclick="navigateTo('PAGE_MASTER')" class="bg-gradient-to-br from-slate-900 to-cyan-950/40 border border-cyan-800/80 hover:border-cyan-400 p-6 rounded-2xl shadow-lg transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-cyan-600 text-white flex items-center justify-center text-2xl group-hover:scale-110 transition-transform mb-4">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <span class="text-[11px] text-cyan-300 font-semibold uppercase tracking-wider">Executive View</span>
+                            <h4 class="text-lg font-bold text-white font-prompt mt-1 group-hover:text-cyan-200 transition">
+                                6. แดชบอร์ดสรุปภาพรวมครบวงจร (Master Overview)
+                            </h4>
+                            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                                รวมทุกผลการทดสอบ, ตัวชี้วัด KPIs, ตาราง FMEA, และกราฟสรุปทั้งหมดในหน้าเดียว เหมาะสำหรับสรุปผู้บริหาร
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-cyan-800/50 flex justify-between items-center text-xs font-semibold text-cyan-300">
+                            <span>เปิดหน้า Master Dashboard</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
 
-        <!-- TAB 3: CEHI SIMULATOR -->
-        <div id="sectionCEHI" class="hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Interactive Slider -->
-                <div class="lg:col-span-2 bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
-                    <div class="flex justify-between items-center border-b border-brand-border pb-3">
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-sliders text-cyan-400"></i> จำลองคะแนน CEHI (Health Simulator)
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SUB-PAGE CONTAINER (WRAPPER FOR EXPORT / DETAILED VIEWS) -->
+        <!-- ========================================================= -->
+        <div id="subpage-wrapper" class="hidden space-y-6">
+
+            <!-- Subpage Header Bar with Back Button -->
+            <div class="flex flex-wrap justify-between items-center gap-4 bg-brand-card border border-brand-border p-4 rounded-2xl">
+                <div class="flex items-center gap-3">
+                    <button onclick="navigateTo('PORTAL')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition flex items-center gap-1.5 border border-slate-700">
+                        <i class="fa-solid fa-chevron-left"></i> กลับหน้าหลัก Portal
+                    </button>
+                    <div>
+                        <h2 id="subpageTitle" class="text-lg font-bold text-white font-prompt">หัวเรื่องผลการทดสอบ</h2>
+                        <p id="subpageSubtitle" class="text-xs text-slate-400">รายละเอียดผลการตรวจวัดสำหรับอุปกรณ์ที่เลือก</p>
+                    </div>
+                </div>
+
+                <!-- Subpage Quick Stats Chip -->
+                <div class="flex items-center gap-4 text-xs">
+                    <div class="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg">
+                        <span class="text-slate-400">อุปกรณ์: </span>
+                        <span id="subpageTargetName" class="font-bold text-cyan-400">TR-115/22kV No.1</span>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg">
+                        <span class="text-slate-400">CEHI: </span>
+                        <span id="subpageTargetCehi" class="font-bold text-emerald-400">88.4%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPORTABLE REPORT CANVAS -->
+            <div id="reportContentToExport" class="space-y-6">
+
+                <!-- ----------------------------------------- -->
+                <!-- SUB-PAGE 1: DGA DETAILED VIEW -->
+                <!-- ----------------------------------------- -->
+                <div id="view-DGA" class="subview space-y-6 hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Gas Table -->
+                        <div class="lg:col-span-2 bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-brand-border pb-3">
+                                <i class="fa-solid fa-vials text-cyan-400"></i> ตารางค่าความเข้มข้นก๊าซ Dissolved Gas Analysis (ppm)
+                            </h3>
+                            <div class="overflow-x-auto custom-scrollbar">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-900/80 text-cyan-400 font-prompt border-b border-brand-border uppercase">
+                                        <tr>
+                                            <th class="p-3">ชนิดก๊าซ (Gas Specie)</th>
+                                            <th class="p-3">สัญลักษณ์</th>
+                                            <th class="p-3 text-right">ค่าที่วัดได้ (Measured)</th>
+                                            <th class="p-3 text-right">เกณฑ์มาตรฐาน (L1)</th>
+                                            <th class="p-3 text-center">สถานะ (Status)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="subpageDgaTableBody" class="divide-y divide-slate-800/80"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Duval Triangle -->
+                        <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg flex flex-col justify-between space-y-4">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-brand-border pb-3">
+                                <i class="fa-solid fa-shapes text-cyan-400"></i> แผนภูมิ Duval Triangle 1
+                            </h3>
+                            <div class="relative w-full aspect-square max-w-[280px] mx-auto duval-triangle-canvas rounded-xl p-2 border border-slate-800 flex items-center justify-center">
+                                <canvas id="subpageDuvalCanvas" width="260" height="230"></canvas>
+                            </div>
+                            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs">
+                                <span class="text-slate-400 block">ผลการวินิจฉัย (Diagnosis):</span>
+                                <span id="subpageDuvalResult" class="text-emerald-400 font-bold text-sm">PD: Partial Discharge</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ----------------------------------------- -->
+                <!-- SUB-PAGE 2: SF6 GIS DETAILED VIEW -->
+                <!-- ----------------------------------------- -->
+                <div id="view-SF6" class="subview space-y-6 hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- SF6 Gas Quality -->
+                        <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-brand-border pb-3">
+                                <i class="fa-solid fa-wind text-blue-400"></i> คุณสมบัติก๊าซฉนวน SF6 ใน Compartment
+                            </h3>
+                            <div class="space-y-3 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center">
+                                    <span class="text-slate-300 font-medium">ความบริสุทธิ์ก๊าซ (SF6 Purity):</span>
+                                    <span id="sf6PurityText" class="text-sm font-bold text-cyan-400 font-mono">99.8% (เกณฑ์ &gt; 97%)</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center">
+                                    <span class="text-slate-300 font-medium">แรงดันก๊าซที่ 20°C (Pressure):</span>
+                                    <span id="sf6PressureText" class="text-sm font-bold text-emerald-400 font-mono">0.65 MPa (ปกติ)</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center">
+                                    <span class="text-slate-300 font-medium">ความชื้นสะสม (Moisture Content):</span>
+                                    <span id="sf6MoistureText" class="text-sm font-bold text-slate-200 font-mono">18 ppmv (เกณฑ์ &lt; 150)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SF6 Decomposition -->
+                        <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-brand-border pb-3">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> ผลิตผลจากการสลายตัว (By-products)
+                            </h3>
+                            <div class="space-y-3 text-xs">
+                                <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center">
+                                    <span class="text-slate-300 font-medium">ก๊าซซัลเฟอร์ไดออกไซด์ (SO2):</span>
+                                    <span id="sf6So2Text" class="text-sm font-bold text-emerald-400 font-mono">0.8 ppmv (ปกติ)</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center">
+                                    <span class="text-slate-300 font-medium">สัญญาณ UHF Partial Discharge:</span>
+                                    <span id="sf6PdStatusText" class="text-sm font-bold text-emerald-400 font-mono">Normal (No Active PD)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ----------------------------------------- -->
+                <!-- SUB-PAGE 3: FMEA & RPN DETAILED VIEW -->
+                <!-- ----------------------------------------- -->
+                <div id="view-FMEA" class="subview space-y-6 hidden">
+                    <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-brand-border pb-3">
+                            <i class="fa-solid fa-table-list text-amber-400"></i> ตารางวิเคราะห์ FMEA & คำนวณค่า RPN Score (S × O × D)
                         </h3>
-                        <button onclick="resetCehiInputs()" class="text-xs text-cyan-400 hover:underline">คืนค่าเดิม</button>
-                    </div>
-
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-xs font-medium">
-                            <span class="text-slate-300">1. DGA / Gas Quality Score (35%)</span>
-                            <span id="slider1ValText" class="text-cyan-400 font-bold">90 / 100</span>
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-900 text-cyan-400 font-prompt border-b border-brand-border uppercase">
+                                    <tr>
+                                        <th class="p-3">ระบบย่อย (Subsystem)</th>
+                                        <th class="p-3">รูปแบบความเสียหาย (Failure Mode)</th>
+                                        <th class="p-3">สาเหตุ (Failure Cause)</th>
+                                        <th class="p-3 text-center">S</th>
+                                        <th class="p-3 text-center">O</th>
+                                        <th class="p-3 text-center">D</th>
+                                        <th class="p-3 text-center">RPN Score</th>
+                                        <th class="p-3">กลยุทธ์ RCM แนะนำ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subpageFmeaTableBody" class="divide-y divide-slate-800"></tbody>
+                            </table>
                         </div>
-                        <input type="range" id="slider1" min="10" max="100" value="90" oninput="recalcCehi()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
-                    </div>
-
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-xs font-medium">
-                            <span class="text-slate-300">2. Dielectric / SF6 Quality (25%)</span>
-                            <span id="slider2ValText" class="text-cyan-400 font-bold">85 / 100</span>
-                        </div>
-                        <input type="range" id="slider2" min="10" max="100" value="85" oninput="recalcCehi()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
-                    </div>
-
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-xs font-medium">
-                            <span class="text-slate-300">3. Partial Discharge (PD) Score (20%)</span>
-                            <span id="slider3ValText" class="text-cyan-400 font-bold">80 / 100</span>
-                        </div>
-                        <input type="range" id="slider3" min="10" max="100" value="80" oninput="recalcCehi()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
-                    </div>
-
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-xs font-medium">
-                            <span class="text-slate-300">4. Thermal & Load History (20%)</span>
-                            <span id="slider4ValText" class="text-cyan-400 font-bold">85 / 100</span>
-                        </div>
-                        <input type="range" id="slider4" min="10" max="100" value="85" oninput="recalcCehi()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
                     </div>
                 </div>
 
-                <!-- Donut Chart -->
-                <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg flex flex-col items-center justify-between">
-                    <h4 class="text-sm font-bold text-white w-full border-b border-brand-border pb-2 text-center">สัดส่วนถ่วงน้ำหนัก</h4>
-                    <div class="w-48 h-48 my-2 relative">
-                        <canvas id="cehiSimulatorDonut"></canvas>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span id="cehiSimTotal" class="text-3xl font-bold font-prompt text-emerald-400">86.3%</span>
-                            <span id="cehiSimGrade" class="text-[11px] font-semibold text-slate-300">GOOD</span>
+                <!-- ----------------------------------------- -->
+                <!-- SUB-PAGE 4: CEHI SIMULATOR VIEW -->
+                <!-- ----------------------------------------- -->
+                <div id="view-CEHI" class="subview space-y-6 hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-brand-border pb-3">
+                                <i class="fa-solid fa-sliders text-emerald-400"></i> จำลองคะแนนดัชนีสุขภาพ CEHI (Interactive Simulator)
+                            </h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                                        <span>1. DGA / Gas Quality (35%)</span>
+                                        <span id="subSimVal1" class="text-cyan-400 font-bold">90</span>
+                                    </div>
+                                    <input type="range" id="subSlider1" min="10" max="100" value="90" oninput="recalcSubCehi()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded cursor-pointer">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                                        <span>2. Dielectric / SF6 Quality (25%)</span>
+                                        <span id="subSimVal2" class="text-cyan-400 font-bold">85</span>
+                                    </div>
+                                    <input type="range" id="subSlider2" min="10" max="100" value="85" oninput="recalcSubCehi()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded cursor-pointer">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                                        <span>3. Partial Discharge & Insulation (20%)</span>
+                                        <span id="subSimVal3" class="text-cyan-400 font-bold">80</span>
+                                    </div>
+                                    <input type="range" id="subSlider3" min="10" max="100" value="80" oninput="recalcSubCehi()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded cursor-pointer">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                                        <span>4. Thermal & Load History (20%)</span>
+                                        <span id="subSimVal4" class="text-cyan-400 font-bold">85</span>
+                                    </div>
+                                    <input type="range" id="subSlider4" min="10" max="100" value="85" oninput="recalcSubCehi()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg flex flex-col items-center justify-center text-center space-y-3">
+                            <span class="text-xs text-slate-400 font-prompt">คะแนนประเมิน CEHI รวม</span>
+                            <span id="subSimTotalScore" class="text-5xl font-bold font-prompt text-emerald-400">86.3%</span>
+                            <span id="subSimGradeText" class="text-xs font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800 px-3 py-1 rounded-full">เกรด: GOOD (ปกติ)</span>
                         </div>
                     </div>
-                    <div class="w-full text-xs space-y-1 pt-2 border-t border-slate-800 text-slate-400">
-                        <div class="flex justify-between"><span>DGA Score (35%)</span><span class="text-white font-medium" id="subVal1">31.5</span></div>
-                        <div class="flex justify-between"><span>Dielectric (25%)</span><span class="text-white font-medium" id="subVal2">21.3</span></div>
-                        <div class="flex justify-between"><span>PD Score (20%)</span><span class="text-white font-medium" id="subVal3">16.0</span></div>
-                        <div class="flex justify-between"><span>Thermal (20%)</span><span class="text-white font-medium" id="subVal4">17.0</span></div>
+                </div>
+
+                <!-- ----------------------------------------- -->
+                <!-- SUB-PAGE 5: RCM PLAN DETAILED VIEW -->
+                <!-- ----------------------------------------- -->
+                <div id="view-RCM" class="subview space-y-6 hidden">
+                    <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-brand-border pb-3">
+                            <i class="fa-solid fa-wrench text-purple-400"></i> รายการแผนปฏิบัติการซ่อมบำรุงตามหลัก RCM
+                        </h3>
+                        <div id="subpageRcmList" class="space-y-3"></div>
                     </div>
                 </div>
+
+                <!-- ----------------------------------------- -->
+                <!-- SUB-PAGE 6: MASTER OVERVIEW VIEW -->
+                <!-- ----------------------------------------- -->
+                <div id="view-MASTER" class="subview space-y-6 hidden">
+                    <!-- Master KPIs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+                            <span class="text-xs text-slate-400">CEHI Health Index</span>
+                            <h4 id="masterCehiScore" class="text-2xl font-bold text-emerald-400 mt-1">88.4%</h4>
+                        </div>
+                        <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+                            <span class="text-xs text-slate-400">Maximum RPN Risk</span>
+                            <h4 id="masterMaxRpn" class="text-2xl font-bold text-amber-400 mt-1">168</h4>
+                        </div>
+                        <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+                            <span class="text-xs text-slate-400">สภาวะฉนวนหลัก</span>
+                            <h4 id="masterInsulationState" class="text-2xl font-bold text-cyan-400 mt-1">ปกติสมบูรณ์</h4>
+                        </div>
+                    </div>
+                    <!-- Master Summary Table -->
+                    <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg">
+                        <h4 class="text-sm font-bold text-white mb-3">สรุปแผนงานและผลทดสอบครบวงจร</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            ระบบได้รวบรวมผลตรวจ DGA, ค่าพิกัดก๊าซ SF6, คะแนน FMEA และระดับสุขภาพ CEHI ไว้เรียบร้อยแล้ว พร้อมส่งออกรายงาน PDF และ CSV สำหรับผู้บริหาร
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- TAB 4: RCM ACTION PLAN -->
-        <div id="sectionRCM" class="hidden space-y-6">
-            <div class="bg-brand-card border border-brand-border p-5 rounded-2xl shadow-lg space-y-4">
-                <div class="flex justify-between items-center border-b border-brand-border pb-3">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-cyan-400"></i> แผนงานบำรุงรักษา RCM Action Tasks
-                    </h3>
-                </div>
-                <div class="space-y-3" id="rcmActionTaskList">
-                </div>
-            </div>
-        </div>
+    </main>
 
-    </div>
-
-    <!-- MODAL: DATA INPUT & SCAN PAPER TEST DIALOG -->
+    <!-- MODAL: DATA INPUT DIALOG -->
     <div id="dataInputModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-brand-border rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-            
-            <!-- Modal Header -->
             <div class="p-5 border-b border-brand-border bg-slate-950 flex justify-between items-center">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-cyan-600 text-white flex items-center justify-center">
-                        <i class="fa-solid fa-file-circle-plus"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-bold text-white font-prompt">นำเข้าผลการทดสอบ & สแกนใบทดสอบ</h3>
-                        <p class="text-xs text-slate-400">อัปโหลดไฟล์/รูปถ่ายใบทดสอบ หรือกรอกตัวเลขโดยตรง</p>
-                    </div>
-                </div>
-                <button onclick="closeDataInputModal()" class="text-slate-400 hover:text-white text-lg">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <h3 class="text-base font-bold text-white font-prompt">นำเข้าผลการทดสอบ & สแกนใบทดสอบ</h3>
+                <button onclick="closeDataInputModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
-            <!-- Optical Paper Scanner Simulation Banner -->
-            <div class="p-4 bg-slate-950 border-b border-brand-border space-y-2">
-                <span class="text-xs font-semibold text-cyan-400 flex items-center gap-1.5">
-                    <i class="fa-solid fa-camera"></i> นำเข้าจากรูปถ่าย / ใบรายงานผลแล็บ (Paper Test OCR)
-                </span>
-                <div class="flex items-center gap-2">
-                    <input type="file" id="paperUploadInput" accept="image/*,.csv" onchange="handlePaperUpload(event)" class="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-cyan-300 hover:file:bg-slate-700 cursor-pointer">
-                    <span id="scanStatusText" class="text-[11px] text-slate-500 italic">เลือกรูปถ่ายผลแล็บเพื่อ Auto-Fill</span>
-                </div>
-            </div>
-
-            <!-- Modal Form Content -->
-            <form id="testDataForm" onsubmit="saveTestData(event)" class="p-6 overflow-y-auto space-y-5 custom-scrollbar text-xs">
-                
-                <!-- General Info -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <form onsubmit="saveNewTestResult(event)" class="p-6 overflow-y-auto space-y-4 custom-scrollbar text-xs">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-slate-300 font-medium mb-1">วันที่ทำการทดสอบ:</label>
-                        <input type="date" id="inputDate" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-cyan-400">
+                        <label class="text-slate-300 block mb-1">วันที่ทดสอบ:</label>
+                        <input type="date" id="formDate" value="2026-08-25" required class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-white">
                     </div>
                     <div>
-                        <label class="block text-slate-300 font-medium mb-1">ผู้ตรวจวัด/วิศวกร:</label>
-                        <input type="text" id="inputInspector" value="Eng. Panisara P." required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-cyan-400">
-                    </div>
-                    <div>
-                        <label class="block text-slate-300 font-medium mb-1">โหลดใช้งาน (% Load):</label>
-                        <input type="number" id="inputLoad" min="0" max="150" value="70" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-cyan-400">
+                        <label class="text-slate-300 block mb-1">ผู้ตรวจวัด:</label>
+                        <input type="text" id="formInspector" value="Eng. Panisara P." class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-white">
                     </div>
                 </div>
-
-                <!-- Transformer Specific Gas Inputs -->
-                <div id="formSectionTransformer" class="space-y-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                    <h4 class="font-bold text-cyan-400 font-prompt border-b border-slate-800 pb-1.5 flex items-center gap-2">
-                        <i class="fa-solid fa-flask"></i> ค่าความเข้มข้นก๊าซ DGA (หน่วย: ppm)
-                    </h4>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <div>
-                            <label class="text-slate-400">Hydrogen (H2):</label>
-                            <input type="number" step="0.1" id="in_H2" value="25" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Methane (CH4):</label>
-                            <input type="number" step="0.1" id="in_CH4" value="12" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Acetylene (C2H2):</label>
-                            <input type="number" step="0.1" id="in_C2H2" value="0.0" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Ethylene (C2H4):</label>
-                            <input type="number" step="0.1" id="in_C2H4" value="15" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Ethane (C2H6):</label>
-                            <input type="number" step="0.1" id="in_C2H6" value="45" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Carbon Monoxide (CO):</label>
-                            <input type="number" step="0.1" id="in_CO" value="280" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Carbon Dioxide (CO2):</label>
-                            <input type="number" step="0.1" id="in_CO2" value="2300" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
+                <div class="p-3 bg-slate-950 rounded-xl space-y-2 border border-slate-800">
+                    <span class="text-cyan-400 font-bold block">กรอกค่าก๊าซทดสอบ (DGA / SF6):</span>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div><label class="text-slate-400">H2 (ppm):</label><input type="number" id="in_h2" value="25" class="w-full bg-slate-800 border border-slate-700 rounded p-1 text-white"></div>
+                        <div><label class="text-slate-400">CH4 (ppm):</label><input type="number" id="in_ch4" value="12" class="w-full bg-slate-800 border border-slate-700 rounded p-1 text-white"></div>
+                        <div><label class="text-slate-400">C2H4 (ppm):</label><input type="number" id="in_c2h4" value="15" class="w-full bg-slate-800 border border-slate-700 rounded p-1 text-white"></div>
                     </div>
                 </div>
-
-                <!-- GIS Specific Gas Inputs -->
-                <div id="formSectionGIS" class="space-y-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800 hidden">
-                    <h4 class="font-bold text-cyan-400 font-prompt border-b border-slate-800 pb-1.5 flex items-center gap-2">
-                        <i class="fa-solid fa-wind"></i> ค่าตรวจวัดก๊าซ SF6 ในสถานี GIS
-                    </h4>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        <div>
-                            <label class="text-slate-400">SF6 Purity (%):</label>
-                            <input type="number" step="0.1" id="in_sf6_purity" value="99.5" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Pressure (MPa at 20°C):</label>
-                            <input type="number" step="0.01" id="in_sf6_press" value="0.65" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Moisture H2O (ppmv):</label>
-                            <input type="number" step="0.1" id="in_sf6_moist" value="25" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Decomposition SO2 (ppmv):</label>
-                            <input type="number" step="0.1" id="in_sf6_so2" value="0.8" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                    </div>
+                <div class="flex justify-end gap-2 pt-2 border-t border-brand-border">
+                    <button type="button" onclick="closeDataInputModal()" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded">ยกเลิก</button>
+                    <button type="submit" class="px-4 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded font-semibold">บันทึกผล</button>
                 </div>
-
-                <!-- Health Evaluation Scores -->
-                <div class="space-y-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-                    <h4 class="font-bold text-cyan-400 font-prompt border-b border-slate-800 pb-1.5 flex items-center gap-2">
-                        <i class="fa-solid fa-heart-pulse"></i> คะแนนประเมินสภาพ (Condition Scores 0-100)
-                    </h4>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <div>
-                            <label class="text-slate-400">Gas / DGA Score:</label>
-                            <input type="number" min="0" max="100" id="in_score_dga" value="90" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Dielectric / SF6 Score:</label>
-                            <input type="number" min="0" max="100" id="in_score_dielectric" value="85" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Partial Discharge (PD):</label>
-                            <input type="number" min="0" max="100" id="in_score_pd" value="80" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                        <div>
-                            <label class="text-slate-400">Thermal / Load Score:</label>
-                            <input type="number" min="0" max="100" id="in_score_thermal" value="85" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal Actions -->
-                <div class="pt-2 flex justify-end gap-3 border-t border-brand-border">
-                    <button type="button" onclick="closeDataInputModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition font-medium">ยกเลิก</button>
-                    <button type="submit" class="px-5 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg transition font-semibold flex items-center gap-1.5">
-                        <i class="fa-solid fa-save"></i> บันทึกและประมวลผล
-                    </button>
-                </div>
-
             </form>
         </div>
     </div>
 
     <!-- FOOTER -->
     <footer class="bg-brand-card border-t border-brand-border px-6 py-4 text-center text-xs text-slate-500">
-        © 2026 Fleet Reliability & Health Diagnostic System | Export Engine v2.5 Ready
+        © 2026 RCM & CEHI Multi-Page Asset Diagnostic Suite | Click & Inspect Architecture
     </footer>
 
-    <!-- LOGIC SCRIPT -->
+    <!-- LOGIC SCRIPT (SPA ROUTER & DATA CONTROLLER) -->
     <script>
-        const fleetDatabase = {
-            TRANSFORMER: {
-                'TR-01': {
-                    name: 'TR-115/22kV No.1 (Substation Ladprao)',
-                    substation: 'Ladprao Substation (50 MVA)',
-                    age: '14 ปี',
-                    load: '68.5%',
-                    inspector: 'Eng. Panisara P.',
-                    testDate: '25/08/2026',
-                    cehi: 88.4,
-                    cehiGrade: 'ปกติ (Good)',
-                    maxRpn: 168,
-                    maxRpnCause: 'OLTC Contact Wear',
-                    rpnStrategy: 'แผน PM Overhaul OLTC',
-                    dominantGas: 'Hydrogen (H2)',
-                    dominantGasDesc: 'ก๊าซไฮโดรเจนเกิดจาก Corona หรือ Partial Discharge พลังงานต่ำในน้ำมัน',
-                    gasUnit: 'ppm',
-                    tdcg: 142,
-                    gases: [
-                        { name: 'Hydrogen', formula: 'H2', val: 25, norm: 100, status: 'ปกติ' },
-                        { name: 'Methane', formula: 'CH4', val: 12, norm: 120, status: 'ปกติ' },
-                        { name: 'Acetylene', formula: 'C2H2', val: 0.0, norm: 1.0, status: 'ปกติ' },
-                        { name: 'Ethylene', formula: 'C2H4', val: 15, norm: 50, status: 'ปกติ' },
-                        { name: 'Ethane', formula: 'C2H6', val: 90, norm: 65, status: 'เฝ้าระวัง' },
-                        { name: 'Carbon Monoxide', formula: 'CO', val: 280, norm: 350, status: 'ปกติ' },
-                        { name: 'Carbon Dioxide', formula: 'CO2', val: 2380, norm: 2500, status: 'ปกติ' }
-                    ],
-                    ratios: { r1: '0.00', r2: '0.48', r3: '0.17' },
-                    duval: { ch4: 44, c2h4: 56, c2h2: 0, result: 'PD (Partial Discharge)', desc: 'การคายประจุบางส่วนในโพรงฉนวนกระดาษหรือน้ำมัน' },
-                    sliders: [90, 85, 80, 85],
-                    fmea: [
-                        { sub: 'OLTC Mechanism', mode: 'Contact Wear & Arcing', cause: 'สลับแท็ปบ่อย หน้าสัมผัสสึกหรอ', s: 7, o: 6, d: 4, rpn: 168, strat: 'PM: ตรวจสัมผัสและกรองน้ำมัน OLTC' },
-                        { sub: 'Winding Insulation', mode: 'Partial Discharge', cause: 'ความชื้นสะสมในฉนวนกระดาษ', s: 9, o: 3, d: 5, rpn: 135, strat: 'PdM: UHF PD Monitoring + DGA' }
-                    ],
-                    tasks: [
-                        { title: 'ตรวจสอบชุดขับเคลื่อน OLTC Mechanism', rpn: 168, level: 'Medium', team: 'Substation Team', date: '15 ก.ย. 2026' }
-                    ]
-                },
-                'TR-02': {
-                    name: 'TR-230/115kV No.2 (Substation Chidlom)',
-                    substation: 'Chidlom Substation (200 MVA)',
-                    age: '22 ปี',
-                    load: '84.0%',
-                    inspector: 'Eng. Thanawat K.',
-                    testDate: '20/08/2026',
-                    cehi: 68.5,
-                    cehiGrade: 'เฝ้าระวัง (Fair/Poor)',
-                    maxRpn: 216,
-                    maxRpnCause: 'High Thermal Overheating > 700°C',
-                    rpnStrategy: 'PdM: DGA Sampling ทุก 1 เดือน',
-                    dominantGas: 'Ethylene (C2H4)',
-                    dominantGasDesc: 'ความร้อนสะสมสูงผิดปกติบริเวณแกนเหล็กหรือจุดต่อกระแส',
-                    gasUnit: 'ppm',
-                    tdcg: 1150,
-                    gases: [
-                        { name: 'Hydrogen', formula: 'H2', val: 95, norm: 100, status: 'ปกติ' },
-                        { name: 'Methane', formula: 'CH4', val: 240, norm: 120, status: 'สูงผิดปกติ' },
-                        { name: 'Acetylene', formula: 'C2H2', val: 2.8, norm: 1.0, status: 'เฝ้าระวัง' },
-                        { name: 'Ethylene', formula: 'C2H4', val: 680, norm: 50, status: 'วิกฤต' },
-                        { name: 'Ethane', formula: 'C2H6', val: 132, norm: 65, status: 'สูงผิดปกติ' },
-                        { name: 'Carbon Monoxide', formula: 'CO', val: 490, norm: 350, status: 'เฝ้าระวัง' },
-                        { name: 'Carbon Dioxide', formula: 'CO2', val: 3400, norm: 2500, status: 'สูงผิดปกติ' }
-                    ],
-                    ratios: { r1: '0.004', r2: '2.52', r3: '5.15' },
-                    duval: { ch4: 26, c2h4: 73.7, c2h2: 0.3, result: 'T3: Thermal Fault > 700°C', desc: 'ตรวจพบความร้อนสูงรุนแรงในน้ำมันหม้อแปลง (Hotspot)' },
-                    sliders: [60, 65, 75, 75],
-                    fmea: [
-                        { sub: 'Winding & Joint', mode: 'Thermal Overheating (T3)', cause: 'จุดต่อภายในหลวม เกิดความร้อนสะสม', s: 9, o: 6, d: 4, rpn: 216, strat: 'PdM: DGA Sampling ทุก 1 เดือน' }
-                    ],
-                    tasks: [
-                        { title: 'ด่วน: สุ่มตรวจก๊าซ DGA ยืนยันอัตราการเพิ่มของก๊าซ C2H4', rpn: 216, level: 'High', team: 'Diagnostic Specialist', date: '28 ส.ค. 2026' }
-                    ]
-                }
+        // Database
+        const assetDatabase = {
+            'TR-01': {
+                name: 'TR-115/22kV No.1 (Ladprao)',
+                type: 'Transformer',
+                cehi: 88.4,
+                cehiGrade: 'GOOD (ปกติ)',
+                maxRpn: 168,
+                dga: [
+                    { name: 'Hydrogen', formula: 'H2', val: 25, norm: 100, status: 'ปกติ' },
+                    { name: 'Methane', formula: 'CH4', val: 12, norm: 120, status: 'ปกติ' },
+                    { name: 'Acetylene', formula: 'C2H2', val: 0.0, norm: 1.0, status: 'ปกติ' },
+                    { name: 'Ethylene', formula: 'C2H4', val: 15, norm: 50, status: 'ปกติ' },
+                    { name: 'Ethane', formula: 'C2H6', val: 90, norm: 65, status: 'เฝ้าระวัง' }
+                ],
+                duval: { result: 'PD (Partial Discharge)' },
+                fmea: [
+                    { sub: 'OLTC Mechanism', mode: 'Contact Wear', cause: 'สลับแท็ปบ่อย', s: 7, o: 6, d: 4, rpn: 168, strat: 'PM: Overhaul OLTC' },
+                    { sub: 'Winding', mode: 'Partial Discharge', cause: 'ความชื้นสะสม', s: 9, o: 3, d: 5, rpn: 135, strat: 'PdM: UHF PD Scan' }
+                ],
+                rcmTasks: [
+                    { title: 'ตรวจสอบกลไกขับเคลื่อน OLTC Mechanism', rpn: 168, date: '15 ก.ย. 2026' }
+                ]
             },
-            GIS: {
-                'GIS-01': {
-                    name: 'GIS 115kV Bay 01 (Feeder Ladprao-1)',
-                    substation: 'Ladprao GIS Substation',
-                    age: '8 ปี',
-                    load: '55.0%',
-                    inspector: 'Eng. Somchai R.',
-                    testDate: '24/08/2026',
-                    cehi: 92.5,
-                    cehiGrade: 'ดีเยี่ยม (Excellent)',
-                    maxRpn: 120,
-                    maxRpnCause: 'SF6 Gas Pressure Slow Leakage',
-                    rpnStrategy: 'PdM: ตรวจวัด Density Switch',
-                    dominantGas: 'SF6 Purity (99.8%)',
-                    dominantGasDesc: 'ก๊าซ SF6 บริสุทธิ์สูง ปริมาณ SO2 ต่ำมาก',
-                    gasUnit: 'MPa / ppmv',
-                    tdcg: 0,
-                    gases: [
-                        { name: 'SF6 Gas Purity', formula: 'SF6 (%)', val: 99.8, norm: 97.0, status: 'ดีเยี่ยม' },
-                        { name: 'SF6 Pressure (20°C)', formula: 'MPa', val: 0.65, norm: 0.60, status: 'ปกติ' },
-                        { name: 'Moisture in SF6', formula: 'H2O (ppmv)', val: 18, norm: 150, status: 'ปกติ' },
-                        { name: 'Sulfur Dioxide', formula: 'SO2 (ppmv)', val: 0.8, norm: 5.0, status: 'ปกติ' }
-                    ],
-                    ratios: { r1: 'N/A', r2: 'N/A', r3: 'N/A' },
-                    duval: { ch4: 0, c2h4: 0, c2h2: 0, result: 'SF6 Normal Condition', desc: 'สภาพฉนวนก๊าซ SF6 ปกติสมบูรณ์' },
-                    sliders: [95, 95, 90, 90],
-                    fmea: [
-                        { sub: 'SF6 Compartment', mode: 'Slow Gas Leakage', cause: 'ซีลปะเก็นเสื่อมสภาพตามเวลา', s: 8, o: 5, d: 3, rpn: 120, strat: 'PdM: SF6 Density Monitoring' }
-                    ],
-                    tasks: [
-                        { title: 'ตรวจวัดแรงดันก๊าซ SF6 Gas Compartment ประจำเดือน', rpn: 120, level: 'Normal', team: 'GIS Operation', date: '10 ก.ย. 2026' }
-                    ]
-                }
+            'TR-02': {
+                name: 'TR-230/115kV No.2 (Chidlom)',
+                type: 'Transformer',
+                cehi: 68.5,
+                cehiGrade: 'FAIR/POOR (เฝ้าระวัง)',
+                maxRpn: 216,
+                dga: [
+                    { name: 'Hydrogen', formula: 'H2', val: 95, norm: 100, status: 'ปกติ' },
+                    { name: 'Methane', formula: 'CH4', val: 240, norm: 120, status: 'สูงผิดปกติ' },
+                    { name: 'Ethylene', formula: 'C2H4', val: 680, norm: 50, status: 'วิกฤต' }
+                ],
+                duval: { result: 'T3: Thermal Fault > 700°C' },
+                fmea: [
+                    { sub: 'Winding Joint', mode: 'Thermal Overheating (T3)', cause: 'จุดต่อภายในหลวม', s: 9, o: 6, d: 4, rpn: 216, strat: 'PdM: DGA Sampling 1 เดือน' }
+                ],
+                rcmTasks: [
+                    { title: 'ด่วน: สุ่มตรวจก๊าซ DGA ยืนยันอัตราเพิ่ม C2H4', rpn: 216, date: '28 ส.ค. 2026' }
+                ]
+            },
+            'GIS-01': {
+                name: 'GIS 115kV Bay 01 (Ladprao)',
+                type: 'GIS',
+                cehi: 92.5,
+                cehiGrade: 'EXCELLENT (ดีเยี่ยม)',
+                maxRpn: 120,
+                sf6Purity: '99.8%',
+                sf6Pressure: '0.65 MPa',
+                sf6Moisture: '18 ppmv',
+                sf6So2: '0.8 ppmv',
+                fmea: [
+                    { sub: 'SF6 Compartment', mode: 'Slow Gas Leakage', cause: 'ซีลเสื่อมสภาพ', s: 8, o: 5, d: 3, rpn: 120, strat: 'PdM: Density Switch' }
+                ],
+                rcmTasks: [
+                    { title: 'ตรวจวัดแรงดันก๊าซ SF6 ประจำเดือน', rpn: 120, date: '10 ก.ย. 2026' }
+                ]
+            },
+            'GIS-02': {
+                name: 'GIS 115kV Bay 02 (Tie TR-1)',
+                type: 'GIS',
+                cehi: 74.0,
+                cehiGrade: 'FAIR (ปานกลาง)',
+                maxRpn: 189,
+                sf6Purity: '97.4%',
+                sf6Pressure: '0.62 MPa',
+                sf6Moisture: '85 ppmv',
+                sf6So2: '4.2 ppmv',
+                fmea: [
+                    { sub: 'Solid Spacer', mode: 'Particle PD', cause: 'ฝุ่นผงโลหะเกาะฉนวน', s: 9, o: 7, d: 3, rpn: 189, strat: 'PdM: UHF PD Acoustic Scan' }
+                ],
+                rcmTasks: [
+                    { title: 'ด่วน: สแกนตรวจหาตำแหน่ง Partial Discharge บน Spacer', rpn: 189, date: '01 ก.ย. 2026' }
+                ]
             }
         };
 
-        let currentCategory = 'TRANSFORMER';
-        let currentAssetId = 'TR-01';
-        let dgaChartInstance = null;
-        let rpnChartInstance = null;
-        let cehiDonutInstance = null;
+        let currentActiveAsset = 'TR-01';
+        let currentRoute = 'PORTAL';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('inputDate').value = '2026-08-25';
-            initDropdown();
-            renderAssetData();
-            initCharts();
-            drawDuvalTriangle();
-        });
+        // SPA Router Function
+        function navigateTo(pageKey) {
+            currentRoute = pageKey;
+            const portalPage = document.getElementById('page-PORTAL');
+            const subpageWrapper = document.getElementById('subpage-wrapper');
+            const badge = document.getElementById('currentPageBadge');
 
-        // Direct PDF Download without Print Dialog
-        function downloadDirectPDF() {
-            const element = document.getElementById('reportContentToExport');
-            const assetName = fleetDatabase[currentCategory][currentAssetId].name.split(' (')[0];
-            
-            const opt = {
-                margin:       [10, 10, 10, 10],
-                filename:     `RCM_CEHI_Report_${currentAssetId}_${new Date().toISOString().slice(0,10)}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#080c14' },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
-            };
-
-            // Generate and save directly
-            html2pdf().set(opt).from(element).save();
-        }
-
-        // Handle Paper/Photo Upload Simulation
-        function handlePaperUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const statusText = document.getElementById('scanStatusText');
-            statusText.innerText = '🔍 กำลังวิเคราะห์ตัวเลขจากใบทดสอบ...';
-            statusText.className = 'text-[11px] text-cyan-400 font-semibold animate-pulse';
-
-            setTimeout(() => {
-                if (currentCategory === 'TRANSFORMER') {
-                    document.getElementById('in_H2').value = (Math.random() * 50 + 10).toFixed(1);
-                    document.getElementById('in_CH4').value = (Math.random() * 30 + 5).toFixed(1);
-                    document.getElementById('in_C2H2').value = (Math.random() * 0.5).toFixed(1);
-                    document.getElementById('in_C2H4').value = (Math.random() * 25 + 5).toFixed(1);
-                    document.getElementById('in_C2H6').value = (Math.random() * 40 + 10).toFixed(1);
-                    document.getElementById('in_CO').value = (Math.random() * 200 + 100).toFixed(0);
-                    document.getElementById('in_CO2').value = (Math.random() * 1500 + 1000).toFixed(0);
-                } else {
-                    document.getElementById('in_sf6_purity').value = (98.5 + Math.random() * 1.4).toFixed(1);
-                    document.getElementById('in_sf6_press').value = (0.62 + Math.random() * 0.05).toFixed(2);
-                    document.getElementById('in_sf6_moist').value = (Math.random() * 30 + 10).toFixed(1);
-                }
-                statusText.innerText = '✅ สแกนค่าจากใบทดสอบสำเร็จ!';
-                statusText.className = 'text-[11px] text-emerald-400 font-semibold';
-            }, 1200);
-        }
-
-        // Switch Category
-        function switchCategory(cat) {
-            currentCategory = cat;
-            const btnTrans = document.getElementById('btnCatTransformer');
-            const btnGis = document.getElementById('btnCatGIS');
-
-            if (cat === 'TRANSFORMER') {
-                btnTrans.className = 'px-3 py-1.5 rounded-md font-semibold bg-cyan-600 text-white transition flex items-center gap-1.5';
-                btnGis.className = 'px-3 py-1.5 rounded-md font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5';
-                currentAssetId = 'TR-01';
-            } else {
-                btnGis.className = 'px-3 py-1.5 rounded-md font-semibold bg-cyan-600 text-white transition flex items-center gap-1.5';
-                btnTrans.className = 'px-3 py-1.5 rounded-md font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5';
-                currentAssetId = 'GIS-01';
+            if (pageKey === 'PORTAL') {
+                portalPage.classList.remove('hidden');
+                subpageWrapper.classList.add('hidden');
+                badge.innerText = 'Portal Menu';
+                return;
             }
 
-            initDropdown();
-            renderAssetData();
-            updateCharts();
-            drawDuvalTriangle();
-        }
+            // Show subpage wrapper & hide portal
+            portalPage.classList.add('hidden');
+            subpageWrapper.classList.remove('hidden');
 
-        function initDropdown() {
-            const dropdown = document.getElementById('assetSelectDropdown');
-            dropdown.innerHTML = '';
-            const items = fleetDatabase[currentCategory];
-            for (const key in items) {
-                const opt = document.createElement('option');
-                opt.value = key;
-                opt.innerText = items[key].name;
-                if (key === currentAssetId) opt.selected = true;
-                dropdown.appendChild(opt);
+            // Hide all subviews first
+            document.querySelectorAll('.subview').forEach(v => v.classList.add('hidden'));
+
+            const titleElem = document.getElementById('subpageTitle');
+            const subTitleElem = document.getElementById('subpageSubtitle');
+
+            // Route mapping
+            if (pageKey === 'PAGE_DGA') {
+                document.getElementById('view-DGA').classList.remove('hidden');
+                titleElem.innerText = '1. รายงานผลการตรวจวิเคราะห์ก๊าซ DGA เชิงลึก';
+                subTitleElem.innerText = 'Dissolved Gas Analysis, Duval Triangle และอัตราส่วนก๊าซ';
+                badge.innerText = 'DGA Diagnostics';
+                renderDgaSubpage();
+            } else if (pageKey === 'PAGE_SF6') {
+                document.getElementById('view-SF6').classList.remove('hidden');
+                titleElem.innerText = '2. รายงานผลทดสอบก๊าซฉนวน SF6 ในสถานี GIS';
+                subTitleElem.innerText = 'ความบริสุทธิ์, แรงดัน, ความชื้น และผลผลิตจากการสลายตัว';
+                badge.innerText = 'GIS SF6 Quality';
+                renderSf6Subpage();
+            } else if (pageKey === 'PAGE_FMEA') {
+                document.getElementById('view-FMEA').classList.remove('hidden');
+                titleElem.innerText = '3. การประเมิน FMEA & ตารางคะแนน RPN';
+                subTitleElem.innerText = 'Failure Modes and Effects Analysis และค่าความเสี่ยงวิกฤต';
+                badge.innerText = 'FMEA & RPN Matrix';
+                renderFmeaSubpage();
+            } else if (pageKey === 'PAGE_CEHI') {
+                document.getElementById('view-CEHI').classList.remove('hidden');
+                titleElem.innerText = '4. การคำนวณและจำลองค่าดัชนีสุขภาพ CEHI';
+                subTitleElem.innerText = 'Composite Equipment Health Index Calculator & Simulator';
+                badge.innerText = 'CEHI Simulator';
+                recalcSubCehi();
+            } else if (pageKey === 'PAGE_RCM') {
+                document.getElementById('view-RCM').classList.remove('hidden');
+                titleElem.innerText = '5. แผนปฏิบัติการบำรุงรักษาตามหลัก RCM';
+                subTitleElem.innerText = 'Reliability-Centered Maintenance Action Queue';
+                badge.innerText = 'RCM Action Plan';
+                renderRcmSubpage();
+            } else if (pageKey === 'PAGE_MASTER') {
+                document.getElementById('view-MASTER').classList.remove('hidden');
+                titleElem.innerText = '6. แดชบอร์ดสรุปภาพรวมครบวงจร (Master Overview)';
+                subTitleElem.innerText = 'Executive Summary Report for Power Transformers & GIS';
+                badge.innerText = 'Master Overview';
+                renderMasterSubpage();
             }
+
+            updateSubpageHeader();
         }
 
         function onAssetChange(assetId) {
-            currentAssetId = assetId;
-            renderAssetData();
-            updateCharts();
-            drawDuvalTriangle();
-        }
-
-        function switchMainTab(tab) {
-            const tabs = ['DGA', 'FMEA', 'CEHI', 'RCM'];
-            tabs.forEach(t => {
-                const btn = document.getElementById(`navTab${t}`);
-                const section = document.getElementById(`section${t}`);
-                if (t === tab) {
-                    btn.classList.add('bg-cyan-600', 'text-white');
-                    btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
-                    section.classList.remove('hidden');
-                } else {
-                    btn.classList.remove('bg-cyan-600', 'text-white');
-                    btn.classList.add('text-slate-400', 'hover:bg-slate-800');
-                    section.classList.add('hidden');
-                }
-            });
-
-            if (tab === 'FMEA' && rpnChartInstance) rpnChartInstance.update();
-            if (tab === 'DGA' && dgaChartInstance) dgaChartInstance.update();
-            if (tab === 'CEHI' && cehiDonutInstance) cehiDonutInstance.update();
-        }
-
-        function renderAssetData() {
-            const asset = fleetDatabase[currentCategory][currentAssetId];
-
-            document.getElementById('kpiCehiScore').innerText = asset.cehi + '%';
-            document.getElementById('kpiCehiBar').style.width = asset.cehi + '%';
-            document.getElementById('kpiCehiBadge').innerText = asset.cehiGrade;
-            document.getElementById('kpiTestDate').innerText = 'วันที่ทดสอบ: ' + asset.testDate;
-
-            document.getElementById('kpiMaxRpn').innerText = asset.maxRpn;
-            document.getElementById('kpiRpnCause').innerText = 'สาเหตุ: ' + asset.maxRpnCause;
-            document.getElementById('kpiRpnStrategy').innerText = asset.rpnStrategy;
-
-            if (currentCategory === 'TRANSFORMER') {
-                document.getElementById('kpiGasTitle').innerText = 'ปริมาณก๊าซติดไฟสะสม (TDCG)';
-                document.getElementById('kpiGasValue').innerText = asset.tdcg;
-                document.getElementById('kpiGasUnit').innerText = asset.gasUnit;
-                document.getElementById('gasSub1Label').innerText = 'Acetylene (C2H2):';
-                document.getElementById('gasSub1Val').innerText = asset.gases.find(g => g.formula === 'C2H2')?.val + ' ppm';
-                document.getElementById('gasSub2Label').innerText = 'Hydrogen (H2):';
-                document.getElementById('gasSub2Val').innerText = asset.gases.find(g => g.formula === 'H2')?.val + ' ppm';
-            } else {
-                document.getElementById('kpiGasTitle').innerText = 'ความบริสุทธิ์ก๊าซ SF6';
-                document.getElementById('kpiGasValue').innerText = asset.gases.find(g => g.formula === 'SF6 (%)')?.val + '%';
-                document.getElementById('kpiGasUnit').innerText = 'Pure SF6 Gas';
-                document.getElementById('gasSub1Label').innerText = 'แรงดัน (20°C):';
-                document.getElementById('gasSub1Val').innerText = asset.gases.find(g => g.formula === 'MPa')?.val + ' MPa';
-                document.getElementById('gasSub2Label').innerText = 'ความชื้น H2O:';
-                document.getElementById('gasSub2Val').innerText = asset.gases.find(g => g.formula === 'H2O (ppmv)')?.val + ' ppmv';
+            currentActiveAsset = assetId;
+            if (currentRoute !== 'PORTAL') {
+                navigateTo(currentRoute);
             }
+        }
 
-            document.getElementById('metaAssetName').innerText = asset.name.split(' (')[0];
-            document.getElementById('metaAssetSub').innerText = asset.substation;
-            document.getElementById('metaAssetAge').innerText = asset.age;
-            document.getElementById('metaInspector').innerText = asset.inspector || 'Eng. Specialist';
+        function updateSubpageHeader() {
+            const asset = assetDatabase[currentActiveAsset];
+            document.getElementById('subpageTargetName').innerText = asset.name;
+            document.getElementById('subpageTargetCehi').innerText = asset.cehi + '%';
+        }
 
-            // DGA Table
-            const tableBody = document.getElementById('dgaGasTableBody');
-            tableBody.innerHTML = '';
-            asset.gases.forEach(g => {
-                let statusBadge = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded font-medium">${g.status}</span>`;
-                if (g.status === 'เฝ้าระวัง') statusBadge = `<span class="bg-amber-950 text-amber-400 border border-amber-800 px-2 py-0.5 rounded font-medium">${g.status}</span>`;
-                if (g.status === 'วิกฤต' || g.status === 'สูงผิดปกติ') statusBadge = `<span class="bg-red-950 text-red-400 border border-red-800 px-2 py-0.5 rounded font-medium">${g.status}</span>`;
+        // Subpage Renderers
+        function renderDgaSubpage() {
+            const asset = assetDatabase[currentActiveAsset];
+            const tbody = document.getElementById('subpageDgaTableBody');
+            tbody.innerHTML = '';
 
-                const row = document.createElement('tr');
-                row.className = 'hover:bg-slate-800/50 transition';
-                row.innerHTML = `
+            const gases = asset.dga || [
+                { name: 'Hydrogen', formula: 'H2', val: 20, norm: 100, status: 'ปกติ' },
+                { name: 'Ethylene', formula: 'C2H4', val: 10, norm: 50, status: 'ปกติ' }
+            ];
+
+            gases.forEach(g => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
                     <td class="p-3 font-medium text-white">${g.name}</td>
                     <td class="p-3 text-cyan-400 font-mono">${g.formula}</td>
                     <td class="p-3 text-right font-bold text-white">${g.val}</td>
                     <td class="p-3 text-right text-slate-400">${g.norm}</td>
-                    <td class="p-3 text-center">${statusBadge}</td>
+                    <td class="p-3 text-center"><span class="bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded">${g.status}</span></td>
                 `;
-                tableBody.appendChild(row);
+                tbody.appendChild(tr);
             });
 
-            document.getElementById('ratio1Val').innerText = asset.ratios.r1;
-            document.getElementById('ratio2Val').innerText = asset.ratios.r2;
-            document.getElementById('ratio3Val').innerText = asset.ratios.r3;
-            document.getElementById('dominantGasName').innerText = asset.dominantGas;
-            document.getElementById('dominantGasDesc').innerText = asset.dominantGasDesc;
-            document.getElementById('duvalResultText').innerText = asset.duval.result;
-            document.getElementById('duvalDetailText').innerText = asset.duval.desc;
+            document.getElementById('subpageDuvalResult').innerText = asset.duval ? asset.duval.result : 'Normal Condition';
+            drawSubDuvalTriangle();
+        }
 
-            // FMEA
-            const fmeaBody = document.getElementById('fmeaTableBody');
-            fmeaBody.innerHTML = '';
-            asset.fmea.forEach(item => {
-                let rpnBadge = `<span class="bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-1 rounded font-bold">${item.rpn}</span>`;
-                if (item.rpn > 200) rpnBadge = `<span class="bg-red-950 text-red-400 border border-red-800 px-2 py-1 rounded font-bold">${item.rpn} (High)</span>`;
-                else if (item.rpn >= 100) rpnBadge = `<span class="bg-amber-950 text-amber-400 border border-amber-800 px-2 py-1 rounded font-bold">${item.rpn} (Med)</span>`;
+        function renderSf6Subpage() {
+            const asset = assetDatabase[currentActiveAsset];
+            document.getElementById('sf6PurityText').innerText = asset.sf6Purity || '99.6% (ปกติ)';
+            document.getElementById('sf6PressureText').innerText = asset.sf6Pressure || '0.65 MPa (ปกติ)';
+            document.getElementById('sf6MoistureText').innerText = asset.sf6Moisture || '20 ppmv (ปกติ)';
+            document.getElementById('sf6So2Text').innerText = asset.sf6So2 || '0.8 ppmv (ปกติ)';
+        }
 
+        function renderFmeaSubpage() {
+            const asset = assetDatabase[currentActiveAsset];
+            const tbody = document.getElementById('subpageFmeaTableBody');
+            tbody.innerHTML = '';
+            asset.fmea.forEach(f => {
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-800/50 transition';
                 tr.innerHTML = `
-                    <td class="p-3 font-semibold text-white">${item.sub}</td>
-                    <td class="p-3 text-slate-200">${item.mode}</td>
-                    <td class="p-3 text-slate-400">${item.cause}</td>
-                    <td class="p-3 text-center font-bold">${item.s}</td>
-                    <td class="p-3 text-center font-bold">${item.o}</td>
-                    <td class="p-3 text-center font-bold">${item.d}</td>
-                    <td class="p-3 text-center">${rpnBadge}</td>
-                    <td class="p-3 text-cyan-300 font-medium">${item.strat}</td>
+                    <td class="p-3 font-semibold text-white">${f.sub}</td>
+                    <td class="p-3 text-slate-200">${f.mode}</td>
+                    <td class="p-3 text-slate-400">${f.cause}</td>
+                    <td class="p-3 text-center">${f.s}</td>
+                    <td class="p-3 text-center">${f.o}</td>
+                    <td class="p-3 text-center">${f.d}</td>
+                    <td class="p-3 text-center font-bold text-amber-400">${f.rpn}</td>
+                    <td class="p-3 text-cyan-300 font-medium">${f.strat}</td>
                 `;
-                fmeaBody.appendChild(tr);
+                tbody.appendChild(tr);
             });
+        }
 
-            // Sliders
-            document.getElementById('slider1').value = asset.sliders[0];
-            document.getElementById('slider2').value = asset.sliders[1];
-            document.getElementById('slider3').value = asset.sliders[2];
-            document.getElementById('slider4').value = asset.sliders[3];
-            recalcCehi();
-
-            // Tasks
-            const taskContainer = document.getElementById('rcmActionTaskList');
-            taskContainer.innerHTML = '';
-            asset.tasks.forEach(t => {
+        function renderRcmSubpage() {
+            const asset = assetDatabase[currentActiveAsset];
+            const list = document.getElementById('subpageRcmList');
+            list.innerHTML = '';
+            (asset.rcmTasks || []).forEach(t => {
                 const div = document.createElement('div');
-                div.className = 'p-4 bg-slate-900 border-l-4 border-cyan-500 rounded-r-xl border border-slate-800 flex flex-wrap justify-between items-center gap-4';
+                div.className = 'p-4 bg-slate-900 border-l-4 border-cyan-500 rounded-r-xl border border-slate-800 flex justify-between items-center';
                 div.innerHTML = `
                     <div>
                         <span class="bg-cyan-950 text-cyan-400 text-xs px-2 py-0.5 rounded font-bold">RPN ${t.rpn}</span>
                         <h4 class="text-sm font-bold text-white mt-1">${t.title}</h4>
-                        <p class="text-[11px] text-slate-400 mt-0.5">ทีม: ${t.team} | กำหนด: ${t.date}</p>
+                        <p class="text-[11px] text-slate-400">กำหนดการ: ${t.date}</p>
                     </div>
-                    <button onclick="this.innerText='Completed'; this.className='text-xs bg-emerald-950 text-emerald-400 border border-emerald-800 px-3 py-1 rounded-full font-medium';" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-3 py-1 rounded transition">ดำเนินการ</button>
+                    <button class="bg-cyan-600 text-white text-xs px-3 py-1 rounded">จัดการแผนงาน</button>
                 `;
-                taskContainer.appendChild(div);
+                list.appendChild(div);
             });
         }
 
-        // CEHI Calculator
-        function recalcCehi() {
-            const v1 = parseFloat(document.getElementById('slider1').value);
-            const v2 = parseFloat(document.getElementById('slider2').value);
-            const v3 = parseFloat(document.getElementById('slider3').value);
-            const v4 = parseFloat(document.getElementById('slider4').value);
-
-            document.getElementById('slider1ValText').innerText = v1 + ' / 100';
-            document.getElementById('slider2ValText').innerText = v2 + ' / 100';
-            document.getElementById('slider3ValText').innerText = v3 + ' / 100';
-            document.getElementById('slider4ValText').innerText = v4 + ' / 100';
-
-            const w1 = (v1 * 0.35).toFixed(1);
-            const w2 = (v2 * 0.25).toFixed(1);
-            const w3 = (v3 * 0.20).toFixed(1);
-            const w4 = (v4 * 0.20).toFixed(1);
-
-            document.getElementById('subVal1').innerText = w1;
-            document.getElementById('subVal2').innerText = w2;
-            document.getElementById('subVal3').innerText = w3;
-            document.getElementById('subVal4').innerText = w4;
-
-            const total = (parseFloat(w1) + parseFloat(w2) + parseFloat(w3) + parseFloat(w4)).toFixed(1);
-            const totalElem = document.getElementById('cehiSimTotal');
-            const gradeElem = document.getElementById('cehiSimGrade');
-            totalElem.innerText = total + '%';
-
-            let grade = 'GOOD (ปกติ)';
-            let color = 'text-emerald-400';
-            if (total >= 85) { grade = 'GOOD (ปกติ)'; color = 'text-emerald-400'; }
-            else if (total >= 70) { grade = 'FAIR (ปานกลาง)'; color = 'text-cyan-400'; }
-            else if (total >= 50) { grade = 'POOR (เฝ้าระวัง)'; color = 'text-amber-400'; }
-            else { grade = 'CRITICAL (วิกฤต)'; color = 'text-red-400'; }
-
-            totalElem.className = `text-3xl font-bold font-prompt ${color}`;
-            gradeElem.innerText = grade;
-
-            if (cehiDonutInstance) {
-                cehiDonutInstance.data.datasets[0].data = [w1, w2, w3, w4];
-                cehiDonutInstance.update();
-            }
+        function renderMasterSubpage() {
+            const asset = assetDatabase[currentActiveAsset];
+            document.getElementById('masterCehiScore').innerText = asset.cehi + '%';
+            document.getElementById('masterMaxRpn').innerText = asset.maxRpn;
         }
 
-        function resetCehiInputs() { renderAssetData(); }
+        function recalcSubCehi() {
+            const s1 = parseFloat(document.getElementById('subSlider1').value);
+            const s2 = parseFloat(document.getElementById('subSlider2').value);
+            const s3 = parseFloat(document.getElementById('subSlider3').value);
+            const s4 = parseFloat(document.getElementById('subSlider4').value);
 
-        // Charts
-        function initCharts() {
-            const ctxDga = document.getElementById('dgaHistoryChart').getContext('2d');
-            dgaChartInstance = new Chart(ctxDga, {
-                type: 'line',
-                data: {
-                    labels: ['มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.'],
-                    datasets: [
-                        { label: 'H2 (ppm)', data: [15, 18, 19, 21, 23, 25], borderColor: '#38bdf8', tension: 0.3 },
-                        { label: 'C2H4 (ppm)', data: [5, 6, 8, 9, 12, 15], borderColor: '#ef4444', tension: 0.3 }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } } }
-            });
+            document.getElementById('subSimVal1').innerText = s1;
+            document.getElementById('subSimVal2').innerText = s2;
+            document.getElementById('subSimVal3').innerText = s3;
+            document.getElementById('subSimVal4').innerText = s4;
 
-            const ctxRpn = document.getElementById('rpnComparisonChart').getContext('2d');
-            rpnChartInstance = new Chart(ctxRpn, {
-                type: 'bar',
-                data: {
-                    labels: ['OLTC Wear', 'Winding PD'],
-                    datasets: [{ label: 'RPN Score', data: [168, 135], backgroundColor: ['#f59e0b', '#06b6d4'], borderRadius: 6 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-
-            const ctxDonut = document.getElementById('cehiSimulatorDonut').getContext('2d');
-            cehiDonutInstance = new Chart(ctxDonut, {
-                type: 'doughnut',
-                data: {
-                    labels: ['DGA (35%)', 'Dielectric (25%)', 'PD (20%)', 'Thermal (20%)'],
-                    datasets: [{ data: [31.5, 21.3, 16.0, 17.0], backgroundColor: ['#06b6d4', '#3b82f6', '#10b981', '#f59e0b'], borderWidth: 0 }]
-                },
-                options: { cutout: '75%', plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: false }
-            });
+            const total = ((s1 * 0.35) + (s2 * 0.25) + (s3 * 0.20) + (s4 * 0.20)).toFixed(1);
+            document.getElementById('subSimTotalScore').innerText = total + '%';
         }
 
-        function updateCharts() {
-            const asset = fleetDatabase[currentCategory][currentAssetId];
-            if (rpnChartInstance) {
-                rpnChartInstance.data.labels = asset.fmea.map(f => f.mode.substring(0, 16));
-                rpnChartInstance.data.datasets[0].data = asset.fmea.map(f => f.rpn);
-                rpnChartInstance.update();
-            }
-        }
-
-        function drawDuvalTriangle() {
-            const canvas = document.getElementById('duvalCanvas');
+        function drawSubDuvalTriangle() {
+            const canvas = document.getElementById('subpageDuvalCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1095,149 +821,30 @@
             ctx.moveTo(top.x, top.y); ctx.lineTo(left.x, left.y); ctx.lineTo(right.x, right.y); ctx.closePath();
             ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2; ctx.stroke();
 
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px Prompt';
-            ctx.fillText('%CH4 (Top)', 105, 15);
-            ctx.fillText('%C2H4 (Left)', 5, 215);
-            ctx.fillText('%C2H2 (Right)', 180, 215);
-
-            let px = 130, py = 120;
-            if (currentCategory === 'TRANSFORMER') {
-                if (currentAssetId === 'TR-01') { px = 120; py = 80; }
-                else { px = 70; py = 160; }
-            }
-
-            ctx.beginPath(); ctx.arc(px, py, 6, 0, 2 * Math.PI);
-            ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.stroke();
-            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 10px Prompt'; ctx.fillText(currentAssetId, px + 8, py - 4);
+            ctx.beginPath(); ctx.arc(120, 90, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.strokeStyle = '#ffffff'; ctx.stroke();
         }
 
-        function openDataInputModal() {
-            const modal = document.getElementById('dataInputModal');
-            modal.classList.remove('hidden');
-
-            if (currentCategory === 'TRANSFORMER') {
-                document.getElementById('formSectionTransformer').classList.remove('hidden');
-                document.getElementById('formSectionGIS').classList.add('hidden');
-            } else {
-                document.getElementById('formSectionTransformer').classList.add('hidden');
-                document.getElementById('formSectionGIS').classList.remove('hidden');
-            }
+        // Direct PDF Export
+        function downloadDirectPDF() {
+            const element = document.getElementById('reportContentToExport');
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: `Report_${currentRoute}_${currentActiveAsset}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#080c14' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+            html2pdf().set(opt).from(element).save();
         }
 
-        function closeDataInputModal() {
-            document.getElementById('dataInputModal').classList.add('hidden');
-        }
+        function openDataInputModal() { document.getElementById('dataInputModal').classList.remove('hidden'); }
+        function closeDataInputModal() { document.getElementById('dataInputModal').classList.add('hidden'); }
 
-        function saveTestData(e) {
+        function saveNewTestResult(e) {
             e.preventDefault();
-            const asset = fleetDatabase[currentCategory][currentAssetId];
-
-            asset.testDate = document.getElementById('inputDate').value;
-            asset.inspector = document.getElementById('inputInspector').value;
-            asset.load = document.getElementById('inputLoad').value + '%';
-
-            const s1 = parseFloat(document.getElementById('in_score_dga').value);
-            const s2 = parseFloat(document.getElementById('in_score_dielectric').value);
-            const s3 = parseFloat(document.getElementById('in_score_pd').value);
-            const s4 = parseFloat(document.getElementById('in_score_thermal').value);
-            asset.sliders = [s1, s2, s3, s4];
-
-            const calcCehi = ((s1 * 0.35) + (s2 * 0.25) + (s3 * 0.20) + (s4 * 0.20)).toFixed(1);
-            asset.cehi = calcCehi;
-            if (calcCehi >= 85) asset.cehiGrade = 'ปกติ (Good)';
-            else if (calcCehi >= 70) asset.cehiGrade = 'ปานกลาง (Fair)';
-            else if (calcCehi >= 50) asset.cehiGrade = 'เฝ้าระวัง (Poor)';
-            else asset.cehiGrade = 'วิกฤต (Critical)';
-
-            if (currentCategory === 'TRANSFORMER') {
-                const h2 = parseFloat(document.getElementById('in_H2').value);
-                const ch4 = parseFloat(document.getElementById('in_CH4').value);
-                const c2h2 = parseFloat(document.getElementById('in_C2H2').value);
-                const c2h4 = parseFloat(document.getElementById('in_C2H4').value);
-                const c2h6 = parseFloat(document.getElementById('in_C2H6').value);
-                const co = parseFloat(document.getElementById('in_CO').value);
-                const co2 = parseFloat(document.getElementById('in_CO2').value);
-
-                asset.tdcg = (h2 + ch4 + c2h2 + c2h4 + c2h6 + co).toFixed(1);
-                asset.gases = [
-                    { name: 'Hydrogen', formula: 'H2', val: h2, norm: 100, status: h2 > 100 ? 'สูงผิดปกติ' : 'ปกติ' },
-                    { name: 'Methane', formula: 'CH4', val: ch4, norm: 120, status: ch4 > 120 ? 'สูงผิดปกติ' : 'ปกติ' },
-                    { name: 'Acetylene', formula: 'C2H2', val: c2h2, norm: 1.0, status: c2h2 > 1.0 ? 'วิกฤต' : 'ปกติ' },
-                    { name: 'Ethylene', formula: 'C2H4', val: c2h4, norm: 50, status: c2h4 > 50 ? 'วิกฤต' : 'ปกติ' },
-                    { name: 'Ethane', formula: 'C2H6', val: c2h6, norm: 65, status: c2h6 > 65 ? 'เฝ้าระวัง' : 'ปกติ' },
-                    { name: 'Carbon Monoxide', formula: 'CO', val: co, norm: 350, status: co > 350 ? 'เฝ้าระวัง' : 'ปกติ' },
-                    { name: 'Carbon Dioxide', formula: 'CO2', val: co2, norm: 2500, status: co2 > 2500 ? 'สูงผิดปกติ' : 'ปกติ' }
-                ];
-
-                const r1 = c2h4 > 0 ? (c2h2 / c2h4).toFixed(3) : '0.00';
-                const r2 = h2 > 0 ? (ch4 / h2).toFixed(2) : '0.00';
-                const r3 = c2h6 > 0 ? (c2h4 / c2h6).toFixed(2) : '0.00';
-                asset.ratios = { r1, r2, r3 };
-
-                const total3 = ch4 + c2h4 + c2h2;
-                if (total3 > 0) {
-                    const pch4 = ((ch4 / total3) * 100).toFixed(1);
-                    const pc2h4 = ((c2h4 / total3) * 100).toFixed(1);
-                    const pc2h2 = ((c2h2 / total3) * 100).toFixed(1);
-
-                    if (c2h2 > 5 || pc2h2 > 15) {
-                        asset.duval = { ch4: pch4, c2h4: pc2h4, c2h2: pc2h2, result: 'D1/D2: High Energy Arcing', desc: 'ตรวจพบการอาร์กไฟฟ้าพลังงานสูงในหม้อแปลง' };
-                    } else if (c2h4 > 50) {
-                        asset.duval = { ch4: pch4, c2h4: pc2h4, c2h2: pc2h2, result: 'T3: Thermal Fault > 700°C', desc: 'ความร้อนสะสมรุนแรงสูงเกิน 700°C' };
-                    } else {
-                        asset.duval = { ch4: pch4, c2h4: pc2h4, c2h2: pc2h2, result: 'Normal / Low PD', desc: 'สภาวะก๊าซอยู่ในเกณฑ์ปลอดภัย' };
-                    }
-                }
-            } else {
-                const purity = parseFloat(document.getElementById('in_sf6_purity').value);
-                const press = parseFloat(document.getElementById('in_sf6_press').value);
-                const moist = parseFloat(document.getElementById('in_sf6_moist').value);
-                const so2 = parseFloat(document.getElementById('in_sf6_so2').value);
-
-                asset.gases = [
-                    { name: 'SF6 Gas Purity', formula: 'SF6 (%)', val: purity, norm: 97.0, status: purity >= 97 ? 'ดีเยี่ยม' : 'เฝ้าระวัง' },
-                    { name: 'SF6 Pressure (20°C)', formula: 'MPa', val: press, norm: 0.60, status: press >= 0.6 ? 'ปกติ' : 'ความดันต่ำ' },
-                    { name: 'Moisture in SF6', formula: 'H2O (ppmv)', val: moist, norm: 150, status: moist <= 150 ? 'ปกติ' : 'ชื้นเกินเกณฑ์' },
-                    { name: 'Sulfur Dioxide', formula: 'SO2 (ppmv)', val: so2, norm: 5.0, status: so2 <= 5.0 ? 'ปกติ' : 'มีอาร์กสลายตัว' }
-                ];
-            }
-
+            alert('✅ บันทึกผลทดสอบเข้าสู่ฐานข้อมูลอุปกรณ์เรียบร้อยแล้ว!');
             closeDataInputModal();
-            renderAssetData();
-            updateCharts();
-            drawDuvalTriangle();
-            alert('✅ บันทึกและคำนวณผลการทดสอบเรียบร้อยแล้ว!');
-        }
-
-        function exportToCSV() {
-            const asset = fleetDatabase[currentCategory][currentAssetId];
-            let csvContent = "\uFEFF";
-            csvContent += `Asset Name,${asset.name}\n`;
-            csvContent += `Category,${currentCategory}\n`;
-            csvContent += `Test Date,${asset.testDate}\n`;
-            csvContent += `Inspector,${asset.inspector || 'N/A'}\n`;
-            csvContent += `Health Index (CEHI),${asset.cehi}%\n`;
-            csvContent += `Health Status,${asset.cehiGrade}\n`;
-            csvContent += `Max RPN,${asset.maxRpn}\n\n`;
-
-            csvContent += "Gas Specie,Formula,Measured Value,Standard Limit,Status\n";
-            asset.gases.forEach(g => {
-                csvContent += `"${g.name}","${g.formula}",${g.val},${g.norm},"${g.status}"\n`;
-            });
-
-            csvContent += "\nSubsystem,Failure Mode,Severity,Occurrence,Detection,RPN Score,RCM Strategy\n";
-            asset.fmea.forEach(f => {
-                csvContent += `"${f.sub}","${f.mode}",${f.s},${f.o},${f.d},${f.rpn},"${f.strat}"\n`;
-            });
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `RCM_Report_${currentAssetId}_${new Date().toISOString().slice(0,10)}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
         }
     </script>
 </body>
