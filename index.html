@@ -967,7 +967,7 @@
         </div>
     </div>
 
-    <!-- MODAL: DATA INPUT DIALOG (WITH ASSET SELECTOR) -->
+    <!-- MODAL: DATA INPUT DIALOG (WITH TARGET ASSET SELECTOR) -->
     <div id="dataInputModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
@@ -985,11 +985,10 @@
 
             <form onsubmit="saveTestDataForm(event)" class="p-6 overflow-y-auto space-y-4 custom-scrollbar text-xs">
                 
-                <!-- NEW: Target Asset Selector in Modal Form -->
+                <!-- Target Asset Selector Dropdown inside Modal -->
                 <div class="p-3 bg-sky-50 border border-sky-200 rounded-xl space-y-1">
                     <label class="text-sky-900 font-bold block"><i class="fa-solid fa-industry mr-1 text-sky-600"></i> เลือกอุปกรณ์เป้าหมายที่นำเข้าผลตรวจ:</label>
                     <select id="modalTargetAssetSelect" onchange="onModalTargetAssetChange(this.value)" class="w-full bg-white border border-sky-300 rounded-lg p-2 font-bold text-sky-700 focus:outline-none cursor-pointer">
-                        <!-- Populated dynamically -->
                     </select>
                 </div>
 
@@ -1069,9 +1068,8 @@
         </div>
     </div>
 
-    <!-- LOGIC SCRIPT -->
+    <!-- LOGIC SCRIPT (MODAL TARGET ASSET SWITCHER HOOK) -->
     <script>
-        // Modal Target Asset Switcher
         function initModalAssetDropdown() {
             const select = document.getElementById('modalTargetAssetSelect');
             select.innerHTML = '';
