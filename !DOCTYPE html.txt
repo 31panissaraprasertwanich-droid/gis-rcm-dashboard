@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIS Transformer RCM & CEHI Reliability Command Center</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0b0f19',
+                            card: '#151d2a',
+                            border: '#233044',
+                            accent: '#38bdf8',
+                            neon: '#00f2fe',
+                            danger: '#ef4444',
+                            warning: '#f59e0b',
+                            success: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        prompt: ['Prompt', 'sans-serif'],
+                        sarabun: ['Sarabun', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #0b0f19;
+            color: #e2e8f0;
+        }
+        h1, h2, h3, h4, h5, h6, .font-prompt {
+            font-family: 'Prompt', sans-serif;
+        }
+        .glow-accent {
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+        }
+        .glow-red {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #151d2a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #233044;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col custom-scrollbar">
+
+    <!-- TOP HEADER / NAVIGATION -->
+    <header class="bg-brand-card/90 backdrop-blur border-b border-brand-border sticky top-0 z-50 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center text-white shadow-lg glow-accent">
+                <i class="fa-solid fa-bolt text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-wide flex items-center gap-2">
+                    GIS TRANSFORMER RCM & CEHI CENTER
+                    <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800 px-2 py-0.5 rounded-full font-normal">v2.4 Live</span>
+                </h1>
+                <p class="text-xs text-slate-400">ระบบบริหารความน่าเชื่อถือและดัชนีสุขภาพหม้อแปลงฉนวนก๊าซ</p>
+            </div>
+        </div>
+
+        <div class="flex items-center flex-wrap gap-4">
+            <!-- Asset Selector -->
+            <div class="flex items-center gap-2 bg-slate-900 border border-brand-border px-3 py-1.5 rounded-lg text-sm">
+                <i class="fa-solid fa-industry text-cyan-400"></i>
+                <span class="text-slate-400 text-xs">หม้อแปลง:</span>
+                <select id="assetSelect" onchange="switchAsset(this.value)" class="bg-transparent text-white font-medium focus:outline-none cursor-pointer">
+                    <option value="TR-115-01" selected>TR-115kV-01 (Substation Alpha)</option>
+                    <option value="TR-115-02">TR-115kV-02 (Substation Beta)</option>
+                    <option value="TR-230-01">TR-230kV-01 (Main Grid South)</option>
+                </select>
+            </div>
+
+            <!-- Status Badge -->
+            <div class="flex items-center gap-2 bg-emerald-950/60 border border-emerald-800 text-emerald-400 text-xs px-3 py-1.5 rounded-lg">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="font-semibold">Online Monitoring</span>
+            </div>
+
+            <button onclick="exportReport()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2 shadow-md">
+                <i class="fa-solid fa-file-pdf"></i> ออกรายงาน RCM
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="flex-1 p-6 space-y-6 max-w-[1800px] mx-auto w-full">
+
+        <!-- METRIC KPI CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <!-- CEHI Metric -->
+            <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg relative overflow-hidden group">
+                <div class="absolute -right-4 -bottom-4 text-cyan-500/10 text-8xl transition-transform group-hover:scale-110">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-xs text-slate-400 font-prompt uppercase tracking-wider">CEHI (Health Index)</span>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span id="kpiCehiScore" class="text-3xl font-bold font-prompt text-emerald-400">84.5%</span>
+                            <span id="kpiCehiBadge" class="text-xs font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded">ปกติ (Good)</span>
+                        </div>
+                    </div>
+                    <div class="w-10 h-10 rounded-lg bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center">
+                        <i class="fa-solid fa-chart-line text-lg"></i>
+                    </div>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full mt-4 overflow-hidden">
+                    <div id="kpiCehiBar" class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-full rounded-full transition-all duration-500" style="width: 84.5%;"></div>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2 flex justify-between">
+                    <span>เป้าหมายสุขภาพ &gt; 80%</span>
+                    <span class="text-emerald-400"><i class="fa-solid fa-arrow-up"></i> +1.2% mo</span>
+                </p>
+            </div>
+
+            <!-- Max RPN Metric -->
+            <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg relative overflow-hidden group">
+                <div class="absolute -right-4 -bottom-4 text-red-500/10 text-8xl transition-transform group-hover:scale-110">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-xs text-slate-400 font-prompt uppercase tracking-wider">ค่า RPN วิกฤตสูงสุด</span>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span id="kpiMaxRpn" class="text-3xl font-bold font-prompt text-red-400">216</span>
+                            <span class="text-xs font-semibold bg-red-950 text-red-400 border border-red-800 px-2 py-0.5 rounded">High Risk</span>
+                        </div>
+                    </div>
+                    <div class="w-10 h-10 rounded-lg bg-red-950 border border-red-800 text-red-400 flex items-center justify-center">
+                        <i class="fa-solid fa-shield-cat text-lg"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-300 mt-3 font-medium">สาเหตุ: Partial Discharge ในขดลวด (Winding)</p>
+                <p class="text-[11px] text-slate-400 mt-1 flex justify-between">
+                    <span>ระดับความสำคัญ (S=9, O=4, D=6)</span>
+                    <span class="text-red-400">ต้องบำรุงรักษาด่วน</span>
+                </p>
+            </div>
+
+            <!-- SF6 Gas Metric -->
+            <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg relative overflow-hidden group">
+                <div class="absolute -right-4 -bottom-4 text-cyan-500/10 text-8xl transition-transform group-hover:scale-110">
+                    <i class="fa-solid fa-wind"></i>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-xs text-slate-400 font-prompt uppercase tracking-wider">สภาวะก๊าซ SF6</span>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span id="kpiSf6Pressure" class="text-3xl font-bold font-prompt text-cyan-400">0.65</span>
+                            <span class="text-xs text-slate-400 font-semibold">MPa (99.6% Pure)</span>
+                        </div>
+                    </div>
+                    <div class="w-10 h-10 rounded-lg bg-cyan-950 border border-cyan-800 text-cyan-400 flex items-center justify-center">
+                        <i class="fa-solid fa-gauge-high text-lg"></i>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mt-3 pt-2 border-t border-slate-800 text-xs">
+                    <div>
+                        <span class="text-slate-400">ความชื้น:</span>
+                        <span id="kpiSf6Moisture" class="text-white font-semibold">18 ppm</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400">อัตราการรั่ว:</span>
+                        <span class="text-emerald-400 font-semibold">&lt;0.05%/ปี</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reliability MTBF -->
+            <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg relative overflow-hidden group">
+                <div class="absolute -right-4 -bottom-4 text-blue-500/10 text-8xl transition-transform group-hover:scale-110">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-xs text-slate-400 font-prompt uppercase tracking-wider">ความน่าเชื่อถือ (MTBF)</span>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-3xl font-bold font-prompt text-blue-400">1,450</span>
+                            <span class="text-xs text-slate-400 font-semibold">ชั่วโมง</span>
+                        </div>
+                    </div>
+                    <div class="w-10 h-10 rounded-lg bg-blue-950 border border-blue-800 text-blue-400 flex items-center justify-center">
+                        <i class="fa-solid fa-server text-lg"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-300 mt-3 flex justify-between">
+                    <span>Availability Rate:</span>
+                    <span class="text-white font-bold">99.88%</span>
+                </p>
+                <p class="text-[11px] text-slate-400 mt-1 flex justify-between">
+                    <span>Unplanned Downtime:</span>
+                    <span class="text-emerald-400 font-semibold">0.00 ชม. (เดือนนี้)</span>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- MAIN TABS & VIEW AREA -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+            <!-- LEFT/CENTER CONTENT AREA (3 Columns) -->
+            <div class="lg:col-span-3 space-y-6">
+
+                <!-- TAB NAVIGATION -->
+                <div class="bg-brand-card border border-brand-border p-2 rounded-xl flex flex-wrap gap-2 text-sm font-prompt">
+                    <button id="tabBtn1" onclick="switchTab(1)" class="tab-btn active bg-cyan-600 text-white px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
+                        <i class="fa-solid fa-calculator"></i> 1. ตัวจำลอง CEHI Health Calculator
+                    </button>
+                    <button id="tabBtn2" onclick="switchTab(2)" class="tab-btn text-slate-400 hover:text-white hover:bg-slate-800 px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
+                        <i class="fa-solid fa-table-cells"></i> 2. การประเมิน FMEA & RPN Matrix
+                    </button>
+                    <button id="tabBtn3" onclick="switchTab(3)" class="tab-btn text-slate-400 hover:text-white hover:bg-slate-800 px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
+                        <i class="fa-solid fa-chart-area"></i> 3. Condition Monitoring (DGA & PD)
+                    </button>
+                    <button id="tabBtn4" onclick="switchTab(4)" class="tab-btn text-slate-400 hover:text-white hover:bg-slate-800 px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
+                        <i class="fa-solid fa-list-check"></i> 4. แผนบำรุงรักษา RCM Strategy
+                    </button>
+                </div>
+
+                <!-- TAB 1: CEHI CALCULATOR & BREAKDOWN -->
+                <div id="tabContent1" class="tab-pane space-y-6">
+                    
+                    <!-- Top CEHI Formula & Simulator Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        
+                        <!-- Interactive Parameter Simulator (2 cols) -->
+                        <div class="md:col-span-2 bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg space-y-4">
+                            <div class="flex justify-between items-center border-b border-brand-border pb-3">
+                                <div>
+                                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-sliders text-cyan-400"></i> ปรับแต่งพารามิเตอร์จำลองค่า CEHI (Interactive Simulator)
+                                    </h3>
+                                    <p class="text-xs text-slate-400">ลองเลื่อนพารามิเตอร์ด้านล่างเพื่อคำนวณค่าดัชนีสุขภาพแบบเรียลไทม์</p>
+                                </div>
+                                <button onclick="resetCehiSim()" class="text-xs text-cyan-400 hover:underline"><i class="fa-solid fa-rotate-left"></i> รีเซ็ตค่าเดิม</button>
+                            </div>
+
+                            <!-- Slider 1: DGA Gas (H2/C2H2) -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-medium">
+                                    <span class="text-slate-300">1. Dissolved Gas Analysis (DGA Score - ถ่วงน้ำหนัก 35%)</span>
+                                    <span id="dgaValueText" class="text-cyan-400 font-bold">90 / 100</span>
+                                </div>
+                                <input type="range" id="sliderDga" min="20" max="100" value="90" oninput="updateCehiSim()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
+                                <p class="text-[11px] text-slate-400">ประเมินจากก๊าซ H2, CH4, C2H2, C2H4 (ก๊าซอาร์กสะสมต่ำ)</p>
+                            </div>
+
+                            <!-- Slider 2: SF6 Quality -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-medium">
+                                    <span class="text-slate-300">2. SF6 Gas & Moisture Quality (ถ่วงน้ำหนัก 25%)</span>
+                                    <span id="sf6ValueText" class="text-cyan-400 font-bold">85 / 100</span>
+                                </div>
+                                <input type="range" id="sliderSf6" min="20" max="100" value="85" oninput="updateCehiSim()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
+                                <p class="text-[11px] text-slate-400">ความบริสุทธิ์ก๊าซ, แรงดันก๊าซ และปริมาณความชื้นสะสม</p>
+                            </div>
+
+                            <!-- Slider 3: UHF Partial Discharge -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-medium">
+                                    <span class="text-slate-300">3. UHF Partial Discharge (PD Score - ถ่วงน้ำหนัก 20%)</span>
+                                    <span id="pdValueText" class="text-cyan-400 font-bold">75 / 100</span>
+                                </div>
+                                <input type="range" id="sliderPd" min="20" max="100" value="75" oninput="updateCehiSim()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
+                                <p class="text-[11px] text-slate-400">ตรวจวัดสัญญาณ PD สัญญาณคายประจุบางส่วนแบบออนไลน์</p>
+                            </div>
+
+                            <!-- Slider 4: Thermal & Load History -->
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-medium">
+                                    <span class="text-slate-300">4. Thermal & Load History (ถ่วงน้ำหนัก 20%)</span>
+                                    <span id="thermalValueText" class="text-cyan-400 font-bold">85 / 100</span>
+                                </div>
+                                <input type="range" id="sliderThermal" min="20" max="100" value="85" oninput="updateCehiSim()" class="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer">
+                                <p class="text-[11px] text-slate-400">สถิติภาระภาระไฟฟ้าสะสมและอุณหภูมิขดลวด (Top Oil/Winding Temp)</p>
+                            </div>
+
+                            <!-- CEHI Formula Display -->
+                            <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-cyan-300">
+                                <span>CEHI Formula = (DGA × 0.35) + (SF6 × 0.25) + (PD × 0.20) + (Thermal × 0.20)</span>
+                            </div>
+                        </div>
+
+                        <!-- Gauge & Weighting Donut (1 col) -->
+                        <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg flex flex-col items-center justify-between">
+                            <h4 class="text-sm font-bold text-white w-full border-b border-brand-border pb-2 text-center">สัดส่วนการถ่วงน้ำหนัก CEHI</h4>
+                            
+                            <div class="w-48 h-48 my-2 relative">
+                                <canvas id="cehiDonutChart"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                    <span id="simResultCehi" class="text-3xl font-bold font-prompt text-emerald-400">84.5%</span>
+                                    <span id="simResultStatus" class="text-[11px] font-semibold text-slate-300">NORMAL</span>
+                                </div>
+                            </div>
+
+                            <div class="w-full text-xs space-y-1.5 pt-2 border-t border-slate-800">
+                                <div class="flex justify-between items-center text-slate-400">
+                                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span> DGA Score</span>
+                                    <span class="text-white font-medium">35%</span>
+                                </div>
+                                <div class="flex justify-between items-center text-slate-400">
+                                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> SF6 Quality</span>
+                                    <span class="text-white font-medium">25%</span>
+                                </div>
+                                <div class="flex justify-between items-center text-slate-400">
+                                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Partial Discharge</span>
+                                    <span class="text-white font-medium">20%</span>
+                                </div>
+                                <div class="flex justify-between items-center text-slate-400">
+                                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Thermal History</span>
+                                    <span class="text-white font-medium">20%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- CEHI Action Decision Matrix Cards -->
+                    <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg">
+                        <h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-cyan-400"></i> เกณฑ์ระดับคะแนน CEHI และแนวทางดำเนินการบำรุงรักษา
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div class="p-3 rounded-lg border border-emerald-800 bg-emerald-950/40 text-xs space-y-1">
+                                <div class="flex justify-between font-bold text-emerald-400">
+                                    <span>85% - 100%</span>
+                                    <span>ปกติ (Good)</span>
+                                </div>
+                                <p class="text-slate-300">บำรุงรักษาตามแผนปกติ (Routine PM/PdM), ตรวจสอบก๊าซ SF6 ปีละ 1 ครั้ง</p>
+                            </div>
+                            <div class="p-3 rounded-lg border border-cyan-800 bg-cyan-950/40 text-xs space-y-1">
+                                <div class="flex justify-between font-bold text-cyan-400">
+                                    <span>70% - 84%</span>
+                                    <span>ปานกลาง (Fair)</span>
+                                </div>
+                                <p class="text-slate-300">เพิ่มความถี่การตรวจวัด DGA เป็นทุก 3 เดือน และเฝ้าระวัง UHF PD</p>
+                            </div>
+                            <div class="p-3 rounded-lg border border-amber-800 bg-amber-950/40 text-xs space-y-1">
+                                <div class="flex justify-between font-bold text-amber-400">
+                                    <span>50% - 69%</span>
+                                    <span>เฝ้าระวัง (Poor)</span>
+                                </div>
+                                <p class="text-slate-300">วางแผนเข้าตรวจสอบกรณีพิเศษ (Minor Overhaul) เตรียมพร้อมอะไหล่สำรอง</p>
+                            </div>
+                            <div class="p-3 rounded-lg border border-red-800 bg-red-950/40 text-xs space-y-1">
+                                <div class="flex justify-between font-bold text-red-400">
+                                    <span>&lt; 50%</span>
+                                    <span>เสื่อมสภาพวิกฤต</span>
+                                </div>
+                                <p class="text-slate-300">วางแผนหยุดจ่ายไฟเพื่อซ่อมใหญ่อย่างเร่งด่วน หรือพิจารณาเปลี่ยนเครื่องใหม่</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- TAB 2: FMEA & RPN MATRIX -->
+                <div id="tabContent2" class="tab-pane hidden space-y-6">
+                    
+                    <!-- FMEA Intro & Risk Matrix Top Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        
+                        <!-- 5x5 Risk Matrix Visualizer (1 col) -->
+                        <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg flex flex-col items-center">
+                            <div class="w-full border-b border-brand-border pb-2 mb-3">
+                                <h3 class="text-sm font-bold text-white">5x5 RCM Risk Criticality Matrix</h3>
+                                <p class="text-[11px] text-slate-400">Severity (ความรุนแรง) vs Occurrence (โอกาสเกิด)</p>
+                            </div>
+
+                            <div class="w-full max-w-[280px]">
+                                <div class="grid grid-cols-6 gap-1 text-center text-[10px] font-bold">
+                                    <div class="text-slate-500">S\O</div>
+                                    <div class="text-slate-400">1</div>
+                                    <div class="text-slate-400">2</div>
+                                    <div class="text-slate-400">3</div>
+                                    <div class="text-slate-400">4</div>
+                                    <div class="text-slate-400">5</div>
+
+                                    <div class="text-slate-400 flex items-center justify-center">5</div>
+                                    <div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div>
+                                    <div class="bg-amber-900 text-amber-300 p-2 rounded">H</div>
+                                    <div class="bg-red-950 text-red-400 p-2 rounded">H</div>
+                                    <div class="bg-red-900 text-red-200 p-2 rounded">V.H</div>
+                                    <div class="bg-red-700 text-white p-2 rounded font-black">250</div>
+
+                                    <div class="text-slate-400 flex items-center justify-center">4</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div>
+                                    <div class="bg-amber-900 text-amber-300 p-2 rounded">H</div>
+                                    <div class="bg-red-900 text-red-200 p-2 rounded relative glow-red border border-red-500">
+                                        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
+                                        216
+                                    </div>
+                                    <div class="bg-red-900 text-red-200 p-2 rounded">V.H</div>
+
+                                    <div class="text-slate-400 flex items-center justify-center">3</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div>
+                                    <div class="bg-amber-900 text-amber-300 p-2 rounded">168</div>
+                                    <div class="bg-red-950 text-red-400 p-2 rounded">H</div>
+
+                                    <div class="text-slate-400 flex items-center justify-center">2</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div>
+                                    <div class="bg-amber-900 text-amber-300 p-2 rounded">H</div>
+
+                                    <div class="text-slate-400 flex items-center justify-center">1</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-emerald-950/60 text-emerald-400 p-2 rounded">L</div>
+                                    <div class="bg-amber-950/60 text-amber-400 p-2 rounded">M</div>
+                                </div>
+                            </div>
+
+                            <p class="text-[11px] text-slate-400 mt-3 text-center">
+                                สูตรคำนวณ: <span class="font-mono text-cyan-400">RPN = Severity × Occurrence × Detection</span>
+                            </p>
+                        </div>
+
+                        <!-- FMEA RPN Ranking Chart (2 cols) -->
+                        <div class="md:col-span-2 bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg space-y-3">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-chart-bar text-cyan-400"></i> การเปรียบเทียบค่า RPN แต่ละลักษณะความเสียหาย (Failure Modes)
+                            </h3>
+                            <div class="h-56">
+                                <canvas id="rpnBarChart"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Detailed FMEA Table -->
+                    <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg space-y-4">
+                        <div class="flex flex-wrap justify-between items-center gap-4 border-b border-brand-border pb-3">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-table text-cyan-400"></i> ตารางวิเคราะห์ FMEA และคะแนน RPN ของหม้อแปลง GIS
+                            </h3>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-slate-400">กรองชิ้นส่วน:</span>
+                                <select onchange="filterFmeaTable(this.value)" class="bg-slate-900 border border-slate-700 text-xs text-white px-2 py-1 rounded focus:outline-none">
+                                    <option value="ALL">ทั้งหมด (All Subsystems)</option>
+                                    <option value="Winding">Winding / Core</option>
+                                    <option value="SF6">SF6 Compartment</option>
+                                    <option value="OLTC">OLTC Mechanism</option>
+                                    <option value="Bushing">GIS Bushing</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-900 text-cyan-400 font-prompt border-b border-brand-border uppercase">
+                                    <tr>
+                                        <th class="p-3">ระบบย่อย (Subsystem)</th>
+                                        <th class="p-3">รูปแบบความเสียหาย (Failure Mode)</th>
+                                        <th class="p-3">สาเหตุความล้มเหลว (Failure Cause)</th>
+                                        <th class="p-3 text-center">S</th>
+                                        <th class="p-3 text-center">O</th>
+                                        <th class="p-3 text-center">D</th>
+                                        <th class="p-3 text-center">RPN Score</th>
+                                        <th class="p-3">กลยุทธ์ RCM (Recommended Strategy)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fmeaTableBody" class="divide-y divide-slate-800">
+                                    <!-- Row 1 -->
+                                    <tr class="hover:bg-slate-800/50 transition">
+                                        <td class="p-3 font-semibold text-white">Winding & Core</td>
+                                        <td class="p-3 text-red-300">Partial Discharge / Dielectric Breakdown</td>
+                                        <td class="p-3 text-slate-400">ความชื้นสะสมและฉนวนกระดาษเสื่อมสภาพตามอายุ</td>
+                                        <td class="p-3 text-center font-bold">9</td>
+                                        <td class="p-3 text-center font-bold">4</td>
+                                        <td class="p-3 text-center font-bold">6</td>
+                                        <td class="p-3 text-center">
+                                            <span class="bg-red-950 text-red-400 border border-red-800 px-2 py-1 rounded font-bold">216 (High)</span>
+                                        </td>
+                                        <td class="p-3">
+                                            <span class="bg-cyan-950 text-cyan-400 border border-cyan-800 px-2 py-0.5 rounded">PdM: UHF PD Monitoring + DGA</span>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 2 -->
+                                    <tr class="hover:bg-slate-800/50 transition">
+                                        <td class="p-3 font-semibold text-white">OLTC Mechanism</td>
+                                        <td class="p-3 text-amber-300">Contact Erosion & Mechanical Arcing</td>
+                                        <td class="p-3 text-slate-400">สวิตช์ปรับแรงดันสถิตย์สึกหรอจากการสลับแท็ปบ่อย</td>
+                                        <td class="p-3 text-center font-bold">7</td>
+                                        <td class="p-3 text-center font-bold">6</td>
+                                        <td class="p-3 text-center font-bold">4</td>
+                                        <td class="p-3 text-center">
+                                            <span class="bg-amber-950 text-amber-400 border border-amber-800 px-2 py-1 rounded font-bold">168 (High)</span>
+                                        </td>
+                                        <td class="p-3">
+                                            <span class="bg-blue-950 text-blue-400 border border-blue-800 px-2 py-0.5 rounded">PM: OLTC Overhaul & Oil Filter</span>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 3 -->
+                                    <tr class="hover:bg-slate-800/50 transition">
+                                        <td class="p-3 font-semibold text-white">SF6 Gas Compartment</td>
+                                        <td class="p-3 text-amber-300">Gas Leakage & Pressure Drop</td>
+                                        <td class="p-3 text-slate-400">ปะเก็นยางซีลเสื่อมสภาพ / วาล์วเติมก๊าซรั่วซึม</td>
+                                        <td class="p-3 text-center font-bold">8</td>
+                                        <td class="p-3 text-center font-bold">5</td>
+                                        <td class="p-3 text-center font-bold">3</td>
+                                        <td class="p-3 text-center">
+                                            <span class="bg-amber-950 text-amber-400 border border-amber-800 px-2 py-1 rounded font-bold">120 (Med)</span>
+                                        </td>
+                                        <td class="p-3">
+                                            <span class="bg-cyan-950 text-cyan-400 border border-cyan-800 px-2 py-0.5 rounded">PdM: Density Switch Sensor</span>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 4 -->
+                                    <tr class="hover:bg-slate-800/50 transition">
+                                        <td class="p-3 font-semibold text-white">GIS Bushing</td>
+                                        <td class="p-3 text-emerald-300">Surface Tracking / Insulation Micro-crack</td>
+                                        <td class="p-3 text-slate-400">ความเค้นแรงดันสูงสะสม (Transient Overvoltage)</td>
+                                        <td class="p-3 text-center font-bold">9</td>
+                                        <td class="p-3 text-center font-bold">2</td>
+                                        <td class="p-3 text-center font-bold">5</td>
+                                        <td class="p-3 text-center">
+                                            <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-1 rounded font-bold">90 (Med)</span>
+                                        </td>
+                                        <td class="p-3">
+                                            <span class="bg-purple-950 text-purple-400 border border-purple-800 px-2 py-0.5 rounded">FFI: Tan Delta & Capacitance Test</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- TAB 3: CONDITION MONITORING TRENDS -->
+                <div id="tabContent3" class="tab-pane hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- DGA Gas Trend Line Chart -->
+                        <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg space-y-3">
+                            <div class="flex justify-between items-center border-b border-brand-border pb-2">
+                                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-flask text-cyan-400"></i> แนวโน้มก๊าซออนไลน์ (DGA Trend ppm)
+                                </h3>
+                                <span class="text-xs text-slate-400">6 เดือนล่าสุด</span>
+                            </div>
+                            <div class="h-64">
+                                <canvas id="dgaTrendChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Partial Discharge (PD) Activity Chart -->
+                        <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg space-y-3">
+                            <div class="flex justify-between items-center border-b border-brand-border pb-2">
+                                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-wave-square text-cyan-400"></i> สัญญาณ Partial Discharge (UHF PD Amplitude pC)
+                                </h3>
+                                <span class="text-xs text-red-400 animate-pulse font-semibold">⚠️ ตรวจพบสัญญาณผิดปกติ</span>
+                            </div>
+                            <div class="h-64">
+                                <canvas id="pdTrendChart"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- TAB 4: RCM ACTION PLAN & MAINTENANCE STRATEGY -->
+                <div id="tabContent4" class="tab-pane hidden space-y-6">
+                    <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg space-y-4">
+                        <div class="flex justify-between items-center border-b border-brand-border pb-3">
+                            <div>
+                                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-rectangle-list text-cyan-400"></i> รายการแผนปฏิบัติการซ่อมบำรุงตามหลัก RCM
+                                </h3>
+                                <p class="text-xs text-slate-400">บำรุงรักษาเชิงคาดการณ์ (PdM) และเชิงป้องกัน (PM) เพื่อลดความเสี่ยง RPN สูงสุด</p>
+                            </div>
+                            <button onclick="addNewTaskModal()" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
+                                <i class="fa-solid fa-plus"></i> เพิ่มแผนงาน
+                            </button>
+                        </div>
+
+                        <div class="space-y-3" id="taskListContainer">
+                            <!-- Task 1 -->
+                            <div class="p-4 bg-slate-900 border-l-4 border-red-500 rounded-r-xl border border-slate-800 flex flex-wrap justify-between items-center gap-4">
+                                <div class="space-y-1 max-w-xl">
+                                    <div class="flex items-center gap-2">
+                                        <span class="bg-red-950 text-red-400 text-xs px-2 py-0.5 rounded font-bold">RPN 216 - ด่วนที่สุด</span>
+                                        <h4 class="text-sm font-bold text-white">ทำการทดสอบ Acoustic & UHF Partial Discharge Localization ใน GIS Chamber</h4>
+                                    </div>
+                                    <p class="text-xs text-slate-400">ระบุตำแหน่งการคายประจุบางส่วนตรงขดลวด Phase B ก่อนส่งผลให้เกิดฉนวนทะลวง</p>
+                                    <div class="text-[11px] text-slate-500 flex gap-4 pt-1">
+                                        <span><i class="fa-solid fa-user text-cyan-400"></i> ทีม: Electrical Diagnostic</span>
+                                        <span><i class="fa-solid fa-calendar text-cyan-400"></i> กำหนดเสร็จ: 28 ส.ค. 2026</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xs bg-amber-950 text-amber-400 border border-amber-800 px-2.5 py-1 rounded-full font-medium">In Progress</span>
+                                    <button onclick="markTaskDone(this)" class="bg-slate-800 hover:bg-emerald-600 text-white text-xs px-3 py-1.5 rounded transition">เสร็จสิ้น</button>
+                                </div>
+                            </div>
+
+                            <!-- Task 2 -->
+                            <div class="p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-xl border border-slate-800 flex flex-wrap justify-between items-center gap-4">
+                                <div class="space-y-1 max-w-xl">
+                                    <div class="flex items-center gap-2">
+                                        <span class="bg-amber-950 text-amber-400 text-xs px-2 py-0.5 rounded font-bold">RPN 168 - ปานกลาง</span>
+                                        <h4 class="text-sm font-bold text-white">ตรวจสอบการกัดกร่อนหน้าสัมผัส (Contact Erosion) และระบบกรองน้ำมัน OLTC</h4>
+                                    </div>
+                                    <p class="text-xs text-slate-400">ล้างทำความสะอาดและตรวจสอบชุดขับเคลื่อนเชิงกล (Mechanical Drive System)</p>
+                                    <div class="text-[11px] text-slate-500 flex gap-4 pt-1">
+                                        <span><i class="fa-solid fa-user text-cyan-400"></i> ทีม: Substation Maintenance</span>
+                                        <span><i class="fa-solid fa-calendar text-cyan-400"></i> กำหนดเสร็จ: 15 ก.ย. 2026</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xs bg-slate-800 text-slate-300 border border-slate-700 px-2.5 py-1 rounded-full font-medium">Scheduled</span>
+                                    <button onclick="markTaskDone(this)" class="bg-slate-800 hover:bg-emerald-600 text-white text-xs px-3 py-1.5 rounded transition">เสร็จสิ้น</button>
+                                </div>
+                            </div>
+
+                            <!-- Task 3 -->
+                            <div class="p-4 bg-slate-900 border-l-4 border-cyan-500 rounded-r-xl border border-slate-800 flex flex-wrap justify-between items-center gap-4">
+                                <div class="space-y-1 max-w-xl">
+                                    <div class="flex items-center gap-2">
+                                        <span class="bg-cyan-950 text-cyan-400 text-xs px-2 py-0.5 rounded font-bold">RPN 120 - ปกติ</span>
+                                        <h4 class="text-sm font-bold text-white">อัดก๊าซ SF6 และเปลี่ยนชุดซีลปะเก็นวาล์วเติมก๊าซ Compartment 2</h4>
+                                    </div>
+                                    <p class="text-xs text-slate-400">ควบคุมระดับความชื้นสะสมให้อยู่ภายใต้เกณฑ์มาตรฐาน IEEE C57.121</p>
+                                    <div class="text-[11px] text-slate-500 flex gap-4 pt-1">
+                                        <span><i class="fa-solid fa-user text-cyan-400"></i> ทีม: Gas Systems Special Forces</span>
+                                        <span><i class="fa-solid fa-calendar text-cyan-400"></i> กำหนดเสร็จ: 05 ต.ค. 2026</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xs bg-slate-800 text-slate-300 border border-slate-700 px-2.5 py-1 rounded-full font-medium">Scheduled</span>
+                                    <button onclick="markTaskDone(this)" class="bg-slate-800 hover:bg-emerald-600 text-white text-xs px-3 py-1.5 rounded transition">เสร็จสิ้น</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDEBAR (1 Column) -->
+            <div class="space-y-6">
+                
+                <!-- Asset Specifications Summary -->
+                <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg space-y-4">
+                    <h3 class="text-sm font-bold text-white border-b border-brand-border pb-2 flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-info text-cyan-400"></i> ข้อมูลเครื่องจักร (Asset Specs)</span>
+                        <span class="text-[11px] text-cyan-400 font-mono">TR-115kV-01</span>
+                    </h3>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between border-b border-slate-800/60 pb-1">
+                            <span class="text-slate-400">ชนิดหม้อแปลง:</span>
+                            <span class="text-white font-medium">GIS Gas-Insulated</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800/60 pb-1">
+                            <span class="text-slate-400">พิกัดกำลัง:</span>
+                            <span class="text-white font-medium">50 MVA (ONAN/ONAF)</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800/60 pb-1">
+                            <span class="text-slate-400">แรงดันไฟฟ้า:</span>
+                            <span class="text-white font-medium">115 kV / 22 kV</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800/60 pb-1">
+                            <span class="text-slate-400">ฉนวนหลัก:</span>
+                            <span class="text-white font-medium">SF6 Gas & High purity Oil</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800/60 pb-1">
+                            <span class="text-slate-400">อายุการใช้งาน:</span>
+                            <span class="text-white font-medium">12 ปี (ติดตั้ง 2014)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Alarm Feed -->
+                <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg space-y-3">
+                    <h3 class="text-sm font-bold text-white border-b border-brand-border pb-2 flex items-center justify-between">
+                        <span><i class="fa-solid fa-bell text-amber-400"></i> การแจ้งเตือนสัญญาณล่าสุด</span>
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                    </h3>
+                    <div class="space-y-2.5 text-xs">
+                        <div class="p-2.5 bg-red-950/40 border border-red-800/60 rounded-lg space-y-0.5">
+                            <div class="flex justify-between text-red-400 font-bold">
+                                <span>[Warning] PD Pattern Detected</span>
+                                <span>10m ago</span>
+                            </div>
+                            <p class="text-slate-300">ความถี่ UHF PD เพิ่มขึ้นเป็น 140 pC ในห้องขดลวด Phase B</p>
+                        </div>
+                        <div class="p-2.5 bg-amber-950/40 border border-amber-800/60 rounded-lg space-y-0.5">
+                            <div class="flex justify-between text-amber-400 font-bold">
+                                <span>[Notice] DGA Hydrogen (H2)</span>
+                                <span>2h ago</span>
+                            </div>
+                            <p class="text-slate-300">ค่า H2 ขยับขึ้นจาก 15 ppm เป็น 28 ppm (ระดับปลอดภัย)</p>
+                        </div>
+                        <div class="p-2.5 bg-slate-900 border border-slate-800 rounded-lg space-y-0.5">
+                            <div class="flex justify-between text-cyan-400 font-bold">
+                                <span>[System] SF6 Auto Check</span>
+                                <span>1d ago</span>
+                            </div>
+                            <p class="text-slate-400">แรงดันปกติ 0.65 MPa ปริมาณความชื้นคงที่</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Buttons -->
+                <div class="bg-brand-card border border-brand-border p-5 rounded-xl shadow-lg space-y-3">
+                    <h3 class="text-sm font-bold text-white border-b border-brand-border pb-2">
+                        <i class="fa-solid fa-bolt-lightning text-cyan-400"></i> ดำเนินการด่วน (Quick Actions)
+                    </h3>
+                    <div class="grid grid-cols-1 gap-2 text-xs">
+                        <button onclick="triggerGasSampling()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 px-3 rounded-lg border border-slate-700 text-left flex items-center justify-between transition">
+                            <span><i class="fa-solid fa-vial text-cyan-400 mr-2"></i> ส่งคำสั่งสุ่มตรวจก๊าซ DGA</span>
+                            <i class="fa-solid fa-chevron-right text-slate-500"></i>
+                        </button>
+                        <button onclick="triggerPdScan()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 px-3 rounded-lg border border-slate-700 text-left flex items-center justify-between transition">
+                            <span><i class="fa-solid fa-tower-broadcast text-emerald-400 mr-2"></i> สแกนคลื่น Partial Discharge</span>
+                            <i class="fa-solid fa-chevron-right text-slate-500"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-card border-t border-brand-border px-6 py-4 text-center text-xs text-slate-500">
+        © 2026 GIS Transformer Reliability-Centered Maintenance (RCM) & Composite Equipment Health Index (CEHI) Platform
+    </footer>
+
+    <!-- JAVASCRIPT CONTROL LOGIC -->
+    <script>
+        // Data Store for Assets
+        const assetData = {
+            'TR-115-01': {
+                cehi: 84.5,
+                maxRpn: 216,
+                sf6Press: 0.65,
+                sf6Moist: '18 ppm',
+                statusText: 'ปกติ (Good)',
+                dgaScore: 90,
+                sf6Score: 85,
+                pdScore: 75,
+                thermalScore: 85
+            },
+            'TR-115-02': {
+                cehi: 91.2,
+                maxRpn: 90,
+                sf6Press: 0.67,
+                sf6Moist: '12 ppm',
+                statusText: 'ดีเยี่ยม (Excellent)',
+                dgaScore: 95,
+                sf6Score: 92,
+                pdScore: 90,
+                thermalScore: 88
+            },
+            'TR-230-01': {
+                cehi: 68.0,
+                maxRpn: 240,
+                sf6Press: 0.61,
+                sf6Moist: '35 ppm',
+                statusText: 'เฝ้าระวัง (Fair/Poor)',
+                dgaScore: 65,
+                sf6Score: 70,
+                pdScore: 60,
+                thermalScore: 75
+            }
+        };
+
+        let currentAsset = 'TR-115-01';
+        let cehiDonutChartInstance = null;
+        let rpnBarChartInstance = null;
+        let dgaTrendChartInstance = null;
+        let pdTrendChartInstance = null;
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            updateCehiSim();
+        });
+
+        // Tab Switching
+        function switchTab(tabIndex) {
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                if (idx + 1 === tabIndex) {
+                    btn.classList.add('bg-cyan-600', 'text-white');
+                    btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
+                } else {
+                    btn.classList.remove('bg-cyan-600', 'text-white');
+                    btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+                }
+            });
+
+            document.querySelectorAll('.tab-pane').forEach((pane, idx) => {
+                if (idx + 1 === tabIndex) {
+                    pane.classList.remove('hidden');
+                } else {
+                    pane.classList.add('hidden');
+                }
+            });
+
+            // Trigger chart update for hidden tabs rendering
+            if (tabIndex === 2 && rpnBarChartInstance) rpnBarChartInstance.update();
+            if (tabIndex === 3 && dgaTrendChartInstance) {
+                dgaTrendChartInstance.update();
+                pdTrendChartInstance.update();
+            }
+        }
+
+        // Switch Asset Selector
+        function switchAsset(assetId) {
+            currentAsset = assetId;
+            const data = assetData[assetId];
+            
+            document.getElementById('kpiCehiScore').innerText = data.cehi + '%';
+            document.getElementById('kpiCehiBar').style.width = data.cehi + '%';
+            document.getElementById('kpiMaxRpn').innerText = data.maxRpn;
+            document.getElementById('kpiSf6Pressure').innerText = data.sf6Press;
+            document.getElementById('kpiSf6Moisture').innerText = data.sf6Moist;
+
+            document.getElementById('sliderDga').value = data.dgaScore;
+            document.getElementById('sliderSf6').value = data.sf6Score;
+            document.getElementById('sliderPd').value = data.pdScore;
+            document.getElementById('sliderThermal').value = data.thermalScore;
+
+            updateCehiSim();
+        }
+
+        // CEHI Dynamic Simulator Calculation
+        function updateCehiSim() {
+            const dga = parseFloat(document.getElementById('sliderDga').value);
+            const sf6 = parseFloat(document.getElementById('sliderSf6').value);
+            const pd = parseFloat(document.getElementById('sliderPd').value);
+            const thermal = parseFloat(document.getElementById('sliderThermal').value);
+
+            document.getElementById('dgaValueText').innerText = dga + ' / 100';
+            document.getElementById('sf6ValueText').innerText = sf6 + ' / 100';
+            document.getElementById('pdValueText').innerText = pd + ' / 100';
+            document.getElementById('thermalValueText').innerText = thermal + ' / 100';
+
+            // CEHI Weighted Formula
+            const cehiScore = ((dga * 0.35) + (sf6 * 0.25) + (pd * 0.20) + (thermal * 0.20)).toFixed(1);
+
+            const scoreElem = document.getElementById('simResultCehi');
+            const statusElem = document.getElementById('simResultStatus');
+            scoreElem.innerText = cehiScore + '%';
+
+            let status = 'NORMAL';
+            let colorClass = 'text-emerald-400';
+
+            if (cehiScore >= 85) {
+                status = 'NORMAL (ปกติ)';
+                colorClass = 'text-emerald-400';
+            } else if (cehiScore >= 70) {
+                status = 'FAIR (ปานกลาง)';
+                colorClass = 'text-cyan-400';
+            } else if (cehiScore >= 50) {
+                status = 'POOR (เฝ้าระวัง)';
+                colorClass = 'text-amber-400';
+            } else {
+                status = 'CRITICAL (วิกฤต)';
+                colorClass = 'text-red-400';
+            }
+
+            statusElem.innerText = status;
+            scoreElem.className = `text-3xl font-bold font-prompt ${colorClass}`;
+
+            // Update Donut Chart Data
+            if (cehiDonutChartInstance) {
+                cehiDonutChartInstance.data.datasets[0].data = [dga * 0.35, sf6 * 0.25, pd * 0.20, thermal * 0.20];
+                cehiDonutChartInstance.update();
+            }
+        }
+
+        function resetCehiSim() {
+            switchAsset(currentAsset);
+        }
+
+        // Initialize Charts
+        function initCharts() {
+            // 1. CEHI Donut Chart
+            const ctxDonut = document.getElementById('cehiDonutChart').getContext('2d');
+            cehiDonutChartInstance = new Chart(ctxDonut, {
+                type: 'doughnut',
+                data: {
+                    labels: ['DGA (35%)', 'SF6 (25%)', 'PD (20%)', 'Thermal (20%)'],
+                    datasets: [{
+                        data: [31.5, 21.25, 15, 17],
+                        backgroundColor: ['#06b6d4', '#3b82f6', '#10b981', '#f59e0b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: '75%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: true }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // 2. RPN Bar Chart
+            const ctxRpn = document.getElementById('rpnBarChart').getContext('2d');
+            rpnBarChartInstance = new Chart(ctxRpn, {
+                type: 'bar',
+                data: {
+                    labels: ['Winding PD', 'OLTC Contact Wear', 'SF6 Gas Leakage', 'Bushing Defect'],
+                    datasets: [{
+                        label: 'ค่า RPN Score',
+                        data: [216, 168, 120, 90],
+                        backgroundColor: ['#ef4444', '#f59e0b', '#facc15', '#10b981'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8', font: { family: 'Prompt' } }, grid: { display: false } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+
+            // 3. DGA Trend Chart
+            const ctxDga = document.getElementById('dgaTrendChart').getContext('2d');
+            dgaTrendChartInstance = new Chart(ctxDga, {
+                type: 'line',
+                data: {
+                    labels: ['มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.'],
+                    datasets: [
+                        { label: 'H2 (ppm)', data: [12, 14, 15, 18, 22, 28], borderColor: '#38bdf8', tension: 0.3 },
+                        { label: 'C2H2 (ppm)', data: [0, 0, 0.1, 0.2, 0.4, 0.8], borderColor: '#ef4444', tension: 0.3 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#cbd5e1' } } },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+
+            // 4. UHF PD Trend Chart
+            const ctxPd = document.getElementById('pdTrendChart').getContext('2d');
+            pdTrendChartInstance = new Chart(ctxPd, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                    datasets: [
+                        { label: 'PD Amplitude (pC)', data: [45, 50, 48, 110, 135, 140], borderColor: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)', fill: true, tension: 0.3 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#cbd5e1' } } },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+        }
+
+        // Table Filtering
+        function filterFmeaTable(subsystem) {
+            const rows = document.querySelectorAll('#fmeaTableBody tr');
+            rows.forEach(row => {
+                if (subsystem === 'ALL') {
+                    row.style.display = '';
+                } else {
+                    const text = row.children[0].innerText;
+                    if (text.includes(subsystem)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Action Buttons Simulation
+        function markTaskDone(btn) {
+            const container = btn.closest('.p-4');
+            container.classList.remove('border-red-500', 'border-amber-500');
+            container.classList.add('border-emerald-500', 'opacity-60');
+            btn.previousElementSibling.innerText = 'Completed';
+            btn.previousElementSibling.className = 'text-xs bg-emerald-950 text-emerald-400 border border-emerald-800 px-2.5 py-1 rounded-full font-medium';
+            btn.remove();
+        }
+
+        function triggerGasSampling() {
+            alert('ส่งคำสั่งเก็บตัวอย่างก๊าซ DGA ไปยังระบบสุ่มตรวจออนไลน์เรียบร้อยแล้ว');
+        }
+
+        function triggerPdScan() {
+            alert('กำลังเริ่มสแกนสัญญาณ UHF Partial Discharge แบบละเอียด ความถี่ 300MHz-1.5GHz...');
+        }
+
+        function exportReport() {
+            alert('กำลังสร้างรายงาน RCM Summary Report (PDF) สำหรับ GIS Transformer ' + currentAsset);
+        }
+
+        function addNewTaskModal() {
+            alert('เปิดหน้าต่างบันทึกแผนงานบำรุงรักษา RCM เพิ่มเติม');
+        }
+    </script>
+</body>
+</html>
+```eof
+
+ผมได้สร้างหน้าเว็บแอปพลิเคชัน **GIS Transformer RCM & CEHI Dashboard** เป็นไฟล์ HTML เดี่ยวแบบครบวงจร (`gis_transformer_rcm_dashboard.html`) เรียบร้อยแล้วครับ!
+
+### คุณสมบัติเด่นของหน้าเว็บแอปนี้:
+1. **ออกแบบเพื่อหม้อแปลง GIS โดยเฉพาะ:** 
+   - แสดงผลดัชนีสุขภาพรวม **CEHI (Composite Equipment Health Index)** พร้อมสูตรถ่วงน้ำหนัก 4 องค์ประกอบหลัก (DGA 35%, SF6 25%, UHF PD 20%, Thermal 20%)
+   - แสดง **FMEA & ค่า RPN วิกฤต** พร้อม 5x5 RCM Risk Criticality Matrix
+2. **เครื่องมือจำลอง interactive (CEHI Simulator):**
+   - ผู้ใช้สามารถทดลองเลื่อน Slider ปรับค่า DGA, SF6, PD, Thermal แล้วระบบจะคำนวณคะแนน CEHI และเปลี่ยนสถานะ (Normal / Fair / Poor / Critical) ให้แบบเรียลไทม์พร้อมปรับกราฟ Donut
+3. **4 แท็บการทำงานหลัก:**
+   - 📊 **Tab 1:** ตัวจำลอง CEHI Health Calculator
+   - ⚠️ **Tab 2:** ตารางวิเคราะห์ FMEA และกราฟเปรียบเทียบ RPN (กรองตาม Subsystem ได้)
+   - 📈 **Tab 3:** กราฟแนวโน้มก๊าซ DGA (H2, C2H2) และสัญญาณ UHF Partial Discharge แบบเรียลไทม์
+   - 🛠️ **Tab 4:** รายการแผนงานบำรุงรักษา RCM (กดอัปเดตสถานะงานได้จริง)
+4. **ดีไซน์ระดับสถาปัตยกรรมอุตสาหกรรม:** ใช้ Tailwind CSS โทนสีเข้ม (Dark Cyber Industrial) พร้อมฟอนต์ภาษาไทย **Prompt** และ **Sarabun** สวยงาม อ่านง่าย และรองรับการดูผ่านทุกอุปกรณ์ครับ
