@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise RCM, CEHI & Maintenance Intelligence Suite</title>
+    <title>RCM CORE - Enterprise Asset Intelligence Suite</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -21,9 +21,9 @@
             theme: {
                 extend: {
                     colors: {
-                        iceBg: '#f8fafc',
+                        slateBg: '#f0f5ff',
                         cardBg: '#ffffff',
-                        borderLight: '#e2e8f0',
+                        borderLight: '#e0ebf7',
                         primaryBlue: '#0284c7',
                         primaryDark: '#0369a1'
                     },
@@ -55,11 +55,11 @@
             font-family: 'Prompt', sans-serif;
         }
         .custom-scrollbar::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f8fafc;
+            background: #eef4fc;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #cbd5e1;
@@ -78,86 +78,86 @@
 <body id="appBody" class="min-h-screen flex antialiased font-sarabun w-full">
 
     <!-- LEFT SIDEBAR NAVIGATION -->
-    <aside id="mainSidebar" class="w-64 bg-white border-r border-slate-100 flex flex-col justify-between shrink-0 sticky top-0 h-screen z-40 shadow-xs hidden">
+    <aside id="mainSidebar" class="w-64 bg-white border-r border-blue-100 flex flex-col justify-between shrink-0 sticky top-0 h-screen z-40 shadow-sm hidden">
         <div>
             <!-- Brand Header -->
-            <div class="p-5 border-b border-slate-100 flex items-center gap-3 cursor-pointer" onclick="navigateTo('PAGE_LANDING')">
-                <div class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center text-white shadow-xs">
-                    <i class="fa-solid fa-bolt-lightning text-sm"></i>
+            <div class="p-5 border-b border-blue-50 flex items-center gap-3 cursor-pointer" onclick="navigateTo('PAGE_LANDING')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-sky-500 flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-bolt-lightning text-lg"></i>
                 </div>
                 <div>
-                    <h2 class="text-sm font-bold text-slate-800 font-prompt tracking-tight">RCM & CEHI SUITE</h2>
-                    <p class="text-[10px] text-slate-400 font-medium">Power Grid Intelligence</p>
+                    <h2 class="text-sm font-bold text-slate-900 font-prompt tracking-tight">RCM CORE</h2>
+                    <p class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider">Asset Intelligence</p>
                 </div>
             </div>
 
             <!-- Menu List -->
-            <nav class="p-3 space-y-0.5 text-xs font-prompt">
-                <div class="px-3 py-1.5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">ระบบหลัก</div>
+            <nav class="p-3 space-y-1 text-xs font-prompt">
+                <div class="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">ระบบหลัก</div>
                 
-                <button onclick="navigateTo('PAGE_LANDING')" id="menu-PAGE_LANDING" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
-                    <i class="fa-solid fa-circle-left w-4 text-center text-slate-600"></i>
+                <button onclick="navigateTo('PAGE_LANDING')" id="menu-PAGE_LANDING" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
+                    <i class="fa-solid fa-circle-left w-4 text-center text-blue-600"></i>
                     <span>หน้าต้อนรับ (Landing Cover)</span>
                 </button>
 
-                <button onclick="navigateTo('PORTAL')" id="menu-PORTAL" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-sky-700 bg-sky-50/70 shadow-xs border-l-4 border-sky-600">
+                <button onclick="navigateTo('PORTAL')" id="menu-PORTAL" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-blue-800 bg-blue-50/80 shadow-xs border-l-4 border-blue-600">
                     <i class="fa-solid fa-house w-4 text-center"></i>
                     <span>ตารางจัดลำดับความเสี่ยง</span>
                 </button>
 
-                <button onclick="navigateTo('PAGE_ALL_TESTS')" id="menu-PAGE_ALL_TESTS" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
-                    <i class="fa-solid fa-folder-open w-4 text-center text-cyan-600"></i>
+                <button onclick="navigateTo('PAGE_ALL_TESTS')" id="menu-PAGE_ALL_TESTS" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
+                    <i class="fa-solid fa-folder-open w-4 text-center text-sky-600"></i>
                     <span>ผลตรวจรวมทั้งหมด (All Tests)</span>
                 </button>
 
-                <div class="pt-3 px-3 py-1.5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">รายงานแยกตามการทดสอบ</div>
+                <div class="pt-3 px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">รายงานแยกตามการทดสอบ</div>
 
-                <button onclick="navigateTo('PAGE_DGA')" id="menu-PAGE_DGA" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                <button onclick="navigateTo('PAGE_DGA')" id="menu-PAGE_DGA" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
                     <i class="fa-solid fa-flask-vial w-4 text-center text-sky-600"></i>
                     <span>1. ก๊าซ DGA & Duval</span>
                 </button>
 
-                <button onclick="navigateTo('PAGE_SF6')" id="menu-PAGE_SF6" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                <button onclick="navigateTo('PAGE_SF6')" id="menu-PAGE_SF6" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
                     <i class="fa-solid fa-wind w-4 text-center text-blue-600"></i>
                     <span>2. ก๊าซฉนวน SF6 ใน GIS</span>
                 </button>
 
-                <button onclick="navigateTo('PAGE_FMEA')" id="menu-PAGE_FMEA" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                <button onclick="navigateTo('PAGE_FMEA')" id="menu-PAGE_FMEA" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
                     <i class="fa-solid fa-table-list w-4 text-center text-amber-600"></i>
                     <span>3. วิเคราะห์ FMEA & RPN</span>
                 </button>
 
-                <button onclick="navigateTo('PAGE_CEHI')" id="menu-PAGE_CEHI" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                <button onclick="navigateTo('PAGE_CEHI')" id="menu-PAGE_CEHI" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
                     <i class="fa-solid fa-heart-pulse w-4 text-center text-emerald-600"></i>
                     <span>4. จำลองดัชนีสุขภาพ CEHI</span>
                 </button>
 
-                <button onclick="navigateTo('PAGE_GALLERY')" id="menu-PAGE_GALLERY" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                <button onclick="navigateTo('PAGE_GALLERY')" id="menu-PAGE_GALLERY" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
                     <i class="fa-solid fa-images w-4 text-center text-orange-600"></i>
                     <span>5. คลังรูปความเสียหาย</span>
                 </button>
 
-                <button onclick="navigateTo('PAGE_MAINT')" id="menu-PAGE_MAINT" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                <button onclick="navigateTo('PAGE_MAINT')" id="menu-PAGE_MAINT" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
                     <i class="fa-solid fa-clock-rotate-left w-4 text-center text-purple-600"></i>
                     <span>6. ประวัติการซ่อม & MTBF</span>
                 </button>
 
-                <button onclick="navigateTo('PAGE_ELECTRICAL')" id="menu-PAGE_ELECTRICAL" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                <button onclick="navigateTo('PAGE_ELECTRICAL')" id="menu-PAGE_ELECTRICAL" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
                     <i class="fa-solid fa-bolt w-4 text-center text-teal-600"></i>
                     <span>7. ผลทดสอบฉนวนไฟฟ้า</span>
                 </button>
 
-                <button onclick="navigateTo('PAGE_MASTER')" id="menu-PAGE_MASTER" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+                <button onclick="navigateTo('PAGE_MASTER')" id="menu-PAGE_MASTER" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 hover:text-blue-700">
                     <i class="fa-solid fa-chart-pie w-4 text-center text-indigo-600"></i>
                     <span>8. แดชบอร์ดภาพรวม Master</span>
                 </button>
             </nav>
         </div>
 
-        <div class="p-4 border-t border-slate-100 bg-slate-50/50">
+        <div class="p-4 border-t border-blue-50 bg-blue-50/40">
             <div class="flex items-center gap-2 text-xs">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="text-slate-600 font-semibold">พร้อมใช้งาน (20 รายการ)</span>
+                <span class="text-blue-900 font-semibold">พร้อมใช้งาน (20 Assets)</span>
             </div>
         </div>
     </aside>
@@ -165,42 +165,39 @@
     <!-- RIGHT MAIN CONTENT AREA -->
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto custom-scrollbar w-full">
         
-        <!-- TOPBAR (รวบปุ่มให้มินิมอลสะอาดตา) -->
-        <header id="topBar" class="bg-white/90 backdrop-blur border-b border-slate-100 sticky top-0 z-30 px-6 py-3 flex flex-wrap items-center justify-between gap-4 shadow-xs hidden">
+        <!-- TOPBAR -->
+        <header id="topBar" class="bg-white/95 backdrop-blur border-b border-blue-100 sticky top-0 z-30 px-6 py-3 flex flex-wrap items-center justify-between gap-4 shadow-xs hidden">
             <div class="flex items-center gap-2">
-                <span id="currentPageBadge" class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-prompt font-medium">หน้าหลัก (Portal Overview)</span>
+                <span id="currentPageBadge" class="text-xs bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1 rounded-full font-prompt font-semibold">หน้าหลัก (Portal Overview)</span>
             </div>
 
-            <!-- Action Controls (Minimal Dropdowns) -->
-            <div class="flex items-center flex-wrap gap-2 text-xs font-prompt">
-                <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl">
-                    <span class="text-slate-500 font-medium"><i class="fa-solid fa-industry text-slate-600 mr-1"></i>อุปกรณ์:</span>
-                    <select id="assetSelectDropdown" onchange="onAssetChange(this.value)" class="bg-transparent text-slate-800 font-semibold focus:outline-none cursor-pointer">
+            <!-- Action Controls -->
+            <div class="flex items-center flex-wrap gap-2">
+                <div class="flex items-center gap-2 bg-blue-50/60 border border-blue-200/80 px-3 py-1.5 rounded-xl text-xs font-prompt">
+                    <span class="text-blue-900 font-bold"><i class="fa-solid fa-industry text-blue-600 mr-1"></i>อุปกรณ์:</span>
+                    <select id="assetSelectDropdown" onchange="onAssetChange(this.value)" class="bg-transparent text-blue-900 font-bold focus:outline-none cursor-pointer">
                     </select>
                 </div>
 
-                <!-- Action Dropdown Menu -->
-                <div class="relative">
-                    <button onclick="toggleActionDropdown()" class="bg-slate-900 hover:bg-black text-white font-medium px-4 py-1.5 rounded-xl transition shadow-xs flex items-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-sliders text-slate-300"></i> จัดการข้อมูล <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                    </button>
-                    <div id="actionDropdownMenu" class="absolute right-0 mt-2 w-48 bg-white border border-slate-100 rounded-2xl shadow-xl py-1 hidden z-50">
-                        <button onclick="openMaintModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-screwdriver-wrench w-4 text-purple-600"></i> บันทึกซ่อม</button>
-                        <button onclick="openDataInputModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-file-arrow-up w-4 text-emerald-600"></i> นำเข้าผลตรวจ</button>
-                        <button onclick="openPhotoUploadModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-camera w-4 text-amber-600"></i> แนบรูปความเสียหาย</button>
-                    </div>
-                </div>
+                <button onclick="openMaintModal()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-screwdriver-wrench text-slate-300"></i> บันทึกซ่อม
+                </button>
 
-                <!-- Export Dropdown Menu -->
-                <div class="relative">
-                    <button onclick="toggleExportDropdown()" class="bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-1.5 rounded-xl transition border border-slate-200 flex items-center gap-2 cursor-pointer shadow-xs">
-                        <i class="fa-solid fa-download text-sky-600"></i> ส่งออกรายงาน <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                    </button>
-                    <div id="exportDropdownMenu" class="absolute right-0 mt-2 w-44 bg-white border border-slate-100 rounded-2xl shadow-xl py-1 hidden z-50">
-                        <button onclick="downloadDirectPDF(); closeExportDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-file-pdf w-4 text-rose-600"></i> ดาวน์โหลด PDF</button>
-                        <button onclick="exportToCSV(); closeExportDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-file-csv w-4 text-emerald-600"></i> ส่งออก CSV</button>
-                    </div>
-                </div>
+                <button onclick="openDataInputModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-arrow-up"></i> นำเข้าผลตรวจ
+                </button>
+
+                <button onclick="openPhotoUploadModal()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-camera"></i> แนบรูป
+                </button>
+
+                <button onclick="downloadDirectPDF()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-pdf"></i> โหลด PDF
+                </button>
+
+                <button onclick="exportToCSV()" class="bg-white hover:bg-blue-50 text-slate-700 text-xs font-medium px-3.5 py-1.5 rounded-xl transition border border-blue-200 flex items-center gap-1.5 shadow-xs">
+                    <i class="fa-solid fa-file-csv text-emerald-600"></i> CSV
+                </button>
             </div>
         </header>
 
@@ -215,12 +212,12 @@
 
                 <div class="relative z-10 flex justify-between items-center border-b border-slate-800 pb-6">
                     <div class="flex items-center gap-3">
-                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white shadow-md text-lg">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white shadow-md text-xl">
                             <i class="fa-solid fa-bolt-lightning"></i>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold font-prompt text-white tracking-tight">RCM & CEHI FLEET SYSTEM</h2>
-                            <p class="text-xs text-cyan-300 font-medium">Enterprise Power Transformer & GIS Maintenance Intelligence</p>
+                            <h2 class="text-xl font-bold font-prompt text-white tracking-wide">RCM CORE</h2>
+                            <p class="text-xs text-cyan-300 font-medium">Enterprise Power Transformer & GIS Intelligence Suite</p>
                         </div>
                     </div>
                     <div class="hidden sm:flex items-center gap-2 bg-slate-900 border border-slate-800 px-4 py-2 rounded-full text-xs text-slate-300 font-prompt">
@@ -230,8 +227,8 @@
                 </div>
 
                 <div class="relative z-10 my-10 max-w-4xl space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-900/40 text-cyan-300 border border-blue-800/50 rounded-full text-xs font-medium font-prompt">
-                        <i class="fa-solid fa-shield-halved text-cyan-400"></i> Reliability-Centered Maintenance Platform
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-900/40 text-cyan-300 border border-blue-800/50 rounded-full text-xs font-medium font-prompt">
+                        <i class="fa-solid fa-shield-halved text-cyan-400"></i> Reliability-Centered Maintenance Core Platform
                     </div>
                     
                     <h1 class="text-4xl sm:text-6xl font-extrabold font-prompt tracking-tight text-white leading-tight">
@@ -272,7 +269,7 @@
                 </div>
 
                 <div class="relative z-10 border-t border-slate-800 pt-4 flex flex-wrap justify-between items-center text-xs text-slate-400 font-prompt">
-                    <span>© 2026 Enterprise RCM & CEHI Maintenance Intelligence Suite</span>
+                    <span>© 2026 RCM CORE - Enterprise Asset Intelligence Suite</span>
                     <span class="text-cyan-400">Power Grid Substation Maintenance Division</span>
                 </div>
             </section>
@@ -281,62 +278,62 @@
             <section id="page-PORTAL" class="p-6 space-y-6 hidden w-full">
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs flex justify-between items-center">
+                    <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex justify-between items-center">
                         <div>
-                            <span class="text-xs text-slate-400 font-prompt uppercase tracking-wider font-semibold">อุปกรณ์ทั้งหมด</span>
-                            <h3 id="badgeTotalAssets" class="text-2xl font-bold text-slate-800 font-prompt mt-1">20 รายการ</h3>
+                            <span class="text-xs text-slate-500 font-prompt uppercase tracking-wider font-semibold">อุปกรณ์ทั้งหมด</span>
+                            <h3 id="badgeTotalAssets" class="text-3xl font-bold text-slate-800 font-prompt mt-1">20 รายการ</h3>
                             <p class="text-[11px] text-slate-400 mt-0.5">หม้อแปลง 10 ตัว | GIS 10 Bays</p>
                         </div>
-                        <div class="w-11 h-11 rounded-xl bg-slate-50 text-slate-600 flex items-center justify-center text-lg">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl">
                             <i class="fa-solid fa-cubes-stacked"></i>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-emerald-50 p-5 rounded-2xl shadow-xs flex justify-between items-center">
+                    <div class="bg-white border border-emerald-100 p-5 rounded-2xl shadow-xs flex justify-between items-center">
                         <div>
                             <span class="text-xs text-emerald-600 font-prompt uppercase tracking-wider font-semibold">สภาพปกติ (Good)</span>
-                            <h3 id="badgeNormalAssets" class="text-2xl font-bold text-emerald-600 font-prompt mt-1">11 รายการ</h3>
+                            <h3 id="badgeNormalAssets" class="text-3xl font-bold text-emerald-600 font-prompt mt-1">11 รายการ</h3>
                             <p class="text-[11px] text-slate-400 mt-0.5">CEHI &ge; 85% บำรุงรักษาตามรอบ</p>
                         </div>
-                        <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-amber-50 p-5 rounded-2xl shadow-xs flex justify-between items-center">
+                    <div class="bg-white border border-amber-100 p-5 rounded-2xl shadow-xs flex justify-between items-center">
                         <div>
                             <span class="text-xs text-amber-600 font-prompt uppercase tracking-wider font-semibold">เฝ้าระวัง (Warning)</span>
-                            <h3 id="badgeWarningAssets" class="text-2xl font-bold text-amber-600 font-prompt mt-1">6 รายการ</h3>
+                            <h3 id="badgeWarningAssets" class="text-3xl font-bold text-amber-600 font-prompt mt-1">6 รายการ</h3>
                             <p class="text-[11px] text-slate-400 mt-0.5">CEHI 60-84% หรือ RPN &gt; 120</p>
                         </div>
-                        <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-rose-50 p-5 rounded-2xl shadow-xs flex justify-between items-center">
+                    <div class="bg-white border border-rose-100 p-5 rounded-2xl shadow-xs flex justify-between items-center">
                         <div>
                             <span class="text-xs text-rose-600 font-prompt uppercase tracking-wider font-semibold">วิกฤต (Critical)</span>
-                            <h3 id="badgeCriticalAssets" class="text-2xl font-bold text-rose-600 font-prompt mt-1">3 รายการ</h3>
+                            <h3 id="badgeCriticalAssets" class="text-3xl font-bold text-rose-600 font-prompt mt-1">3 รายการ</h3>
                             <p class="text-[11px] text-slate-400 mt-0.5">CEHI &lt; 60% หรือ RPN &gt; 200</p>
                         </div>
-                        <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-lg">
+                        <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
                             <i class="fa-solid fa-radiation"></i>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white border border-slate-100 p-6 rounded-2xl shadow-xs space-y-4">
-                    <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-100 pb-4">
+                <div class="bg-white border border-blue-100 p-6 rounded-2xl shadow-xs space-y-4">
+                    <div class="flex flex-wrap justify-between items-center gap-3 border-b border-blue-50 pb-4">
                         <div>
                             <h3 class="text-base font-bold text-slate-800 font-prompt flex items-center gap-2">
-                                <i class="fa-solid fa-arrow-down-wide-short text-rose-500"></i> ตารางจัดลำดับความเร่งด่วนเข้าทำบำรุงรักษา (PM / PdM Priority Queue)
+                                <i class="fa-solid fa-arrow-down-wide-short text-rose-600"></i> ตารางจัดลำดับความเร่งด่วนที่ควรเข้าทำบำรุงรักษา (PM / PdM Priority Queue)
                             </h3>
-                            <p class="text-xs text-slate-400">คลิกที่แถวอุปกรณ์เพื่อเปิดดู <strong>รายละเอียดเนมเพลต, สเตจงาน และข้อแนะนำทางวิศวกรรม</strong></p>
+                            <p class="text-xs text-slate-500">คลิกที่แถวอุปกรณ์เพื่อเปิดดู <strong>รายละเอียดเนมเพลต, สเตจงาน และข้อแนะนำทางวิศวกรรม</strong></p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs text-slate-400 font-medium">ตัวกรอง:</span>
-                            <select onchange="filterPmTable(this.value)" class="bg-slate-50 border border-slate-200/80 text-xs text-slate-700 px-3 py-1.5 rounded-xl focus:outline-none">
+                            <span class="text-xs text-slate-500 font-medium">ตัวกรอง:</span>
+                            <select onchange="filterPmTable(this.value)" class="bg-blue-50/50 border border-blue-200/80 text-xs text-slate-700 px-3 py-1.5 rounded-lg focus:outline-none">
                                 <option value="ALL">ทั้งหมด (20 รายการ)</option>
                                 <option value="CRITICAL">เฉพาะกลุ่มวิกฤต (High Priority)</option>
                                 <option value="Transformer">เฉพาะหม้อแปลง (Transformers)</option>
@@ -347,9 +344,9 @@
 
                     <div class="overflow-x-auto custom-scrollbar">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-50/70 text-slate-500 font-prompt border-b border-slate-100 uppercase">
+                            <thead class="bg-blue-50/60 text-blue-900 font-prompt border-b border-blue-100 uppercase">
                                 <tr>
-                                    <th class="p-3 text-center font-semibold">ลำดับ</th>
+                                    <th class="p-3 text-center font-bold">ลำดับ</th>
                                     <th class="p-3 font-semibold">รหัสอุปกรณ์</th>
                                     <th class="p-3 font-semibold">ชื่ออุปกรณ์ / สถานีไฟฟ้า</th>
                                     <th class="p-3 font-semibold">ประเภท</th>
@@ -362,11 +359,11 @@
                                     <th class="p-3 text-center font-semibold">การกระทำ</th>
                                 </tr>
                             </thead>
-                            <tbody id="pmPriorityTableBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                            <tbody id="pmPriorityTableBody" class="divide-y divide-blue-50 text-slate-700"></tbody>
                         </table>
                     </div>
 
-                    <div class="flex flex-wrap justify-between items-center pt-3 border-t border-slate-100 text-xs text-slate-400">
+                    <div class="flex flex-wrap justify-between items-center pt-3 border-t border-blue-50 text-xs text-slate-500">
                         <span id="pmTablePaginationInfo">แสดง 1 - 10 จากทั้งหมด 20 รายการ</span>
                         <div class="flex items-center gap-1.5" id="pmTablePaginationButtons"></div>
                     </div>
@@ -377,9 +374,9 @@
             <!-- SUB-PAGE CONTAINER -->
             <div id="subpage-wrapper" class="p-6 hidden space-y-6 w-full">
 
-                <div class="flex flex-wrap justify-between items-center gap-4 bg-white border border-slate-100 p-4 rounded-2xl shadow-xs">
+                <div class="flex flex-wrap justify-between items-center gap-4 bg-white border border-blue-100 p-4 rounded-2xl shadow-xs">
                     <div class="flex items-center gap-3">
-                        <button onclick="navigateTo('PORTAL')" class="px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-medium transition flex items-center gap-1.5 border border-slate-200/80">
+                        <button onclick="navigateTo('PORTAL')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-semibold transition flex items-center gap-1.5 border border-blue-200">
                             <i class="fa-solid fa-chevron-left"></i> กลับหน้าหลัก
                         </button>
                         <div>
@@ -389,16 +386,16 @@
                     </div>
 
                     <div class="flex items-center gap-2.5 text-xs">
-                        <div class="bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl">
+                        <div class="bg-blue-50/60 border border-blue-200/80 px-3 py-1.5 rounded-xl">
                             <span class="text-slate-400">อุปกรณ์: </span>
-                            <span id="subpageTargetName" class="font-bold text-slate-800">TR-01</span>
+                            <span id="subpageTargetName" class="font-bold text-blue-900">TR-01</span>
                         </div>
-                        <div class="bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl">
+                        <div class="bg-blue-50/60 border border-blue-200/80 px-3 py-1.5 rounded-xl">
                             <span class="text-slate-400">CEHI: </span>
                             <span id="subpageTargetCehi" class="font-bold text-emerald-600">88.4%</span>
                         </div>
-                        <button onclick="openAssetDossierModal()" class="bg-slate-900 hover:bg-black text-white font-medium px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
-                            <i class="fa-solid fa-circle-info text-sky-400"></i> เนมเพลต & แผนงาน
+                        <button onclick="openAssetDossierModal()" class="bg-blue-800 hover:bg-blue-900 text-white font-medium px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-info text-cyan-300"></i> เนมเพลต & แผนงาน
                         </button>
                     </div>
                 </div>
@@ -408,134 +405,134 @@
 
                     <!-- ALL TESTS OVERVIEW -->
                     <div id="view-ALL_TESTS" class="subview space-y-6 hidden">
-                        <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-100 shadow-xs">
+                        <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-blue-100 shadow-xs">
                             <div>
                                 <h3 class="text-sm font-bold text-slate-800 font-prompt flex items-center gap-2">
                                     <i class="fa-solid fa-folder-open text-sky-600"></i> สรุปผลการทดสอบทุกมิติของอุปกรณ์ (Comprehensive Test Dossier)
                                 </h3>
                                 <p class="text-xs text-slate-400">ภาพรวมผลการทดสอบ DGA, SF6, ฉนวนไฟฟ้า, FMEA และสถิติงานซ่อมบำรุง</p>
                             </div>
-                            <span class="text-xs font-medium px-3 py-1 bg-slate-100 text-slate-700 rounded-lg">Full Diagnostics</span>
+                            <span class="text-xs font-semibold px-3 py-1 bg-blue-50 text-blue-800 rounded-lg border border-blue-200">Full Diagnostics</span>
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             
                             <!-- 1. DGA Summary -->
-                            <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
+                            <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
                                 <div>
-                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+                                    <div class="flex justify-between items-center border-b border-blue-50 pb-2.5">
                                         <h4 class="text-sm font-bold text-slate-800 font-prompt flex items-center gap-2">
                                             <i class="fa-solid fa-flask-vial text-sky-600"></i> 1. ผลวิเคราะห์ก๊าซ (DGA & Gas State)
                                         </h4>
                                         <button onclick="navigateTo('PAGE_DGA')" class="text-xs text-sky-600 hover:underline font-semibold">ดูรายงานละเอียด &gt;</button>
                                     </div>
                                     <div class="mt-3 space-y-2 text-xs">
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">ก๊าซหลัก (Dominant Gas):</span>
                                             <span id="allTestGasMain" class="font-bold text-slate-800">Hydrogen (H2) 25 ppm</span>
                                         </div>
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">Duval Triangle:</span>
                                             <span id="allTestDuvalResult" class="font-bold text-sky-700">PD (Partial Discharge)</span>
                                         </div>
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">สถานะก๊าซ SF6:</span>
                                             <span id="allTestSf6Purity" class="font-bold text-emerald-600">99.8% (0.65 MPa)</span>
                                         </div>
                                     </div>
                                 </div>
-                                <button onclick="navigateTo('PAGE_DGA')" class="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-sky-700 font-semibold text-xs rounded-xl border border-slate-200/80 transition">
+                                <button onclick="navigateTo('PAGE_DGA')" class="w-full py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-blue-900 font-semibold text-xs rounded-xl border border-blue-200/60 transition">
                                     เปิดดูตารางก๊าซ 7 ชนิด และพิกัด Duval Triangle
                                 </button>
                             </div>
 
                             <!-- 2. Electrical Tests -->
-                            <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
+                            <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
                                 <div>
-                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+                                    <div class="flex justify-between items-center border-b border-blue-50 pb-2.5">
                                         <h4 class="text-sm font-bold text-slate-800 font-prompt flex items-center gap-2">
                                             <i class="fa-solid fa-bolt text-teal-600"></i> 2. ผลทดสอบฉนวนไฟฟ้า (Electrical Tests)
                                         </h4>
                                         <button onclick="navigateTo('PAGE_ELECTRICAL')" class="text-xs text-teal-600 hover:underline font-semibold">ดูรายงานละเอียด &gt;</button>
                                     </div>
                                     <div class="mt-3 space-y-2 text-xs">
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">Megger & Polarization Index:</span>
                                             <span id="allTestMegger" class="font-bold text-slate-800">2,850 MΩ (PI: 2.45)</span>
                                         </div>
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">Bushing Tan Delta (&delta;):</span>
                                             <span id="allTestTanDelta" class="font-bold text-emerald-600">0.35% / 35.4 μΩ</span>
                                         </div>
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">สภาพกระดาษฉนวน (DP):</span>
                                             <span id="allTestPaperDp" class="font-bold text-sky-700">720 DP (แข็งแรง)</span>
                                         </div>
                                     </div>
                                 </div>
-                                <button onclick="navigateTo('PAGE_ELECTRICAL')" class="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-teal-700 font-semibold text-xs rounded-xl border border-slate-200/80 transition">
+                                <button onclick="navigateTo('PAGE_ELECTRICAL')" class="w-full py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-teal-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition">
                                     เปิดดูผลทดสอบฉนวน Megger, Tan Delta, Furans, BDV
                                 </button>
                             </div>
 
                             <!-- 3. Risk & FMEA -->
-                            <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
+                            <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
                                 <div>
-                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+                                    <div class="flex justify-between items-center border-b border-blue-50 pb-2.5">
                                         <h4 class="text-sm font-bold text-slate-800 font-prompt flex items-center gap-2">
                                             <i class="fa-solid fa-table-list text-amber-600"></i> 3. การประเมินความเสี่ยง FMEA & RPN
                                         </h4>
                                         <button onclick="navigateTo('PAGE_FMEA')" class="text-xs text-amber-600 hover:underline font-semibold">ดูรายงานละเอียด &gt;</button>
                                     </div>
                                     <div class="mt-3 space-y-2 text-xs">
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">คะแนนความเสี่ยงสูงสุด:</span>
                                             <span id="allTestMaxRpn" class="font-bold text-amber-600 font-mono">168 / 1000</span>
                                         </div>
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">โหมดความเสียหายวิกฤต:</span>
                                             <span id="allTestFailureMode" class="font-bold text-slate-800 truncate max-w-xs">OLTC Contact Wear</span>
                                         </div>
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">กลยุทธ์ RCM ที่ต้องทำ:</span>
                                             <span id="allTestRcmStrat" class="font-bold text-sky-700">PM Overhaul ชุดขับเคลื่อน</span>
                                         </div>
                                     </div>
                                 </div>
-                                <button onclick="navigateTo('PAGE_FMEA')" class="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-amber-700 font-semibold text-xs rounded-xl border border-slate-200/80 transition">
+                                <button onclick="navigateTo('PAGE_FMEA')" class="w-full py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-amber-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition">
                                     เปิดดูตาราง FMEA แจกแจง S × O × D
                                 </button>
                             </div>
 
                             <!-- 4. CEHI & Maint -->
-                            <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
+                            <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
                                 <div>
-                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+                                    <div class="flex justify-between items-center border-b border-blue-50 pb-2.5">
                                         <h4 class="text-sm font-bold text-slate-800 font-prompt flex items-center gap-2">
                                             <i class="fa-solid fa-heart-pulse text-emerald-600"></i> 4. ดัชนีสุขภาพ CEHI & ประวัติงานซ่อม
                                         </h4>
                                         <button onclick="navigateTo('PAGE_CEHI')" class="text-xs text-emerald-600 hover:underline font-semibold">ดูรายงานละเอียด &gt;</button>
                                     </div>
                                     <div class="mt-3 space-y-2 text-xs">
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">ดัชนีสุขภาพรวม (CEHI):</span>
                                             <span id="allTestCehiScore" class="font-bold text-emerald-600 font-mono">88.4% (ปกติ)</span>
                                         </div>
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">ความพร้อมจ่ายไฟ (Availability):</span>
                                             <span id="allTestAvail" class="font-bold text-slate-800">99.91%</span>
                                         </div>
-                                        <div class="flex justify-between p-2.5 bg-slate-50 rounded-xl">
+                                        <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl">
                                             <span class="text-slate-400">ใบสั่งงานล่าสุด:</span>
                                             <span id="allTestLastWo" class="font-bold text-purple-700">WO-2025-102</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button onclick="navigateTo('PAGE_CEHI')" class="flex-1 py-2.5 bg-slate-50 hover:bg-slate-100 text-emerald-700 font-semibold text-xs rounded-xl border border-slate-200/80 transition">
+                                    <button onclick="navigateTo('PAGE_CEHI')" class="flex-1 py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-emerald-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition">
                                         จำลอง CEHI
                                     </button>
-                                    <button onclick="navigateTo('PAGE_MAINT')" class="flex-1 py-2.5 bg-slate-50 hover:bg-slate-100 text-purple-700 font-semibold text-xs rounded-xl border border-slate-200/80 transition">
+                                    <button onclick="navigateTo('PAGE_MAINT')" class="flex-1 py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-purple-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition">
                                         ดูประวัติซ่อม
                                     </button>
                                 </div>
@@ -547,13 +544,13 @@
                     <!-- SUB-PAGE 1: DGA VIEW -->
                     <div id="view-DGA" class="subview space-y-6 hidden">
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div class="lg:col-span-2 bg-white border border-slate-100 p-5 rounded-2xl shadow-xs space-y-4">
-                                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3 font-prompt">
+                            <div class="lg:col-span-2 bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-blue-50 pb-3 font-prompt">
                                     <i class="fa-solid fa-vials text-sky-600"></i> ตารางความเข้มข้นก๊าซ DGA ในน้ำมัน (ppm)
                                 </h3>
                                 <div class="overflow-x-auto custom-scrollbar">
                                     <table class="w-full text-left text-xs">
-                                        <thead class="bg-slate-50/70 text-slate-500 font-prompt border-b border-slate-100 uppercase">
+                                        <thead class="bg-blue-50/60 text-blue-900 font-prompt border-b border-blue-100 uppercase">
                                             <tr>
                                                 <th class="p-3 font-semibold">ชนิดก๊าซ</th>
                                                 <th class="p-3 font-semibold">สูตร</th>
@@ -562,30 +559,30 @@
                                                 <th class="p-3 text-center font-semibold">สถานะ</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="subpageDgaTableBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                                        <tbody id="subpageDgaTableBody" class="divide-y divide-blue-50 text-slate-700"></tbody>
                                     </table>
                                 </div>
                             </div>
 
                             <!-- Duval Triangle Card -->
-                            <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
-                                <div class="border-b border-slate-100 pb-2">
+                            <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
+                                <div class="border-b border-blue-50 pb-2">
                                     <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 font-prompt">
                                         <i class="fa-solid fa-shapes text-sky-600"></i> แผนภูมิ Duval Triangle 1
                                     </h3>
                                     <p class="text-[11px] text-slate-400">พิกัดสัดส่วน %CH4, %C2H4, %C2H2 (IEC 60599)</p>
                                 </div>
 
-                                <div class="w-full aspect-square max-w-[300px] mx-auto bg-slate-50/70 rounded-2xl p-2 flex items-center justify-center border border-slate-100">
+                                <div class="w-full aspect-square max-w-[300px] mx-auto bg-blue-50/30 rounded-2xl p-2 flex items-center justify-center border border-blue-100">
                                     <canvas id="subpageDuvalCanvas" width="280" height="260"></canvas>
                                 </div>
 
-                                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1">
+                                <div class="p-3.5 bg-blue-50/50 rounded-xl border border-blue-100 text-xs space-y-1">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-slate-400">ผลวินิจฉัย Duval:</span>
-                                        <span id="subpageDuvalResult" class="text-sky-700 font-bold text-xs">PD: Partial Discharge</span>
+                                        <span class="text-slate-500">ผลวินิจฉัย Duval:</span>
+                                        <span id="subpageDuvalResult" class="text-blue-900 font-bold text-xs">PD: Partial Discharge</span>
                                     </div>
-                                    <p id="subpageDuvalCoords" class="text-[10px] text-slate-400 font-mono pt-1 border-t border-slate-200/60 flex justify-between">
+                                    <p id="subpageDuvalCoords" class="text-[10px] text-slate-400 font-mono pt-1 border-t border-blue-100 flex justify-between">
                                         <span>%CH4 = 44.0%</span>
                                         <span>%C2H4 = 56.0%</span>
                                         <span>%C2H2 = 0.0%</span>
@@ -598,36 +595,36 @@
                     <!-- SUB-PAGE 2: SF6 VIEW -->
                     <div id="view-SF6" class="subview space-y-6 hidden">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs space-y-4">
-                                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3 font-prompt">
+                            <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-blue-50 pb-3 font-prompt">
                                     <i class="fa-solid fa-wind text-blue-600"></i> คุณภาพก๊าซฉนวน SF6 ใน Compartment
                                 </h3>
                                 <div class="space-y-2.5 text-xs">
-                                    <div class="p-3 bg-slate-50 rounded-xl flex justify-between items-center">
+                                    <div class="p-3 bg-blue-50/40 rounded-xl flex justify-between items-center">
                                         <span class="text-slate-500 font-medium">ความบริสุทธิ์ (SF6 Purity):</span>
-                                        <span id="sf6PurityText" class="text-sm font-bold text-sky-700 font-mono">99.8%</span>
+                                        <span id="sf6PurityText" class="text-sm font-bold text-blue-900 font-mono">99.8%</span>
                                     </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl flex justify-between items-center">
+                                    <div class="p-3 bg-blue-50/40 rounded-xl flex justify-between items-center">
                                         <span class="text-slate-500 font-medium">แรงดันก๊าซ (20°C Pressure):</span>
                                         <span id="sf6PressureText" class="text-sm font-bold text-emerald-600 font-mono">0.65 MPa</span>
                                     </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl flex justify-between items-center">
+                                    <div class="p-3 bg-blue-50/40 rounded-xl flex justify-between items-center">
                                         <span class="text-slate-500 font-medium">ความชื้นสะสม (Moisture Content):</span>
                                         <span id="sf6MoistureText" class="text-sm font-bold text-slate-700 font-mono">18 ppmv</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs space-y-4">
-                                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3 font-prompt">
+                            <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-blue-50 pb-3 font-prompt">
                                     <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> ก๊าซผลผลิตจากการสลายตัว (Decomposition)
                                 </h3>
                                 <div class="space-y-2.5 text-xs">
-                                    <div class="p-3 bg-slate-50 rounded-xl flex justify-between items-center">
+                                    <div class="p-3 bg-blue-50/40 rounded-xl flex justify-between items-center">
                                         <span class="text-slate-500 font-medium">ก๊าซซัลเฟอร์ไดออกไซด์ (SO2):</span>
                                         <span id="sf6So2Text" class="text-sm font-bold text-emerald-600 font-mono">0.8 ppmv</span>
                                     </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl flex justify-between items-center">
+                                    <div class="p-3 bg-blue-50/40 rounded-xl flex justify-between items-center">
                                         <span class="text-slate-500 font-medium">UHF Partial Discharge:</span>
                                         <span id="sf6PdStatusText" class="text-sm font-bold text-emerald-600 font-mono">Normal (No PD)</span>
                                     </div>
@@ -638,13 +635,13 @@
 
                     <!-- SUB-PAGE 3: FMEA VIEW -->
                     <div id="view-FMEA" class="subview space-y-6 hidden">
-                        <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs space-y-4">
-                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3 font-prompt">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-blue-50 pb-3 font-prompt">
                                 <i class="fa-solid fa-table-list text-amber-600"></i> ตารางวิเคราะห์ FMEA & คำนวณคะแนน RPN Score
                             </h3>
                             <div class="overflow-x-auto custom-scrollbar">
                                 <table class="w-full text-left text-xs text-slate-700">
-                                    <thead class="bg-slate-50/70 text-slate-500 font-prompt border-b border-slate-100 uppercase">
+                                    <thead class="bg-blue-50/60 text-blue-900 font-prompt border-b border-blue-100 uppercase">
                                         <tr>
                                             <th class="p-3 font-semibold">ระบบย่อย</th>
                                             <th class="p-3 font-semibold">รูปแบบความเสียหาย</th>
@@ -656,7 +653,7 @@
                                             <th class="p-3 font-semibold">กลยุทธ์ RCM แนะนำ</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="subpageFmeaTableBody" class="divide-y divide-slate-100"></tbody>
+                                    <tbody id="subpageFmeaTableBody" class="divide-y divide-blue-50"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -665,11 +662,11 @@
                     <!-- SUB-PAGE 4: CEHI VIEW -->
                     <div id="view-CEHI" class="subview space-y-6 hidden">
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div class="lg:col-span-2 bg-white border border-slate-100 p-6 rounded-2xl shadow-xs space-y-5">
-                                <div class="flex flex-wrap justify-between items-center border-b border-slate-100 pb-3 gap-2">
+                            <div class="lg:col-span-2 bg-white border border-blue-100 p-6 rounded-2xl shadow-xs space-y-5">
+                                <div class="flex flex-wrap justify-between items-center border-b border-blue-50 pb-3 gap-2">
                                     <div>
                                         <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 font-prompt">
-                                            <i class="fa-solid fa-sliders text-emerald-600"></i> จำลองคะแนนสุขภาพ CEHI สำหรับ <span id="cehiTargetAssetLabel" class="text-sky-700 font-bold"></span>
+                                            <i class="fa-solid fa-sliders text-emerald-600"></i> จำลองคะแนนสุขภาพ CEHI สำหรับ <span id="cehiTargetAssetLabel" class="text-blue-900 font-bold"></span>
                                         </h3>
                                         <p class="text-xs text-slate-400">ปรับพารามิเตอร์ 4 ด้านเฉพาะอุปกรณ์ตัวนี้เพื่อจำลองแนวโน้มสุขภาพ</p>
                                     </div>
@@ -682,7 +679,7 @@
                                             <span id="sliderLabel1">1. DGA Gas Quality (35%)</span>
                                             <span id="subSimVal1" class="text-sky-600 font-bold font-mono">90 / 100</span>
                                         </div>
-                                        <input type="range" id="subSlider1" min="10" max="100" value="90" oninput="recalcSubCehi()" class="w-full accent-slate-800 bg-slate-200 h-1.5 rounded cursor-pointer">
+                                        <input type="range" id="subSlider1" min="10" max="100" value="90" oninput="recalcSubCehi()" class="w-full accent-blue-700 bg-blue-100 h-1.5 rounded cursor-pointer">
                                     </div>
 
                                     <div>
@@ -690,7 +687,7 @@
                                             <span id="sliderLabel2">2. Dielectric / SF6 Quality (25%)</span>
                                             <span id="subSimVal2" class="text-sky-600 font-bold font-mono">85 / 100</span>
                                         </div>
-                                        <input type="range" id="subSlider2" min="10" max="100" value="85" oninput="recalcSubCehi()" class="w-full accent-slate-800 bg-slate-200 h-1.5 rounded cursor-pointer">
+                                        <input type="range" id="subSlider2" min="10" max="100" value="85" oninput="recalcSubCehi()" class="w-full accent-blue-700 bg-blue-100 h-1.5 rounded cursor-pointer">
                                     </div>
 
                                     <div>
@@ -698,7 +695,7 @@
                                             <span id="sliderLabel3">3. Partial Discharge & Insulation (20%)</span>
                                             <span id="subSimVal3" class="text-sky-600 font-bold font-mono">80 / 100</span>
                                         </div>
-                                        <input type="range" id="subSlider3" min="10" max="100" value="80" oninput="recalcSubCehi()" class="w-full accent-slate-800 bg-slate-200 h-1.5 rounded cursor-pointer">
+                                        <input type="range" id="subSlider3" min="10" max="100" value="80" oninput="recalcSubCehi()" class="w-full accent-blue-700 bg-blue-100 h-1.5 rounded cursor-pointer">
                                     </div>
 
                                     <div>
@@ -706,23 +703,23 @@
                                             <span id="sliderLabel4">4. Thermal & Load History (20%)</span>
                                             <span id="subSimVal4" class="text-sky-600 font-bold font-mono">85 / 100</span>
                                         </div>
-                                        <input type="range" id="subSlider4" min="10" max="100" value="85" oninput="recalcSubCehi()" class="w-full accent-slate-800 bg-slate-200 h-1.5 rounded cursor-pointer">
+                                        <input type="range" id="subSlider4" min="10" max="100" value="85" oninput="recalcSubCehi()" class="w-full accent-blue-700 bg-blue-100 h-1.5 rounded cursor-pointer">
                                     </div>
                                 </div>
 
-                                <div class="pt-3 border-t border-slate-100 flex justify-end">
-                                    <button onclick="saveSimulatedCehiToDatabase()" class="bg-slate-900 hover:bg-black text-white text-xs font-medium px-4 py-2 rounded-xl transition shadow-xs flex items-center gap-1.5">
+                                <div class="pt-3 border-t border-blue-50 flex justify-end">
+                                    <button onclick="saveSimulatedCehiToDatabase()" class="bg-blue-900 hover:bg-blue-950 text-white text-xs font-medium px-4 py-2 rounded-xl transition shadow-xs flex items-center gap-1.5">
                                         <i class="fa-solid fa-floppy-disk"></i> บันทึกค่าที่จำลองเข้าฐานข้อมูล
                                     </button>
                                 </div>
                             </div>
 
-                            <div class="bg-white border border-slate-100 p-6 rounded-2xl shadow-xs flex flex-col items-center justify-between text-center space-y-4">
+                            <div class="bg-white border border-blue-100 p-6 rounded-2xl shadow-xs flex flex-col items-center justify-between text-center space-y-4">
                                 <span class="text-xs text-slate-400 font-prompt">คะแนนสุขภาพ CEHI รวม (จำลอง)</span>
                                 <span id="subSimTotalScore" class="text-4xl font-bold font-prompt text-emerald-600">86.3%</span>
                                 <span id="subSimGradeText" class="text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full">เกรด: GOOD (ปกติ)</span>
 
-                                <div class="w-full text-xs space-y-2 pt-4 border-t border-slate-100 text-slate-400 text-left">
+                                <div class="w-full text-xs space-y-2 pt-4 border-t border-blue-50 text-slate-400 text-left">
                                     <div class="flex justify-between"><span>Factor 1 (35%):</span><span id="subCalc1" class="font-bold text-slate-700">31.5</span></div>
                                     <div class="flex justify-between"><span>Factor 2 (25%):</span><span id="subCalc2" class="font-bold text-slate-700">21.3</span></div>
                                     <div class="flex justify-between"><span>Factor 3 (20%):</span><span id="subCalc3" class="font-bold text-slate-700">16.0</span></div>
@@ -734,15 +731,15 @@
 
                     <!-- SUB-PAGE 5: DAMAGE GALLERY -->
                     <div id="view-GALLERY" class="subview space-y-6 hidden">
-                        <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs space-y-4">
-                            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                            <div class="flex justify-between items-center border-b border-blue-50 pb-3">
                                 <div>
                                     <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 font-prompt">
                                         <i class="fa-solid fa-images text-orange-500"></i> คลังรูปภาพความเสียหาย & บันทึกการตรวจสภาพหน้างาน
                                     </h3>
-                                    <p class="text-xs text-slate-400">ภาพถ่ายความเสียหายของอุปกรณ์ <span id="galleryAssetBadge" class="text-slate-800 font-bold"></span></p>
+                                    <p class="text-xs text-slate-400">ภาพถ่ายความเสียหายของอุปกรณ์ <span id="galleryAssetBadge" class="text-blue-900 font-bold"></span></p>
                                 </div>
-                                <button onclick="openPhotoUploadModal()" class="bg-orange-600 hover:bg-orange-700 text-white text-xs font-medium px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-xs">
+                                <button onclick="openPhotoUploadModal()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-xs">
                                     <i class="fa-solid fa-upload"></i> อัปโหลดรูปภาพใหม่
                                 </button>
                             </div>
@@ -754,26 +751,26 @@
                     <!-- SUB-PAGE 6: MAINTENANCE HISTORY -->
                     <div id="view-MAINT" class="subview space-y-6 hidden">
                         <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                            <div class="bg-white border border-slate-100 p-4 rounded-xl shadow-xs">
+                            <div class="bg-white border border-blue-100 p-4 rounded-xl shadow-xs">
                                 <span class="text-xs text-slate-400">MTBF (เฉลี่ยการทำงาน)</span>
-                                <h4 id="maintMtbfVal" class="text-lg font-bold text-slate-800 font-mono mt-1">1,450 ชม.</h4>
+                                <h4 id="maintMtbfVal" class="text-lg font-bold text-blue-900 font-mono mt-1">1,450 ชม.</h4>
                             </div>
-                            <div class="bg-white border border-slate-100 p-4 rounded-xl shadow-xs">
+                            <div class="bg-white border border-blue-100 p-4 rounded-xl shadow-xs">
                                 <span class="text-xs text-slate-400">MTTR (เฉลี่ยการแก้ซ่อม)</span>
                                 <h4 id="maintMttrVal" class="text-lg font-bold text-amber-600 font-mono mt-1">4.2 ชม.</h4>
                             </div>
-                            <div class="bg-white border border-slate-100 p-4 rounded-xl shadow-xs">
+                            <div class="bg-white border border-blue-100 p-4 rounded-xl shadow-xs">
                                 <span class="text-xs text-slate-400">Availability Rate</span>
                                 <h4 id="maintAvailVal" class="text-lg font-bold text-emerald-600 font-mono mt-1">99.85%</h4>
                             </div>
-                            <div class="bg-white border border-slate-100 p-4 rounded-xl shadow-xs">
+                            <div class="bg-white border border-blue-100 p-4 rounded-xl shadow-xs">
                                 <span class="text-xs text-slate-400">Remaining Useful Life (RUL)</span>
                                 <h4 id="maintRulVal" class="text-lg font-bold text-purple-600 font-mono mt-1">12.5 ปี</h4>
                             </div>
                         </div>
 
-                        <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs space-y-4">
-                            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                            <div class="flex justify-between items-center border-b border-blue-50 pb-3">
                                 <div>
                                     <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 font-prompt">
                                         <i class="fa-solid fa-clock-rotate-left text-purple-600"></i> ประวัติใบสั่งงานซ่อมบำรุงย้อนหลัง (Maintenance Work Orders)
@@ -787,7 +784,7 @@
 
                             <div class="overflow-x-auto custom-scrollbar">
                                 <table class="w-full text-left text-xs text-slate-700">
-                                    <thead class="bg-slate-50/70 text-slate-500 font-prompt border-b border-slate-100 uppercase">
+                                    <thead class="bg-blue-50/60 text-blue-900 font-prompt border-b border-blue-100 uppercase">
                                         <tr>
                                             <th class="p-3 font-semibold">WO ID</th>
                                             <th class="p-3 font-semibold">ประเภท</th>
@@ -799,7 +796,7 @@
                                             <th class="p-3 text-center font-semibold">สถานะ</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="subpageMaintTableBody" class="divide-y divide-slate-100"></tbody>
+                                    <tbody id="subpageMaintTableBody" class="divide-y divide-blue-50"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -807,33 +804,33 @@
 
                     <!-- SUB-PAGE 7: ELECTRICAL TESTS -->
                     <div id="view-ELECTRICAL" class="subview space-y-6 hidden">
-                        <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs space-y-4">
-                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3 font-prompt">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-blue-50 pb-3 font-prompt">
                                 <i class="fa-solid fa-bolt text-teal-600"></i> รายงานผลการทดสอบฉนวนไฟฟ้าเชิงลึก (Electrical Testing Suite)
                             </h3>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-                                <div class="p-4 bg-slate-50 rounded-xl space-y-2">
-                                    <span class="font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-gauge text-sky-600"></i> Megger Insulation & PI</span>
-                                    <div class="flex justify-between border-b border-slate-200/60 pb-1"><span class="text-slate-400">Insulation Res (10 min):</span><span id="elecMeggerRes" class="font-bold font-mono text-slate-800">2,450 MΩ</span></div>
+                                <div class="p-4 bg-blue-50/30 rounded-xl space-y-2 border border-blue-50">
+                                    <span class="font-bold text-blue-900 flex items-center gap-1.5"><i class="fa-solid fa-gauge text-sky-600"></i> Megger Insulation & PI</span>
+                                    <div class="flex justify-between border-b border-blue-100 pb-1"><span class="text-slate-400">Insulation Res (10 min):</span><span id="elecMeggerRes" class="font-bold font-mono text-slate-800">2,450 MΩ</span></div>
                                     <div class="flex justify-between"><span class="text-slate-400">Polarization Index (PI):</span><span id="elecMeggerPi" class="font-bold font-mono text-emerald-600">2.15</span></div>
                                 </div>
 
-                                <div class="p-4 bg-slate-50 rounded-xl space-y-2">
-                                    <span class="font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-wave-square text-sky-600"></i> Bushing Tan Delta (&delta;)</span>
-                                    <div class="flex justify-between border-b border-slate-200/60 pb-1"><span class="text-slate-400">HV Bushing Tan Delta:</span><span id="elecTanDelta" class="font-bold font-mono text-emerald-600">0.38%</span></div>
+                                <div class="p-4 bg-blue-50/30 rounded-xl space-y-2 border border-blue-50">
+                                    <span class="font-bold text-blue-900 flex items-center gap-1.5"><i class="fa-solid fa-wave-square text-sky-600"></i> Bushing Tan Delta (&delta;)</span>
+                                    <div class="flex justify-between border-b border-blue-100 pb-1"><span class="text-slate-400">HV Bushing Tan Delta:</span><span id="elecTanDelta" class="font-bold font-mono text-emerald-600">0.38%</span></div>
                                     <div class="flex justify-between"><span class="text-slate-400">Capacitance Drift:</span><span id="elecCapDrift" class="font-bold font-mono text-slate-800">+0.8%</span></div>
                                 </div>
 
-                                <div class="p-4 bg-slate-50 rounded-xl space-y-2">
-                                    <span class="font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-leaf text-teal-600"></i> Furans Analysis (2-FAL)</span>
-                                    <div class="flex justify-between border-b border-slate-200/60 pb-1"><span class="text-slate-400">Furan Concentration:</span><span id="elecFuranPpm" class="font-bold font-mono text-slate-800">0.25 ppm</span></div>
+                                <div class="p-4 bg-blue-50/30 rounded-xl space-y-2 border border-blue-50">
+                                    <span class="font-bold text-blue-900 flex items-center gap-1.5"><i class="fa-solid fa-leaf text-teal-600"></i> Furans Analysis (2-FAL)</span>
+                                    <div class="flex justify-between border-b border-blue-100 pb-1"><span class="text-slate-400">Furan Concentration:</span><span id="elecFuranPpm" class="font-bold font-mono text-slate-800">0.25 ppm</span></div>
                                     <div class="flex justify-between"><span class="text-slate-400">Est. Paper DP Value:</span><span id="elecPaperDp" class="font-bold font-mono text-emerald-600">680 DP</span></div>
                                 </div>
 
-                                <div class="p-4 bg-slate-50 rounded-xl space-y-2">
-                                    <span class="font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-flask text-sky-600"></i> Oil BDV / Contact Res</span>
-                                    <div class="flex justify-between border-b border-slate-200/60 pb-1"><span class="text-slate-400">Oil Breakdown (BDV):</span><span id="elecOilBdv" class="font-bold font-mono text-emerald-600">68 kV</span></div>
+                                <div class="p-4 bg-blue-50/30 rounded-xl space-y-2 border border-blue-50">
+                                    <span class="font-bold text-blue-900 flex items-center gap-1.5"><i class="fa-solid fa-flask text-sky-600"></i> Oil BDV / Contact Res</span>
+                                    <div class="flex justify-between border-b border-blue-100 pb-1"><span class="text-slate-400">Oil Breakdown (BDV):</span><span id="elecOilBdv" class="font-bold font-mono text-emerald-600">68 kV</span></div>
                                     <div class="flex justify-between"><span class="text-slate-400">Contact Resistance:</span><span id="elecContactRes" class="font-bold font-mono text-slate-800">38.2 &mu;&Omega;</span></div>
                                 </div>
                             </div>
@@ -843,21 +840,21 @@
                     <!-- SUB-PAGE 8: MASTER VIEW -->
                     <div id="view-MASTER" class="subview space-y-6 hidden">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div class="bg-white border border-slate-100 p-4 rounded-xl shadow-xs">
+                            <div class="bg-white border border-blue-100 p-4 rounded-xl shadow-xs">
                                 <span class="text-xs text-slate-400">ดัชนีสุขภาพ CEHI</span>
                                 <h4 id="masterCehiScore" class="text-2xl font-bold text-emerald-600 mt-1">88.4%</h4>
                             </div>
-                            <div class="bg-white border border-slate-100 p-4 rounded-xl shadow-xs">
+                            <div class="bg-white border border-blue-100 p-4 rounded-xl shadow-xs">
                                 <span class="text-xs text-slate-400">ค่าความเสี่ยง Max RPN</span>
                                 <h4 id="masterMaxRpn" class="text-2xl font-bold text-amber-600 mt-1">168</h4>
                             </div>
-                            <div class="bg-white border border-slate-100 p-4 rounded-xl shadow-xs">
+                            <div class="bg-white border border-blue-100 p-4 rounded-xl shadow-xs">
                                 <span class="text-xs text-slate-400">การประเมินสภาพรวม</span>
-                                <h4 id="masterStateText" class="text-2xl font-bold text-slate-800 mt-1">ปกติสมบูรณ์</h4>
+                                <h4 id="masterStateText" class="text-2xl font-bold text-blue-900 mt-1">ปกติสมบูรณ์</h4>
                             </div>
                         </div>
 
-                        <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs space-y-3">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-3">
                             <h4 class="text-xs font-bold text-slate-800 flex items-center gap-2 font-prompt uppercase tracking-wider">
                                 <i class="fa-solid fa-camera text-orange-500"></i> รูปภาพตรวจสภาพล่าสุด
                             </h4>
@@ -873,11 +870,11 @@
     </div>
 
     <!-- ASSET DOSSIER MODAL -->
-    <div id="assetDossierModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white border border-slate-100 rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-            <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+    <div id="assetDossierModal" class="fixed inset-0 bg-slate-950/50 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white border border-blue-100 rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-5 border-b border-blue-50 bg-blue-50/30 flex justify-between items-center">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-xs">
+                    <div class="w-9 h-9 rounded-xl bg-blue-900 text-white flex items-center justify-center text-sm shadow-xs">
                         <i class="fa-solid fa-id-card-clip"></i>
                     </div>
                     <div>
@@ -890,48 +887,48 @@
 
             <div class="p-6 overflow-y-auto space-y-5 custom-scrollbar text-xs">
                 
-                <div class="bg-slate-50/70 border border-slate-100 p-5 rounded-2xl space-y-3">
-                    <div class="flex justify-between items-center border-b border-slate-200/60 pb-2">
-                        <h4 class="font-bold text-slate-800 font-prompt text-xs flex items-center gap-1.5 uppercase tracking-wider">
+                <div class="bg-blue-50/30 border border-blue-100 p-5 rounded-2xl space-y-3">
+                    <div class="flex justify-between items-center border-b border-blue-100 pb-2">
+                        <h4 class="font-bold text-blue-900 font-prompt text-xs flex items-center gap-1.5 uppercase tracking-wider">
                             <i class="fa-solid fa-bolt text-sky-600"></i> ข้อมูลจำเพาะ (Nameplate Specifications)
                         </h4>
-                        <span id="modalAssetTypeBadge" class="px-2.5 py-0.5 bg-slate-200/70 text-slate-800 font-medium rounded-md text-[11px]">Transformer</span>
+                        <span id="modalAssetTypeBadge" class="px-2.5 py-0.5 bg-blue-100 text-blue-900 font-medium rounded-md text-[11px]">Transformer</span>
                     </div>
 
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-1">
-                        <div class="p-3 bg-white border border-slate-100 rounded-xl space-y-0.5">
+                        <div class="p-3 bg-white border border-blue-100 rounded-xl space-y-0.5">
                             <span class="text-slate-400 text-[10px] block">วันที่ติดตั้ง (Commissioning)</span>
                             <span id="modalInstallDate" class="font-bold text-slate-800 font-mono text-xs">15/03/2012</span>
                         </div>
-                        <div class="p-3 bg-white border border-slate-100 rounded-xl space-y-0.5">
+                        <div class="p-3 bg-white border border-blue-100 rounded-xl space-y-0.5">
                             <span class="text-slate-400 text-[10px] block">อายุใช้งาน (Age)</span>
                             <span id="modalOperatingAge" class="font-bold text-slate-800 font-mono text-xs">14 ปี</span>
                         </div>
-                        <div class="p-3 bg-white border border-slate-100 rounded-xl space-y-0.5">
+                        <div class="p-3 bg-white border border-blue-100 rounded-xl space-y-0.5">
                             <span class="text-slate-400 text-[10px] block">ผู้ผลิต (Manufacturer)</span>
                             <span id="modalManufacturer" class="font-bold text-slate-800 text-xs">Hitachi Energy</span>
                         </div>
-                        <div class="p-3 bg-white border border-slate-100 rounded-xl space-y-0.5">
+                        <div class="p-3 bg-white border border-blue-100 rounded-xl space-y-0.5">
                             <span class="text-slate-400 text-[10px] block">Serial No.</span>
                             <span id="modalSerialNo" class="font-bold text-slate-800 font-mono text-xs">TR-HT-2012-984</span>
                         </div>
-                        <div class="p-3 bg-white border border-slate-100 rounded-xl space-y-0.5">
+                        <div class="p-3 bg-white border border-blue-100 rounded-xl space-y-0.5">
                             <span class="text-slate-400 text-[10px] block" id="modalParam1Label">พิกัดกำลัง</span>
                             <span id="modalParam1Val" class="font-bold text-slate-800 font-mono text-xs">50 MVA</span>
                         </div>
-                        <div class="p-3 bg-white border border-slate-100 rounded-xl space-y-0.5">
+                        <div class="p-3 bg-white border border-blue-100 rounded-xl space-y-0.5">
                             <span class="text-slate-400 text-[10px] block" id="modalParam2Label">ระดับแรงดัน</span>
                             <span id="modalParam2Val" class="font-bold text-slate-800 font-mono text-xs">115/22 kV (Dyn11)</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-slate-50/70 border border-slate-100 p-5 rounded-2xl space-y-3">
-                    <div class="flex justify-between items-center border-b border-slate-200/60 pb-2">
-                        <h4 class="font-bold text-slate-800 font-prompt text-xs flex items-center gap-1.5 uppercase tracking-wider">
+                <div class="bg-blue-50/30 border border-blue-100 p-5 rounded-2xl space-y-3">
+                    <div class="flex justify-between items-center border-b border-blue-100 pb-2">
+                        <h4 class="font-bold text-blue-900 font-prompt text-xs flex items-center gap-1.5 uppercase tracking-wider">
                             <i class="fa-solid fa-bars-progress text-sky-600"></i> ขั้นตอนดำเนินงาน (Workflow Stage)
                         </h4>
-                        <span id="modalWorkflowProgress" class="font-bold text-slate-700 font-mono text-xs">ความคืบหน้า: 60%</span>
+                        <span id="modalWorkflowProgress" class="font-bold text-blue-900 font-mono text-xs">ความคืบหน้า: 60%</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 text-center text-xs pt-1 font-prompt">
@@ -958,7 +955,7 @@
                     </div>
                 </div>
 
-                <div class="bg-amber-50/50 border border-amber-200/80 p-5 rounded-2xl flex gap-4 items-start">
+                <div class="bg-amber-50/60 border border-amber-200/80 p-5 rounded-2xl flex gap-4 items-start">
                     <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 text-base">
                         <i class="fa-solid fa-lightbulb"></i>
                     </div>
@@ -1015,11 +1012,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-slate-500 block mb-1">เลขที่ใบสั่งงาน (WO ID):</label>
-                        <input type="text" id="maintWoId" value="WO-2026-089" required class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800 font-mono">
+                        <input type="text" id="maintWoId" value="WO-2026-089" required class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800 font-mono">
                     </div>
                     <div>
                         <label class="text-slate-500 block mb-1">ประเภทงาน:</label>
-                        <select id="maintType" class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800">
+                        <select id="maintType" class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800">
                             <option value="PM">เชิงป้องกัน (PM)</option>
                             <option value="PdM">เชิงคาดการณ์ (PdM)</option>
                             <option value="CM">ซ่อมฉุกเฉิน (CM)</option>
@@ -1030,34 +1027,34 @@
 
                 <div>
                     <label class="text-slate-500 block mb-1">กิจกรรมที่ดำเนินการ:</label>
-                    <input type="text" id="maintActivity" placeholder="เช่น เปลี่ยนซีลปะเก็นวาล์ว, ขัดทำความสะอาดหน้าสัมผัส" required class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800">
+                    <input type="text" id="maintActivity" placeholder="เช่น เปลี่ยนซีลปะเก็นวาล์ว, ขัดทำความสะอาดหน้าสัมผัส" required class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-slate-500 block mb-1">อะไหล่ที่เปลี่ยน:</label>
-                        <input type="text" id="maintParts" placeholder="เช่น Gasket Kit, Silica Gel" class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800">
+                        <input type="text" id="maintParts" placeholder="เช่น Gasket Kit, Silica Gel" class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800">
                     </div>
                     <div>
                         <label class="text-slate-500 block mb-1">Downtime:</label>
-                        <input type="text" id="maintDowntime" value="4.5 ชม." class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800">
+                        <input type="text" id="maintDowntime" value="4.5 ชม." class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-slate-500 block mb-1">ผู้รับผิดชอบ:</label>
-                        <input type="text" id="maintTeam" value="Substation Team A" class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800">
+                        <input type="text" id="maintTeam" value="Substation Team A" class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800">
                     </div>
                     <div>
                         <label class="text-slate-500 block mb-1">วันที่ดำเนินการ:</label>
-                        <input type="date" id="maintDate" value="2026-08-25" required class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800">
+                        <input type="date" id="maintDate" value="2026-08-25" required class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800">
                     </div>
                 </div>
 
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
                     <button type="button" onclick="closeMaintModal()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl">ยกเลิก</button>
-                    <button type="submit" class="px-4 py-1.5 bg-slate-900 hover:bg-black text-white rounded-xl font-medium shadow-xs">บันทึก Work Order</button>
+                    <button type="submit" class="px-4 py-1.5 bg-blue-900 hover:bg-blue-950 text-white rounded-xl font-medium shadow-xs">บันทึก Work Order</button>
                 </div>
             </form>
         </div>
@@ -1071,30 +1068,30 @@
                 <button onclick="closeDataInputModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             
-            <div class="p-4 bg-slate-50/70 border-b border-slate-100 space-y-2">
-                <span class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+            <div class="p-4 bg-blue-50/30 border-b border-blue-50 space-y-2">
+                <span class="text-xs font-semibold text-blue-900 flex items-center gap-1.5">
                     <i class="fa-solid fa-camera text-sky-600"></i> สแกนรูปถ่ายใบทดสอบ / ไฟล์ CSV (Auto-Fill)
                 </span>
-                <input type="file" id="paperUploadInput" accept="image/*,.csv" onchange="handlePaperUpload(event)" class="text-xs text-slate-500 file:mr-3 file:py-1 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-medium file:bg-white file:text-slate-700 file:border file:border-slate-200 hover:file:bg-slate-50 cursor-pointer">
+                <input type="file" id="paperUploadInput" accept="image/*,.csv" onchange="handlePaperUpload(event)" class="text-xs text-slate-500 file:mr-3 file:py-1 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-medium file:bg-white file:text-blue-900 file:border file:border-blue-200 hover:file:bg-blue-50 cursor-pointer">
                 <span id="scanStatusText" class="text-[11px] text-slate-400 block italic">เลือกรูปถ่ายผลแล็บเพื่อดึงตัวเลขก๊าซเข้าตาราง</span>
             </div>
 
             <form onsubmit="saveTestDataForm(event)" class="p-6 overflow-y-auto space-y-4 custom-scrollbar text-xs">
                 
-                <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1">
-                    <label class="text-slate-700 font-bold block"><i class="fa-solid fa-industry mr-1 text-slate-600"></i> เลือกอุปกรณ์เป้าหมายที่นำเข้าผลตรวจ:</label>
-                    <select id="modalTargetAssetSelect" onchange="onModalTargetAssetChange(this.value)" class="w-full bg-white border border-slate-200 rounded-lg p-2 font-semibold text-slate-800 focus:outline-none cursor-pointer">
+                <div class="p-3.5 bg-blue-50/50 border border-blue-100 rounded-xl space-y-1">
+                    <label class="text-blue-900 font-bold block"><i class="fa-solid fa-industry mr-1 text-sky-600"></i> เลือกอุปกรณ์เป้าหมายที่นำเข้าผลตรวจ:</label>
+                    <select id="modalTargetAssetSelect" onchange="onModalTargetAssetChange(this.value)" class="w-full bg-white border border-blue-200 rounded-lg p-2 font-semibold text-slate-800 focus:outline-none cursor-pointer">
                     </select>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <div><label class="text-slate-500 block mb-1">วันที่ทำการทดสอบ:</label><input type="date" id="formInputDate" value="2026-08-25" required class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800"></div>
-                    <div><label class="text-slate-500 block mb-1">ผู้ตรวจวัด:</label><input type="text" id="formInputInspector" value="Eng. Panisara P." class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800"></div>
+                    <div><label class="text-slate-500 block mb-1">วันที่ทำการทดสอบ:</label><input type="date" id="formInputDate" value="2026-08-25" required class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800"></div>
+                    <div><label class="text-slate-500 block mb-1">ผู้ตรวจวัด:</label><input type="text" id="formInputInspector" value="Eng. Panisara P." class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800"></div>
                 </div>
 
                 <!-- Transformer Specific Gases -->
                 <div id="modalTransformerGases" class="p-4 bg-slate-50 rounded-xl space-y-3 border border-slate-100">
-                    <span class="text-slate-700 font-bold block">กรอกค่าก๊าซ DGA ในน้ำมัน (ppm):</span>
+                    <span class="text-blue-900 font-bold block">กรอกค่าก๊าซ DGA ในน้ำมัน (ppm):</span>
                     <div class="grid grid-cols-3 gap-3">
                         <div><label class="text-slate-400">Hydrogen (H2):</label><input type="number" step="0.1" id="in_h2" value="25" class="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-slate-800"></div>
                         <div><label class="text-slate-400">Methane (CH4):</label><input type="number" step="0.1" id="in_ch4" value="12" class="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-slate-800"></div>
@@ -1106,7 +1103,7 @@
 
                 <!-- GIS Specific Gases -->
                 <div id="modalGisGases" class="p-4 bg-slate-50 rounded-xl space-y-3 border border-slate-100 hidden">
-                    <span class="text-slate-700 font-bold block">กรอกค่าก๊าซฉนวน SF6 ใน GIS:</span>
+                    <span class="text-blue-900 font-bold block">กรอกค่าก๊าซฉนวน SF6 ใน GIS:</span>
                     <div class="grid grid-cols-3 gap-3">
                         <div><label class="text-slate-400">SF6 Purity (%):</label><input type="number" step="0.1" id="in_sf6_purity" value="99.5" class="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-slate-800"></div>
                         <div><label class="text-slate-400">Pressure (MPa 20°C):</label><input type="number" step="0.01" id="in_sf6_press" value="0.65" class="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-slate-800"></div>
@@ -1116,7 +1113,7 @@
 
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
                     <button type="button" onclick="closeDataInputModal()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl">ยกเลิก</button>
-                    <button type="submit" class="px-4 py-1.5 bg-slate-900 hover:bg-black text-white rounded-xl font-medium shadow-xs">บันทึกผลตรวจ</button>
+                    <button type="submit" class="px-4 py-1.5 bg-blue-900 hover:bg-blue-950 text-white rounded-xl font-medium shadow-xs">บันทึกผลตรวจ</button>
                 </div>
             </form>
         </div>
@@ -1127,7 +1124,7 @@
         <div class="bg-white border border-slate-100 rounded-2xl max-w-lg w-full flex flex-col shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                 <h3 class="text-sm font-bold text-slate-800 font-prompt flex items-center gap-2">
-                    <i class="fa-solid fa-camera text-orange-600"></i> บันทึกภาพความเสียหาย
+                    <i class="fa-solid fa-camera text-amber-600"></i> บันทึกภาพความเสียหาย
                 </h3>
                 <button onclick="closePhotoUploadModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
@@ -1145,17 +1142,17 @@
 
                 <div>
                     <label class="text-slate-500 block mb-1">ตำแหน่งชิ้นส่วนที่เสียหาย:</label>
-                    <input type="text" id="photoLocationInput" placeholder="เช่น Bushing Phase B, ปะเก็นวาล์ว SF6" required class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800">
+                    <input type="text" id="photoLocationInput" placeholder="เช่น Bushing Phase B, ปะเก็นวาล์ว SF6" required class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800">
                 </div>
 
                 <div>
                     <label class="text-slate-500 block mb-1">รายละเอียดความเสียหาย:</label>
-                    <textarea id="photoDescInput" rows="2" placeholder="ระบุอาการ เช่น พบคราบน้ำมันรั่วซึม, รอยแตกร้าว" required class="w-full bg-slate-50 border border-slate-200/80 rounded-xl p-2 text-slate-800"></textarea>
+                    <textarea id="photoDescInput" rows="2" placeholder="ระบุอาการ เช่น พบคราบน้ำมันรั่วซึม, รอยแตกร้าว" required class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800"></textarea>
                 </div>
 
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
                     <button type="button" onclick="closePhotoUploadModal()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl">ยกเลิก</button>
-                    <button type="submit" class="px-4 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-medium shadow-xs">บันทึกรูปภาพ</button>
+                    <button type="submit" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-medium shadow-xs">บันทึกรูปภาพ</button>
                 </div>
             </form>
         </div>
@@ -1336,7 +1333,6 @@
             }
         }
 
-        // Color-coded Status Badges (Yellow for Warning, Red for Critical)
         function getGasStatusBadgeHTML(status) {
             if (!status) status = 'ปกติ';
             if (status.includes('วิกฤต')) {
@@ -1476,30 +1472,6 @@
         function onAssetChange(assetId) {
             currentActiveAsset = assetId;
             if (currentRoute !== 'PORTAL' && currentRoute !== 'PAGE_LANDING') navigateTo(currentRoute);
-        }
-
-        // Action & Export Dropdown Toggles
-        function toggleActionDropdown() {
-            const menu = document.getElementById('actionDropdownMenu');
-            menu.classList.toggle('hidden');
-            document.getElementById('exportDropdownMenu').classList.add('hidden');
-        }
-        function closeActionDropdown() {
-            document.getElementById('actionDropdownMenu').classList.add('hidden');
-        }
-        function toggleExportDropdown() {
-            const menu = document.getElementById('exportDropdownMenu');
-            menu.classList.toggle('hidden');
-            document.getElementById('actionDropdownMenu').classList.add('hidden');
-        }
-        function closeExportDropdown() {
-            document.getElementById('exportDropdownMenu').classList.add('hidden');
-        }
-        window.onclick = function(e) {
-            if (!e.target.closest('button')) {
-                closeActionDropdown();
-                closeExportDropdown();
-            }
         }
 
         function navigateTo(pageKey) {
@@ -2189,3 +2161,4 @@
     </script>
 </body>
 </html>
+```eof
