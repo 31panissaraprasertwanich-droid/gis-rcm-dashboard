@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise RCM & CEHI Asset Intelligence Suite</title>
+    <title>Enterprise RCM, CEHI & Maintenance Intelligence Suite</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -76,40 +76,49 @@
             <div>
                 <div class="flex items-center gap-2">
                     <h1 onclick="navigateTo('PORTAL')" class="text-base font-bold text-slate-800 tracking-wide cursor-pointer hover:text-sky-600 transition font-prompt">
-                        RCM & CEHI ASSET FLEET INTELLIGENCE
+                        RCM, CEHI & MAINTENANCE INTELLIGENCE SUITE
                     </h1>
                     <span id="currentPageBadge" class="text-[11px] bg-sky-50 text-sky-700 border border-sky-200 px-2.5 py-0.5 rounded-full font-prompt font-medium">Portal Menu</span>
                 </div>
-                <p class="text-xs text-slate-500">ระบบติดตามและจัดลำดับการบำรุงรักษาหม้อแปลง 10 ตัว & GIS 10 Bays</p>
+                <p class="text-xs text-slate-500">ระบบบริหารประวัติซ่อมบำรุง, ผลทดสอบไฟฟ้า & ความน่าเชื่อถือหม้อแปลงและ GIS</p>
             </div>
         </div>
 
         <!-- Right Quick Action Controls -->
-        <div class="flex items-center flex-wrap gap-2.5">
+        <div class="flex items-center flex-wrap gap-2">
             <button onclick="navigateTo('PORTAL')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition border border-slate-200 flex items-center gap-1.5 shadow-sm">
                 <i class="fa-solid fa-house text-sky-600"></i> หน้าหลัก (Portal)
             </button>
 
-            <!-- Global Asset Dropdown (20 Assets) -->
-            <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg text-xs font-prompt shadow-sm">
+            <!-- Global Asset Dropdown -->
+            <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-prompt shadow-sm">
                 <span class="text-slate-500 font-medium">เลือกอุปกรณ์:</span>
                 <select id="assetSelectDropdown" onchange="onAssetChange(this.value)" class="bg-transparent text-sky-700 font-bold focus:outline-none cursor-pointer">
                     <!-- Populated dynamically -->
                 </select>
             </div>
 
+            <!-- BUTTON: Add Maintenance Log -->
+            <button onclick="openMaintModal()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-screwdriver-wrench"></i> บันทึกประวัติซ่อม
+            </button>
+
+            <!-- BUTTON: Import Paper Test Modal -->
             <button onclick="openDataInputModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
                 <i class="fa-solid fa-file-arrow-up"></i> นำเข้าผลทดสอบ
             </button>
 
+            <!-- BUTTON: Damage Photo Upload Modal -->
             <button onclick="openPhotoUploadModal()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
                 <i class="fa-solid fa-camera"></i> แนบรูปความเสียหาย
             </button>
 
+            <!-- BUTTON: Direct PDF Download -->
             <button onclick="downloadDirectPDF()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
                 <i class="fa-solid fa-file-pdf"></i> โหลด PDF
             </button>
 
+            <!-- BUTTON: Export CSV -->
             <button onclick="exportToCSV()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition border border-slate-200 flex items-center gap-1.5 shadow-sm">
                 <i class="fa-solid fa-file-csv text-emerald-600"></i> โหลด CSV
             </button>
@@ -131,12 +140,11 @@
                         <h2 class="text-xl font-bold text-slate-800 font-prompt">ภาพรวมสถานะสุขภาพอุปกรณ์ในระบบ (Fleet Health Summary)</h2>
                         <p class="text-xs text-slate-500">ติดตามสถานะหม้อแปลงไฟฟ้า 10 ตัว และสถานี GIS 10 Bays ครอบคลุมทุกพื้นที่</p>
                     </div>
-                    <span class="text-xs text-sky-700 bg-sky-50 border border-sky-200 px-3 py-1 rounded-full font-medium">ฐานข้อมูล 20 รายการ</span>
+                    <span class="text-xs text-sky-700 bg-sky-50 border border-sky-200 px-3 py-1 rounded-full font-medium">ฐานข้อมูลพร้อมใช้งาน 20 รายการ</span>
                 </div>
 
                 <!-- Status Counter Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Total -->
                     <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex justify-between items-center">
                         <div>
                             <span class="text-xs text-slate-500 font-prompt uppercase font-medium">อุปกรณ์ทั้งหมด (Total Fleet)</span>
@@ -148,7 +156,6 @@
                         </div>
                     </div>
 
-                    <!-- Normal -->
                     <div class="bg-white border border-emerald-100 p-5 rounded-2xl shadow-sm flex justify-between items-center">
                         <div>
                             <span class="text-xs text-emerald-600 font-prompt uppercase font-medium">สภาพปกติ (Good / Normal)</span>
@@ -160,7 +167,6 @@
                         </div>
                     </div>
 
-                    <!-- Warning -->
                     <div class="bg-white border border-amber-100 p-5 rounded-2xl shadow-sm flex justify-between items-center">
                         <div>
                             <span class="text-xs text-amber-600 font-prompt uppercase font-medium">เฝ้าระวัง (Fair / Warning)</span>
@@ -172,7 +178,6 @@
                         </div>
                     </div>
 
-                    <!-- Critical -->
                     <div class="bg-white border border-rose-100 p-5 rounded-2xl shadow-sm flex justify-between items-center">
                         <div>
                             <span class="text-xs text-rose-600 font-prompt uppercase font-medium">วิกฤต (Critical / High Risk)</span>
@@ -186,116 +191,146 @@
                 </div>
             </div>
 
-            <!-- ========================================================= -->
-            <!-- 1. HUB TOPIC CARDS GRID (หัวข้อรายงานผลการทดสอบที่จะเลือก) -->
-            <!-- ========================================================= -->
+            <!-- HUB TOPIC CARDS GRID (8 หมวดหมู่ใช้งาน) -->
             <div>
                 <h3 class="text-base font-bold text-slate-800 font-prompt mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-cubes text-sky-600"></i> เลือกหัวข้อรายงานผลการทดสอบ & การวิเคราะห์เชิงลึก
                 </h3>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- DGA -->
-                    <div onclick="navigateTo('PAGE_DGA')" class="bg-white hover:bg-sky-50/50 border border-slate-200 hover:border-sky-300 p-6 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    
+                    <!-- Card 1: DGA -->
+                    <div onclick="navigateTo('PAGE_DGA')" class="bg-white hover:bg-sky-50/50 border border-slate-200 hover:border-sky-300 p-5 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform mb-4 shadow-sm">
+                            <div class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center text-xl group-hover:scale-105 transition-transform mb-3 shadow-sm">
                                 <i class="fa-solid fa-flask-vial"></i>
                             </div>
-                            <span class="text-[11px] text-sky-600 font-semibold uppercase tracking-wider">หมวดก๊าซในน้ำมัน</span>
-                            <h4 class="text-lg font-bold text-slate-800 font-prompt mt-1 group-hover:text-sky-600 transition">1. ผลวิเคราะห์ก๊าซ DGA & แผนภูมิ Duval Triangle</h4>
-                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">ตรวจเช็กก๊าซ 7 ชนิด, คำนวณพิกัดสามเหลี่ยม Duval 1 และอัตราส่วนก๊าซของหม้อแปลง</p>
+                            <span class="text-[10px] text-sky-600 font-semibold uppercase tracking-wider">หมวดก๊าซในน้ำมัน</span>
+                            <h4 class="text-sm font-bold text-slate-800 font-prompt mt-1 group-hover:text-sky-600 transition">1. ผลวิเคราะห์ก๊าซ DGA & Duval</h4>
+                            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">ก๊าซติดไฟ 7 ชนิด, พิกัด Duval Triangle 1 และ Gas Ratios</p>
                         </div>
-                        <div class="mt-5 pt-3 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-sky-600">
-                            <span>เข้าสู่รายงาน DGA</span>
+                        <div class="mt-4 pt-2 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-sky-600">
+                            <span>เข้าดูรายงาน DGA</span>
                             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </div>
                     </div>
 
-                    <!-- SF6 GIS -->
-                    <div onclick="navigateTo('PAGE_SF6')" class="bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 p-6 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                    <!-- Card 2: SF6 GIS -->
+                    <div onclick="navigateTo('PAGE_SF6')" class="bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 p-5 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform mb-4 shadow-sm">
+                            <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center text-xl group-hover:scale-105 transition-transform mb-3 shadow-sm">
                                 <i class="fa-solid fa-wind"></i>
                             </div>
-                            <span class="text-[11px] text-blue-600 font-semibold uppercase tracking-wider">หมวดสถานี GIS</span>
-                            <h4 class="text-lg font-bold text-slate-800 font-prompt mt-1 group-hover:text-blue-600 transition">2. ผลทดสอบก๊าซฉนวน SF6 ใน GIS Bay</h4>
-                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">ตรวจสอบความบริสุทธิ์ SF6 (%), ค่าความดัน (MPa), ความชื้นสะสม และก๊าซสลายตัว SO2</p>
+                            <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider">หมวดสถานี GIS</span>
+                            <h4 class="text-sm font-bold text-slate-800 font-prompt mt-1 group-hover:text-blue-600 transition">2. ผลทดสอบก๊าซฉนวน SF6 ใน GIS</h4>
+                            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">ความบริสุทธิ์ SF6 (%), ค่าความดัน (MPa), ความชื้น และ SO2</p>
                         </div>
-                        <div class="mt-5 pt-3 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-blue-600">
-                            <span>เข้าสู่รายงาน SF6 GIS</span>
+                        <div class="mt-4 pt-2 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-blue-600">
+                            <span>เข้าดูรายงาน SF6 GIS</span>
                             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </div>
                     </div>
 
-                    <!-- FMEA -->
-                    <div onclick="navigateTo('PAGE_FMEA')" class="bg-white hover:bg-amber-50/50 border border-slate-200 hover:border-amber-300 p-6 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                    <!-- Card 3: FMEA -->
+                    <div onclick="navigateTo('PAGE_FMEA')" class="bg-white hover:bg-amber-50/50 border border-slate-200 hover:border-amber-300 p-5 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform mb-4 shadow-sm">
+                            <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center text-xl group-hover:scale-105 transition-transform mb-3 shadow-sm">
                                 <i class="fa-solid fa-table-list"></i>
                             </div>
-                            <span class="text-[11px] text-amber-600 font-semibold uppercase tracking-wider">หมวดประเมินความเสี่ยง</span>
-                            <h4 class="text-lg font-bold text-slate-800 font-prompt mt-1 group-hover:text-amber-600 transition">3. การวิเคราะห์ FMEA & 5x5 RPN Matrix</h4>
-                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">ตารางแจกแจง Failure Modes, สูตร RPN = S×O×D, และเกณฑ์ประเมินความเสี่ยง</p>
+                            <span class="text-[10px] text-amber-600 font-semibold uppercase tracking-wider">หมวดประเมินความเสี่ยง</span>
+                            <h4 class="text-sm font-bold text-slate-800 font-prompt mt-1 group-hover:text-amber-600 transition">3. การวิเคราะห์ FMEA & RPN Matrix</h4>
+                            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">ตารางแจกแจง Failure Modes, สูตร RPN = S×O×D</p>
                         </div>
-                        <div class="mt-5 pt-3 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-amber-600">
-                            <span>เข้าสู่รายงาน FMEA/RPN</span>
+                        <div class="mt-4 pt-2 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-amber-600">
+                            <span>เข้าดูรายงาน FMEA</span>
                             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </div>
                     </div>
 
-                    <!-- CEHI -->
-                    <div onclick="navigateTo('PAGE_CEHI')" class="bg-white hover:bg-emerald-50/50 border border-slate-200 hover:border-emerald-300 p-6 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                    <!-- Card 4: CEHI Simulator -->
+                    <div onclick="navigateTo('PAGE_CEHI')" class="bg-white hover:bg-emerald-50/50 border border-slate-200 hover:border-emerald-300 p-5 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform mb-4 shadow-sm">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center text-xl group-hover:scale-105 transition-transform mb-3 shadow-sm">
                                 <i class="fa-solid fa-heart-pulse"></i>
                             </div>
-                            <span class="text-[11px] text-emerald-600 font-semibold uppercase tracking-wider">หมวดดัชนีสุขภาพ</span>
-                            <h4 class="text-lg font-bold text-slate-800 font-prompt mt-1 group-hover:text-emerald-600 transition">4. คำนวณ & จำลองค่าดัชนีสุขภาพ CEHI รายตัว</h4>
-                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">สูตรถ่วงน้ำหนักเฉพาะตัวอุปกรณ์ พร้อมสไลเดอร์จำลองผลและบันทึกคะแนนเข้าสู่ระบบ</p>
+                            <span class="text-[10px] text-emerald-600 font-semibold uppercase tracking-wider">หมวดดัชนีสุขภาพ</span>
+                            <h4 class="text-sm font-bold text-slate-800 font-prompt mt-1 group-hover:text-emerald-600 transition">4. คำนวณ & จำลองค่า CEHI รายตัว</h4>
+                            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">สูตรถ่วงน้ำหนัก 4 ด้าน พร้อมสไลเดอร์จำลองผลลัพธ์</p>
                         </div>
-                        <div class="mt-5 pt-3 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-emerald-600">
-                            <span>เข้าสู่จำลอง CEHI</span>
+                        <div class="mt-4 pt-2 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-emerald-600">
+                            <span>เข้าดูจำลอง CEHI</span>
                             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </div>
                     </div>
 
-                    <!-- Damage Gallery -->
-                    <div onclick="navigateTo('PAGE_GALLERY')" class="bg-white hover:bg-orange-50/50 border border-slate-200 hover:border-orange-300 p-6 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                    <!-- Card 5: Damage Gallery -->
+                    <div onclick="navigateTo('PAGE_GALLERY')" class="bg-white hover:bg-orange-50/50 border border-slate-200 hover:border-orange-300 p-5 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 text-orange-600 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform mb-4 shadow-sm">
+                            <div class="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 text-orange-600 flex items-center justify-center text-xl group-hover:scale-105 transition-transform mb-3 shadow-sm">
                                 <i class="fa-solid fa-images"></i>
                             </div>
-                            <span class="text-[11px] text-orange-600 font-semibold uppercase tracking-wider">หมวดตรวจสอบหน้างาน</span>
-                            <h4 class="text-lg font-bold text-slate-800 font-prompt mt-1 group-hover:text-orange-600 transition">5. คลังรูปภาพความเสียหาย (Damage Gallery)</h4>
-                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">ดูรูปถ่ายสภาพจริง, จุดน้ำมันรั่วซึม, รอยแตกร้าวบน Bushing และคราบเขม่า Arcing</p>
+                            <span class="text-[10px] text-orange-600 font-semibold uppercase tracking-wider">หมวดตรวจสภาพ</span>
+                            <h4 class="text-sm font-bold text-slate-800 font-prompt mt-1 group-hover:text-orange-600 transition">5. คลังรูปภาพความเสียหาย</h4>
+                            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">ดูรูปภาพจุดบกพร่อง, คราบน้ำมันรั่ว และรอยแตกร้าว</p>
                         </div>
-                        <div class="mt-5 pt-3 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-orange-600">
-                            <span>เข้าสู่คลังภาพความเสียหาย</span>
+                        <div class="mt-4 pt-2 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-orange-600">
+                            <span>เข้าสู่คลังรูปภาพ</span>
                             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </div>
                     </div>
 
-                    <!-- Master View -->
-                    <div onclick="navigateTo('PAGE_MASTER')" class="bg-gradient-to-br from-white to-sky-50 border border-sky-200 hover:border-sky-400 p-6 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                    <!-- Card 6: Maintenance History (NEW) -->
+                    <div onclick="navigateTo('PAGE_MAINT')" class="bg-white hover:bg-purple-50/50 border border-slate-200 hover:border-purple-300 p-5 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center text-2xl group-hover:scale-105 transition-transform mb-4 shadow-md">
+                            <div class="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center text-xl group-hover:scale-105 transition-transform mb-3 shadow-sm">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </div>
+                            <span class="text-[10px] text-purple-600 font-semibold uppercase tracking-wider">หมวดประวัติซ่อม</span>
+                            <h4 class="text-sm font-bold text-slate-800 font-prompt mt-1 group-hover:text-purple-600 transition">6. ประวัติการซ่อมบำรุง & MTBF</h4>
+                            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">สถิติใบสั่งงาน Work Orders, อะไหล่ที่เปลี่ยน, Downtime และ MTBF/MTTR</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-purple-600">
+                            <span>เข้าดูประวัติซ่อมบำรุง</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 7: Electrical Tests (NEW) -->
+                    <div onclick="navigateTo('PAGE_ELECTRICAL')" class="bg-white hover:bg-teal-50/50 border border-slate-200 hover:border-teal-300 p-5 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 text-teal-600 flex items-center justify-center text-xl group-hover:scale-105 transition-transform mb-3 shadow-sm">
+                                <i class="fa-solid fa-bolt text-lg"></i>
+                            </div>
+                            <span class="text-[10px] text-teal-600 font-semibold uppercase tracking-wider">หมวดทดสอบฉนวนไฟฟ้า</span>
+                            <h4 class="text-sm font-bold text-slate-800 font-prompt mt-1 group-hover:text-teal-600 transition">7. ผลทดสอบฉนวนไฟฟ้าเชิงลึก</h4>
+                            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Megger / PI, Tan Delta, Furans DP, BDV, Contact Resistance</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-slate-100 flex justify-between items-center text-xs font-semibold text-teal-600">
+                            <span>เข้าดูการทดสอบไฟฟ้า</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 8: Master Executive Overview -->
+                    <div onclick="navigateTo('PAGE_MASTER')" class="bg-gradient-to-br from-white to-sky-50 border border-sky-200 hover:border-sky-400 p-5 rounded-2xl shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-sky-600 text-white flex items-center justify-center text-xl group-hover:scale-105 transition-transform mb-3 shadow-md">
                                 <i class="fa-solid fa-chart-pie"></i>
                             </div>
-                            <span class="text-[11px] text-sky-700 font-semibold uppercase tracking-wider">หมวดสรุปผู้บริหาร</span>
-                            <h4 class="text-lg font-bold text-slate-800 font-prompt mt-1 group-hover:text-sky-600 transition">6. แดชบอร์ดสรุปภาพรวมครบวงจร (Master View)</h4>
-                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">รวบรวมทุกตัวชี้วัด KPIs, DGA, FMEA, CEHI และรูปภาพในหน้าเดียวเพื่อส่งออก PDF</p>
+                            <span class="text-[10px] text-sky-700 font-semibold uppercase tracking-wider">หมวดสรุปผู้บริหาร</span>
+                            <h4 class="text-sm font-bold text-slate-800 font-prompt mt-1 group-hover:text-sky-600 transition">8. แดชบอร์ดภาพรวมครบวงจร</h4>
+                            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">รวบรวมตัวชี้วัด KPIs, DGA, FMEA, CEHI, และรูปภาพในหน้าเดียวเพื่อส่งออก PDF</p>
                         </div>
-                        <div class="mt-5 pt-3 border-t border-sky-100 flex justify-between items-center text-xs font-semibold text-sky-600">
+                        <div class="mt-4 pt-2 border-t border-sky-100 flex justify-between items-center text-xs font-semibold text-sky-600">
                             <span>เปิด Master Dashboard</span>
                             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </div>
                     </div>
+
                 </div>
             </div>
 
-            <!-- ========================================================= -->
-            <!-- 2. PM / PdM PRIORITY RANKING TABLE (อยู่ใต้หัวข้อรายงานตามที่ต้องการ) -->
-            <!-- ========================================================= -->
+            <!-- PM / PdM PRIORITY RANKING TABLE (อยู่ใต้หัวข้อรายงานตามที่ต้องการ) -->
             <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm space-y-4">
                 <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-100 pb-4">
                     <div>
@@ -333,7 +368,7 @@
                             </tr>
                         </thead>
                         <tbody id="pmPriorityTableBody" class="divide-y divide-slate-100 text-slate-700">
-                            <!-- Populated and sorted dynamically -->
+                            <!-- Populated dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -374,7 +409,7 @@
             <!-- EXPORTABLE REPORT WRAPPER -->
             <div id="reportContentToExport" class="space-y-6">
 
-                <!-- SUB-PAGE 1: DGA REPORT VIEW (WITH DUVAL TRIANGLE) -->
+                <!-- SUB-PAGE 1: DGA REPORT VIEW -->
                 <div id="view-DGA" class="subview space-y-6 hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="lg:col-span-2 bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-4">
@@ -397,11 +432,11 @@
                             </div>
                         </div>
 
-                        <!-- Duval Triangle 1 Canvas (แสดงผลแบบสมบูรณ์) -->
+                        <!-- Duval Canvas -->
                         <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex flex-col justify-between space-y-4">
                             <div class="border-b border-slate-100 pb-2">
                                 <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-                                    <i class="fa-solid fa-shapes text-sky-600"></i> แผนภูมิ Duval Triangle 1
+                                    <i class="fa-solid fa-shapes text-sky-600"></i> Duval Triangle 1 Analysis
                                 </h3>
                                 <p class="text-[11px] text-slate-400">พิกัดสัดส่วน %CH4, %C2H4, %C2H2 (IEC 60599)</p>
                             </div>
@@ -412,13 +447,13 @@
 
                             <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
                                 <div class="flex justify-between items-center">
-                                    <span class="text-slate-500 font-medium">ผลวินิจฉัยความผิดพร่อง:</span>
+                                    <span class="text-slate-500 font-medium">ผลการวินิจฉัย Duval:</span>
                                     <span id="subpageDuvalResult" class="text-sky-700 font-bold text-sm">PD: Partial Discharge</span>
                                 </div>
                                 <p id="subpageDuvalCoords" class="text-[11px] text-slate-400 font-mono pt-1 border-t border-slate-200 flex justify-between">
-                                    <span>พิกัด: %CH4=44.0%</span>
-                                    <span>%C2H4=56.0%</span>
-                                    <span>%C2H2=0.0%</span>
+                                    <span>%CH4 = 44.0%</span>
+                                    <span>%C2H4 = 56.0%</span>
+                                    <span>%C2H2 = 0.0%</span>
                                 </p>
                             </div>
                         </div>
@@ -586,7 +621,102 @@
                     </div>
                 </div>
 
-                <!-- SUB-PAGE 6: MASTER EXECUTIVE OVERVIEW -->
+                <!-- SUB-PAGE 6: MAINTENANCE HISTORY (NEW) -->
+                <div id="view-MAINT" class="subview space-y-6 hidden">
+                    <!-- Reliability KPIs Summary -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+                            <span class="text-xs text-slate-500">MTBF (เวลาเฉลี่ยการทำงาน)</span>
+                            <h4 id="maintMtbfVal" class="text-xl font-bold text-sky-700 font-mono mt-1">1,450 ชม.</h4>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+                            <span class="text-xs text-slate-500">MTTR (เวลาเฉลี่ยการแก้ซ่อม)</span>
+                            <h4 id="maintMttrVal" class="text-xl font-bold text-amber-600 font-mono mt-1">4.2 ชม.</h4>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+                            <span class="text-xs text-slate-500">Availability Rate</span>
+                            <h4 id="maintAvailVal" class="text-xl font-bold text-emerald-600 font-mono mt-1">99.85%</h4>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+                            <span class="text-xs text-slate-500">Remaining Useful Life (RUL)</span>
+                            <h4 id="maintRulVal" class="text-xl font-bold text-purple-700 font-mono mt-1">12.5 ปี</h4>
+                        </div>
+                    </div>
+
+                    <!-- Work Order History Table -->
+                    <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                            <div>
+                                <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                                    <i class="fa-solid fa-clock-rotate-left text-purple-600"></i> ประวัติใบสั่งงานซ่อมบำรุงย้อนหลัง (Maintenance Work Orders)
+                                </h3>
+                                <p class="text-xs text-slate-500">ประวัติงานซ่อม PM, PdM, Overhaul และการเปลี่ยนอะไหล่</p>
+                            </div>
+                            <button onclick="openMaintModal()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-plus"></i> เพิ่มบันทึกงานซ่อมใหม่
+                            </button>
+                        </div>
+
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left text-xs text-slate-700">
+                                <thead class="bg-slate-50 text-slate-600 font-prompt border-b border-slate-200 uppercase">
+                                    <tr>
+                                        <th class="p-3 font-semibold">WO ID</th>
+                                        <th class="p-3 font-semibold">ประเภทงาน</th>
+                                        <th class="p-3 font-semibold">รายละเอียดกิจกรรมซ่อมบำรุง</th>
+                                        <th class="p-3 font-semibold">อะไหล่ที่ถูกเปลี่ยน (Spare Parts)</th>
+                                        <th class="p-3 text-center font-semibold">Downtime</th>
+                                        <th class="p-3 font-semibold">ผู้รับผิดชอบ</th>
+                                        <th class="p-3 font-semibold">วันที่ดำเนินการ</th>
+                                        <th class="p-3 text-center font-semibold">สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subpageMaintTableBody" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-PAGE 7: ELECTRICAL TESTS (NEW) -->
+                <div id="view-ELECTRICAL" class="subview space-y-6 hidden">
+                    <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-4">
+                        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+                            <i class="fa-solid fa-bolt text-teal-600"></i> รายงานผลการทดสอบฉนวนไฟฟ้าเชิงลึก (Electrical Testing Suite)
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                            <!-- Insulation Resistance & PI -->
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                                <span class="font-bold text-sky-700 flex items-center gap-1.5"><i class="fa-solid fa-gauge"></i> Megger Insulation & PI</span>
+                                <div class="flex justify-between border-b border-slate-200 pb-1"><span class="text-slate-500">Insulation Res (10 min):</span><span id="elecMeggerRes" class="font-bold font-mono text-slate-800">2,450 MΩ</span></div>
+                                <div class="flex justify-between"><span class="text-slate-500">Polarization Index (PI):</span><span id="elecMeggerPi" class="font-bold font-mono text-emerald-600">2.15 (ดี)</span></div>
+                            </div>
+
+                            <!-- Tan Delta / Power Factor -->
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                                <span class="font-bold text-sky-700 flex items-center gap-1.5"><i class="fa-solid fa-wave-square"></i> Bushing & Winding Tan Delta</span>
+                                <div class="flex justify-between border-b border-slate-200 pb-1"><span class="text-slate-500">HV Bushing Tan Delta (&delta;):</span><span id="elecTanDelta" class="font-bold font-mono text-emerald-600">0.38% (&lt; 0.5%)</span></div>
+                                <div class="flex justify-between"><span class="text-slate-500">Capacitance Drift (&Delta;C):</span><span id="elecCapDrift" class="font-bold font-mono text-slate-800">+0.8%</span></div>
+                            </div>
+
+                            <!-- Furans & Paper DP -->
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                                <span class="font-bold text-sky-700 flex items-center gap-1.5"><i class="fa-solid fa-leaf"></i> Furans Analysis (2-FAL)</span>
+                                <div class="flex justify-between border-b border-slate-200 pb-1"><span class="text-slate-500">Furan Concentration:</span><span id="elecFuranPpm" class="font-bold font-mono text-slate-800">0.25 ppm</span></div>
+                                <div class="flex justify-between"><span class="text-slate-500">Est. Paper DP Value:</span><span id="elecPaperDp" class="font-bold font-mono text-emerald-600">680 DP (แข็งแรง)</span></div>
+                            </div>
+
+                            <!-- Oil BDV / Contact Resistance -->
+                            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                                <span class="font-bold text-sky-700 flex items-center gap-1.5"><i class="fa-solid fa-flask"></i> Oil BDV / Contact Resistance</span>
+                                <div class="flex justify-between border-b border-slate-200 pb-1"><span class="text-slate-500">Oil Breakdown (BDV):</span><span id="elecOilBdv" class="font-bold font-mono text-emerald-600">68 kV (ปกติ)</span></div>
+                                <div class="flex justify-between"><span class="text-slate-500">Contact Res / Timing:</span><span id="elecContactRes" class="font-bold font-mono text-slate-800">38.2 &mu;&Omega; / 42 ms</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-PAGE 8: MASTER EXECUTIVE OVERVIEW -->
                 <div id="view-MASTER" class="subview space-y-6 hidden">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
@@ -617,7 +747,7 @@
 
     </main>
 
-    <!-- LIGHTBOX / PHOTO PREVIEW MODAL -->
+    <!-- LIGHTBOX MODAL -->
     <div id="lightboxModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl flex flex-col">
             <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
@@ -637,7 +767,69 @@
         </div>
     </div>
 
-    <!-- MODAL 1: TEST DATA IMPORT DIALOG -->
+    <!-- MODAL: ADD NEW MAINTENANCE LOG (ฟอร์มบันทึกประวัติซ่อม) -->
+    <div id="maintModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 rounded-2xl max-w-lg w-full flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                <h3 class="text-base font-bold text-slate-800 font-prompt flex items-center gap-2">
+                    <i class="fa-solid fa-screwdriver-wrench text-purple-600"></i> บันทึกประวัติซ่อมบำรุงใหม่ (Work Order)
+                </h3>
+                <button onclick="closeMaintModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form onsubmit="saveMaintenanceLog(event)" class="p-6 space-y-4 text-xs">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-slate-600 block mb-1">เลขที่ใบสั่งงาน (Work Order ID):</label>
+                        <input type="text" id="maintWoId" value="WO-2026-089" required class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800 font-mono">
+                    </div>
+                    <div>
+                        <label class="text-slate-600 block mb-1">ประเภทงาน:</label>
+                        <select id="maintType" class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800">
+                            <option value="PM">เชิงป้องกัน (PM)</option>
+                            <option value="PdM">เชิงคาดการณ์ (PdM)</option>
+                            <option value="CM">ซ่อมฉุกเฉิน (CM/Breakdown)</option>
+                            <option value="Overhaul">ยกเครื่องใหญ่ (Overhaul)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-slate-600 block mb-1">กิจกรรมที่ดำเนินการซ่อมบำรุง:</label>
+                    <input type="text" id="maintActivity" placeholder="เช่น เปลี่ยนซีลปะเก็นวาล์ว, ขัดทำความสะอาดหน้าสัมผัส OLTC" required class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-slate-600 block mb-1">อะไหล่ที่เปลี่ยน (Parts):</label>
+                        <input type="text" id="maintParts" placeholder="เช่น NBR Gasket Kit, Silica Gel" class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800">
+                    </div>
+                    <div>
+                        <label class="text-slate-600 block mb-1">ระยะเวลาหยุดเครื่อง (Downtime):</label>
+                        <input type="text" id="maintDowntime" value="4.5 ชม." class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-slate-600 block mb-1">ทีมงาน/ผู้รับผิดชอบ:</label>
+                        <input type="text" id="maintTeam" value="Substation Team A" class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800">
+                    </div>
+                    <div>
+                        <label class="text-slate-600 block mb-1">วันที่ดำเนินการเสร็จสิ้น:</label>
+                        <input type="date" id="maintDate" value="2026-08-25" required class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800">
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeMaintModal()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg">ยกเลิก</button>
+                    <button type="submit" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold shadow-sm">บันทึก Work Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: DATA INPUT DIALOG -->
     <div id="dataInputModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
@@ -655,14 +847,8 @@
 
             <form onsubmit="saveTestDataForm(event)" class="p-6 overflow-y-auto space-y-4 custom-scrollbar text-xs">
                 <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-slate-600 block mb-1">วันที่ทำการทดสอบ:</label>
-                        <input type="date" id="formInputDate" value="2026-08-25" required class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800 focus:outline-none focus:border-sky-500">
-                    </div>
-                    <div>
-                        <label class="text-slate-600 block mb-1">ผู้ตรวจวัด/วิศวกร:</label>
-                        <input type="text" id="formInputInspector" value="Eng. Panisara P." class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800 focus:outline-none focus:border-sky-500">
-                    </div>
+                    <div><label class="text-slate-600 block mb-1">วันที่ทำการทดสอบ:</label><input type="date" id="formInputDate" value="2026-08-25" required class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800"></div>
+                    <div><label class="text-slate-600 block mb-1">ผู้ตรวจวัด/วิศวกร:</label><input type="text" id="formInputInspector" value="Eng. Panisara P." class="w-full bg-slate-50 border border-slate-200 rounded p-2 text-slate-800"></div>
                 </div>
 
                 <div class="p-4 bg-slate-50 rounded-xl space-y-3 border border-slate-200">
@@ -678,14 +864,14 @@
                 </div>
 
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                    <button type="button" onclick="closeDataInputModal()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200">ยกเลิก</button>
+                    <button type="button" onclick="closeDataInputModal()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg">ยกเลิก</button>
                     <button type="submit" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-semibold shadow-sm">บันทึกและคำนวณใหม่</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL 2: DAMAGE PHOTO UPLOAD DIALOG -->
+    <!-- MODAL: DAMAGE PHOTO DIALOG -->
     <div id="photoUploadModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white border border-slate-200 rounded-2xl max-w-lg w-full flex flex-col shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
@@ -698,7 +884,7 @@
             <form onsubmit="saveDamagePhoto(event)" class="p-6 space-y-4 text-xs">
                 <div>
                     <label class="text-slate-600 block mb-1">เลือกไฟล์รูปภาพความเสียหาย (JPG/PNG):</label>
-                    <input type="file" id="damagePhotoFile" accept="image/*" required onchange="previewDamageImage(event)" class="w-full text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-slate-200 file:text-xs file:font-semibold file:bg-slate-50 file:text-orange-600 hover:file:bg-slate-100 cursor-pointer">
+                    <input type="file" id="damagePhotoFile" accept="image/*" required onchange="previewDamageImage(event)" class="w-full text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-slate-200 file:text-xs file:font-semibold file:bg-slate-50 file:text-orange-600 cursor-pointer">
                 </div>
 
                 <div id="imagePreviewContainer" class="w-full h-40 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center overflow-hidden">
@@ -708,16 +894,16 @@
 
                 <div>
                     <label class="text-slate-600 block mb-1">ตำแหน่งชิ้นส่วนที่เสียหาย (Subsystem/Location):</label>
-                    <input type="text" id="photoLocationInput" placeholder="เช่น High-Voltage Bushing Phase B, ปะเก็นวาล์ว SF6" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800 focus:outline-none focus:border-sky-500">
+                    <input type="text" id="photoLocationInput" placeholder="เช่น High-Voltage Bushing Phase B, ปะเก็นวาล์ว SF6" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800">
                 </div>
 
                 <div>
                     <label class="text-slate-600 block mb-1">รายละเอียดความเสียหาย (Damage Description):</label>
-                    <textarea id="photoDescInput" rows="2" placeholder="ระบุอาการ เช่น พบคราบน้ำมันรั่วซึม, รอยแตกร้าวจากการคายประจุ" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800 focus:outline-none focus:border-sky-500"></textarea>
+                    <textarea id="photoDescInput" rows="2" placeholder="ระบุอาการ เช่น พบคราบน้ำมันรั่วซึม, รอยแตกร้าวจากการคายประจุ" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800"></textarea>
                 </div>
 
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                    <button type="button" onclick="closePhotoUploadModal()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200">ยกเลิก</button>
+                    <button type="button" onclick="closePhotoUploadModal()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg">ยกเลิก</button>
                     <button type="submit" class="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold flex items-center gap-1.5 shadow-sm">
                         <i class="fa-solid fa-save"></i> บันทึกรูปภาพ
                     </button>
@@ -728,12 +914,12 @@
 
     <!-- FOOTER -->
     <footer class="bg-white border-t border-slate-200 px-6 py-4 text-center text-xs text-slate-500">
-        © 2026 Enterprise RCM & CEHI Asset Intelligence Suite | Power Transformers & GIS Fleet
+        © 2026 Enterprise RCM, CEHI & Maintenance Intelligence Suite | 20 Assets Full Capability
     </footer>
 
     <!-- LOGIC SCRIPT -->
     <script>
-        // 20 Enterprise Assets Database (10 Transformers + 10 GIS Bays)
+        // 20 Assets Database with Maintenance Log & Electrical Testing Data
         const fleetDatabase = {
             'TR-01': {
                 id: 'TR-01', name: 'TR-115/22kV No.1 (Ladprao)', station: 'Ladprao Substation (50 MVA)', type: 'Transformer', age: '14 ปี',
@@ -743,7 +929,13 @@
                 simFactors: [90, 85, 80, 85],
                 duval: { ch4: 12, c2h4: 15, c2h2: 0.0, result: 'PD (Partial Discharge)' },
                 fmea: [{ sub: 'OLTC Mechanism', mode: 'Contact Wear', cause: 'สลับแท็ปบ่อย', s: 7, o: 6, d: 4, rpn: 168, strat: 'PM: Overhaul OLTC' }],
-                photos: [{ location: 'OLTC Diverter Switch Tank', desc: 'พบคราบเขม่าสะสมระดับปานกลางบริเวณหน้าสัมผัส', date: '25/08/2026', src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60' }]
+                photos: [{ location: 'OLTC Diverter Switch Tank', desc: 'พบคราบเขม่าสะสมระดับปานกลางบริเวณหน้าสัมผัส', date: '25/08/2026', src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60' }],
+                maintHistory: [
+                    { id: 'WO-2025-102', type: 'PM', activity: 'เปลี่ยนสารดูดความชื้น Silica Gel & กรองน้ำมัน OLTC', parts: 'Silica Gel 5kg, Oil Filter', downtime: '3.0 ชม.', team: 'Substation Team A', date: '10/11/2025', status: 'Completed' },
+                    { id: 'WO-2024-044', type: 'PdM', activity: 'ตรวจวัดคลื่น Partial Discharge ออนไลน์', parts: '-', downtime: '0 ชม.', team: 'Diagnostic Team', date: '15/05/2024', status: 'Completed' }
+                ],
+                elecTests: { meggerRes: '2,850 MΩ', meggerPi: '2.45 (ดี)', tanDelta: '0.35% (ปกติ)', capDrift: '+0.5%', furanPpm: '0.12 ppm', paperDp: '720 DP (แข็งแรง)', oilBdv: '68 kV', contactRes: '35.4 μΩ' },
+                reliability: { mtbf: '1,850 ชม.', mttr: '3.5 ชม.', avail: '99.91%', rul: '16.0 ปี' }
             },
             'TR-02': {
                 id: 'TR-02', name: 'TR-230/115kV No.2 (Chidlom)', station: 'Chidlom Substation (200 MVA)', type: 'Transformer', age: '22 ปี',
@@ -753,7 +945,12 @@
                 simFactors: [50, 60, 65, 55],
                 duval: { ch4: 240, c2h4: 680, c2h2: 2.8, result: 'T3: Thermal Fault > 700°C' },
                 fmea: [{ sub: 'Winding Joint', mode: 'Thermal Overheating (T3)', cause: 'จุดต่อภายในหลวม', s: 9, o: 6, d: 4, rpn: 216, strat: 'PdM: DGA Sampling ทุกเดือน' }],
-                photos: [{ location: 'HV Bushing Phase B Base', desc: 'ตรวจพบคราบน้ำมันรั่วซึมจากปะเก็นฝาถังและรอย Overheating', date: '20/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }]
+                photos: [{ location: 'HV Bushing Phase B Base', desc: 'ตรวจพบคราบน้ำมันรั่วซึมจากปะเก็นฝาถังและรอย Overheating', date: '20/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }],
+                maintHistory: [
+                    { id: 'WO-2026-012', type: 'CM', activity: 'ขันแน่นปะเก็นฐาน Bushing Phase B และเปลี่ยนซีลยาง Viton', parts: 'Viton Gasket Set', downtime: '8.0 ชม.', team: 'Special Maintenance', date: '12/01/2026', status: 'Completed' }
+                ],
+                elecTests: { meggerRes: '1,120 MΩ', meggerPi: '1.45 (เฝ้าระวัง)', tanDelta: '0.82% (สูง)', capDrift: '+2.4%', furanPpm: '1.85 ppm', paperDp: '380 DP (เสื่อมสภาพ)', oilBdv: '42 kV', contactRes: '62.0 μΩ' },
+                reliability: { mtbf: '620 ชม.', mttr: '8.2 ชม.', avail: '98.50%', rul: '4.5 ปี' }
             },
             'TR-03': {
                 id: 'TR-03', name: 'TR-500/230kV No.3 (Bangkok South)', station: 'Bangkok South Terminal (300 MVA)', type: 'Transformer', age: '6 ปี',
@@ -762,77 +959,11 @@
                 dga: [{ name: 'Hydrogen', formula: 'H2', val: 10, norm: 100, status: 'ปกติ' }, { name: 'Ethylene', formula: 'C2H4', val: 2, norm: 50, status: 'ปกติ' }],
                 simFactors: [95, 95, 90, 95],
                 duval: { ch4: 5, c2h4: 2, c2h2: 0.0, result: 'Normal Condition' },
-                fmea: [{ sub: 'Cooling Radiator', mode: 'Fan Motor Vibration', cause: 'ตลับลูกปืนสึกหรอ', s: 4, o: 4, d: 4, rpn: 64, strat: 'Routine PM' }], photos: []
+                fmea: [{ sub: 'Cooling Radiator', mode: 'Fan Motor Vibration', cause: 'ตลับลูกปืนสึกหรอ', s: 4, o: 4, d: 4, rpn: 64, strat: 'Routine PM' }], photos: [],
+                maintHistory: [{ id: 'WO-2025-201', type: 'PM', activity: 'เปลี่ยนตลับลูกปืนตู้พัดลมระบายความร้อน Radiator #1', parts: 'Bearing SKF', downtime: '2.0 ชม.', team: 'Substation B', date: '05/06/2025', status: 'Completed' }],
+                elecTests: { meggerRes: '4,200 MΩ', meggerPi: '3.10 (ดีเยี่ยม)', tanDelta: '0.22%', capDrift: '+0.1%', furanPpm: '0.05 ppm', paperDp: '910 DP', oilBdv: '75 kV', contactRes: '28.0 μΩ' },
+                reliability: { mtbf: '3,200 ชม.', mttr: '2.0 ชม.', avail: '99.98%', rul: '24.0 ปี' }
             },
-            'TR-04': {
-                id: 'TR-04', name: 'TR-115/22kV No.2 (Bang Kapi)', station: 'Bang Kapi Substation (50 MVA)', type: 'Transformer', age: '18 ปี',
-                cehi: 68.5, cehiGrade: 'เฝ้าระวัง (Fair)', statusCategory: 'WARNING', maxRpn: 180, testDate: '15/08/2026',
-                concern: 'ฉนวนกระดาษเสื่อมสภาพ & ก๊าซ CO2/CO สูง', rcmStrat: 'PdM: ตรวจวัด Furans ในน้ำมัน', targetDate: '15/09/2026',
-                dga: [{ name: 'Hydrogen', formula: 'H2', val: 45, norm: 100, status: 'ปกติ' }, { name: 'Carbon Monoxide', formula: 'CO', val: 420, norm: 350, status: 'เฝ้าระวัง' }],
-                simFactors: [70, 75, 65, 65],
-                duval: { ch4: 35, c2h4: 40, c2h2: 0.2, result: 'Thermal Degradation (T1)' },
-                fmea: [{ sub: 'Paper Insulation', mode: 'Cellulose Degradation', cause: 'ความร้อนสะสม', s: 9, o: 4, d: 5, rpn: 180, strat: 'PdM: Furan Analysis' }],
-                photos: [{ location: 'Radiator Valve Seal', desc: 'พบคราบน้ำมันซึมบริเวณวาล์วด้านข้างหม้อแปลง', date: '15/08/2026', src: 'https://images.unsplash.com/photo-1544725121-be3bf52e2dc8?w=500&auto=format&fit=crop&q=60' }]
-            },
-            'TR-05': {
-                id: 'TR-05', name: 'TR-230/69kV No.1 (Thonburi)', station: 'Thonburi Substation (150 MVA)', type: 'Transformer', age: '12 ปี',
-                cehi: 85.0, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 96, testDate: '18/08/2026',
-                concern: 'ค่า Breakdown Voltage น้ำมันลดลงเล็กน้อย', rcmStrat: 'PM: กรองน้ำมันหม้อแปลง', targetDate: '10/11/2026',
-                dga: [{ name: 'Hydrogen', formula: 'H2', val: 18, norm: 100, status: 'ปกติ' }],
-                simFactors: [85, 85, 85, 85],
-                duval: { ch4: 15, c2h4: 8, c2h2: 0.0, result: 'Normal Condition' },
-                fmea: [{ sub: 'Oil Insulation', mode: 'Moisture Ingress', cause: 'สารดูดความชื้นเริ่มอิ่มตัว', s: 6, o: 4, d: 4, rpn: 96, strat: 'PM: Silica Gel Change' }], photos: []
-            },
-            'TR-06': {
-                id: 'TR-06', name: 'TR-115/22kV No.3 (Phra Khanong)', station: 'Phra Khanong Substation (60 MVA)', type: 'Transformer', age: '19 ปี',
-                cehi: 71.2, cehiGrade: 'เฝ้าระวัง (Fair)', statusCategory: 'WARNING', maxRpn: 160, testDate: '12/08/2026',
-                concern: 'Bushing Power Factor (Tan Delta) เพิ่มสูง', rcmStrat: 'PdM: วัดค่า Capacitance & Tan Delta ซ้ำ', targetDate: '25/09/2026',
-                dga: [{ name: 'Hydrogen', formula: 'H2', val: 30, norm: 100, status: 'ปกติ' }],
-                simFactors: [75, 70, 70, 70],
-                duval: { ch4: 20, c2h4: 15, c2h2: 0.0, result: 'Normal Condition' },
-                fmea: [{ sub: 'HV Bushing', mode: 'Dielectric Loss Increase', cause: 'ฉนวน Bushing เสื่อม', s: 8, o: 4, d: 5, rpn: 160, strat: 'PdM: Tan Delta Test' }],
-                photos: [{ location: 'Bushing Oil Level Gauge', desc: 'ระดับน้ำมันในหลอดแก้ว Bushing ลดลงต่ำกว่าขีดปกติ', date: '12/08/2026', src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60' }]
-            },
-            'TR-07': {
-                id: 'TR-07', name: 'TR-500/115kV No.1 (Ayutthaya Link)', station: 'North Grid Station (350 MVA)', type: 'Transformer', age: '4 ปี',
-                cehi: 96.0, cehiGrade: 'ดีเยี่ยม (Excellent)', statusCategory: 'NORMAL', maxRpn: 45, testDate: '24/08/2026',
-                concern: 'สภาพโดยรวมปกติสมบูรณ์', rcmStrat: 'Routine Monitoring', targetDate: '15/01/2027',
-                dga: [{ name: 'Hydrogen', formula: 'H2', val: 5, norm: 100, status: 'ปกติ' }],
-                simFactors: [98, 95, 95, 95],
-                duval: { ch4: 3, c2h4: 1, c2h2: 0.0, result: 'Normal Condition' },
-                fmea: [{ sub: 'Conservator', mode: 'Air Cell Degradation', cause: 'ยางไดอะแฟรมเสื่อมตามอายุ', s: 5, o: 3, d: 3, rpn: 45, strat: 'Routine PM' }], photos: []
-            },
-            'TR-08': {
-                id: 'TR-08', name: 'TR-230/22kV No.2 (Rama 9)', station: 'Rama 9 Substation (80 MVA)', type: 'Transformer', age: '25 ปี',
-                cehi: 52.4, cehiGrade: 'วิกฤต (Critical)', statusCategory: 'CRITICAL', maxRpn: 240, testDate: '10/08/2026',
-                concern: 'ตรวจพบก๊าซ Acetylene (C2H2) ชี้เกิด Arcing พลังงานสูง', rcmStrat: 'ด่วนที่สุด: ตรวจหาตำแหน่ง Partial Discharge / Arcing', targetDate: '28/08/2026',
-                dga: [{ name: 'Acetylene', formula: 'C2H2', val: 12.5, norm: 1.0, status: 'วิกฤต' }, { name: 'Hydrogen', formula: 'H2', val: 310, norm: 100, status: 'วิกฤต' }],
-                simFactors: [45, 55, 55, 60],
-                duval: { ch4: 80, c2h4: 90, c2h2: 45.0, result: 'D2: High Energy Arcing' },
-                fmea: [{ sub: 'Core & Winding', mode: 'High Energy Arcing', cause: 'ฉนวนทะลวงระหว่างชั้นขดลวด', s: 10, o: 6, d: 4, rpn: 240, strat: 'Emergency Inspection' }],
-                photos: [{ location: 'Main Tank Pressure Relief Valve', desc: 'PRV มีการปลดปล่อยแรงดันและพบคราบน้ำมันกระจายรอบตัวถัง', date: '10/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }]
-            },
-            'TR-09': {
-                id: 'TR-09', name: 'TR-115/22kV No.1 (Nonthaburi)', station: 'Nonthaburi Substation (50 MVA)', type: 'Transformer', age: '11 ปี',
-                cehi: 89.0, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 90, testDate: '17/08/2026',
-                concern: 'สารกรองความชื้น Silica Gel เริ่มเปลี่ยนสี', rcmStrat: 'PM: เปลี่ยนเม็ดสาร Silica Gel', targetDate: '05/11/2026',
-                dga: [{ name: 'Hydrogen', formula: 'H2', val: 20, norm: 100, status: 'ปกติ' }],
-                simFactors: [90, 90, 85, 90],
-                duval: { ch4: 12, c2h4: 6, c2h2: 0.0, result: 'Normal Condition' },
-                fmea: [{ sub: 'Dehydrating Breather', mode: 'Silica Saturation', cause: 'ดูดความชื้นตามรอบ', s: 5, o: 6, d: 3, rpn: 90, strat: 'PM: Silica Replace' }], photos: []
-            },
-            'TR-10': {
-                id: 'TR-10', name: 'TR-115/69kV No.4 (Samut Prakan)', station: 'Samut Prakan Terminal (100 MVA)', type: 'Transformer', age: '16 ปี',
-                cehi: 76.5, cehiGrade: 'เฝ้าระวัง (Fair)', statusCategory: 'WARNING', maxRpn: 140, testDate: '14/08/2026',
-                concern: 'อุณหภูมิ Winding Temperature สูงกว่าปกติขณะโหลด 80%', rcmStrat: 'PM: ล้างทำความสะอาด Radiator Fins', targetDate: '01/10/2026',
-                dga: [{ name: 'Methane', formula: 'CH4', val: 85, norm: 120, status: 'ปกติ' }],
-                simFactors: [80, 75, 75, 75],
-                duval: { ch4: 85, c2h4: 30, c2h2: 0.1, result: 'T1: Thermal Fault < 300°C' },
-                fmea: [{ sub: 'Cooling Radiator', mode: 'Clogged Cooling Fin', cause: 'ฝุ่นเกาะหนาแน่น', s: 7, o: 5, d: 4, rpn: 140, strat: 'PM: Radiator Cleaning' }],
-                photos: [{ location: 'Cooling Fin Bank #2', desc: 'คราบฝุ่นอุตสาหกรรมสะสมหนาแน่นขัดขวางการระบายความร้อน', date: '14/08/2026', src: 'https://images.unsplash.com/photo-1544725121-be3bf52e2dc8?w=500&auto=format&fit=crop&q=60' }]
-            },
-
-            // --- 10 GIS BAYS ---
             'GIS-01': {
                 id: 'GIS-01', name: 'GIS 115kV Bay 01 (Feeder Ladprao-1)', station: 'Ladprao GIS Station', type: 'GIS Bay', age: '8 ปี',
                 cehi: 92.5, cehiGrade: 'ดีเยี่ยม (Excellent)', statusCategory: 'NORMAL', maxRpn: 120, testDate: '24/08/2026',
@@ -840,32 +971,10 @@
                 sf6Purity: '99.8%', sf6Pressure: '0.65 MPa', sf6Moisture: '18 ppmv', sf6So2: '0.8 ppmv',
                 simFactors: [95, 95, 90, 90],
                 fmea: [{ sub: 'SF6 Compartment', mode: 'Slow Gas Leakage', cause: 'ซีลเสื่อมสภาพ', s: 8, o: 5, d: 3, rpn: 120, strat: 'PdM: Density Switch' }],
-                photos: [{ location: 'GIS Gas Compartment 1 Valve', desc: 'สภาพทั่วไปสะอาด ไม่มีสัญญาณรั่วซึม', date: '24/08/2026', src: 'https://images.unsplash.com/photo-1544725121-be3bf52e2dc8?w=500&auto=format&fit=crop&q=60' }]
-            },
-            'GIS-02': {
-                id: 'GIS-02', name: 'GIS 115kV Bay 02 (Tie TR-1)', station: 'Ladprao GIS Station', type: 'GIS Bay', age: '15 ปี',
-                cehi: 74.0, cehiGrade: 'เฝ้าระวัง (Fair)', statusCategory: 'WARNING', maxRpn: 189, testDate: '21/08/2026',
-                concern: 'ตรวจพบสัญญาณ UHF Partial Discharge บน Spacer', rcmStrat: 'PdM: ตรวจ Acoustic Localization หาตำแหน่งคายประจุ', targetDate: '05/09/2026',
-                sf6Purity: '97.4%', sf6Pressure: '0.62 MPa', sf6Moisture: '85 ppmv', sf6So2: '4.2 ppmv',
-                simFactors: [75, 75, 70, 75],
-                fmea: [{ sub: 'Solid Spacer Barrier', mode: 'Particle PD', cause: 'ฝุ่นผงโลหะเกาะฉนวน', s: 9, o: 7, d: 3, rpn: 189, strat: 'PdM: UHF PD Scan' }],
-                photos: [{ location: 'Spacer Barrier Flange', desc: 'ตรวจพบคราบอนุภาคแปลกปลอมเกาะบริเวณขอบหน้าแปลน', date: '21/08/2026', src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60' }]
-            },
-            'GIS-03': {
-                id: 'GIS-03', name: 'GIS 230kV Bay 03 (Bus Coupler Chidlom)', station: 'Chidlom 230kV GIS Station', type: 'GIS Bay', age: '18 ปี',
-                cehi: 78.5, cehiGrade: 'เฝ้าระวัง (Fair)', statusCategory: 'WARNING', maxRpn: 144, testDate: '19/08/2026',
-                concern: 'ระยะเวลาตัด-ต่อสวิตช์ใบมีด (DS) ช้ากว่ามาตรฐาน', rcmStrat: 'PM: อัดจาระบีและปรับตั้งชุดกลไกขับเคลื่อน', targetDate: '20/09/2026',
-                sf6Purity: '98.0%', sf6Pressure: '0.63 MPa', sf6Moisture: '65 ppmv', sf6So2: '2.1 ppmv',
-                simFactors: [80, 80, 75, 80],
-                fmea: [{ sub: 'Circuit Breaker DS', mode: 'Operating Mechanism Delay', cause: 'จาระบีกลไกฝืด', s: 8, o: 6, d: 3, rpn: 144, strat: 'PM: Mechanism Lube' }], photos: []
-            },
-            'GIS-04': {
-                id: 'GIS-04', name: 'GIS 115kV Bay 04 (Line Phra Khanong)', station: 'Chidlom 115kV GIS Station', type: 'GIS Bay', age: '10 ปี',
-                cehi: 91.0, cehiGrade: 'ดีเยี่ยม (Excellent)', statusCategory: 'NORMAL', maxRpn: 80, testDate: '23/08/2026',
-                concern: 'สภาวะก๊าซ SF6 ปกติ', rcmStrat: 'Routine Gas Density Check', targetDate: '10/01/2027',
-                sf6Purity: '99.5%', sf6Pressure: '0.66 MPa', sf6Moisture: '22 ppmv', sf6So2: '0.5 ppmv',
-                simFactors: [90, 95, 90, 90],
-                fmea: [{ sub: 'Current Transformer', mode: 'Secondary Terminal Drift', cause: 'ความชื้นในกล่องต่อสาย', s: 5, o: 4, d: 4, rpn: 80, strat: 'Routine PM' }], photos: []
+                photos: [{ location: 'GIS Gas Compartment 1 Valve', desc: 'สภาพทั่วไปสะอาด ไม่มีสัญญาณรั่วซึม', date: '24/08/2026', src: 'https://images.unsplash.com/photo-1544725121-be3bf52e2dc8?w=500&auto=format&fit=crop&q=60' }],
+                maintHistory: [{ id: 'WO-2025-088', type: 'PM', activity: 'อัดเติมก๊าซ SF6 เข้า Compartment 1 เพิ่ม 0.02 MPa', parts: 'SF6 Gas 2kg', downtime: '1.5 ชม.', team: 'GIS Team', date: '18/09/2025', status: 'Completed' }],
+                elecTests: { meggerRes: '5,000 MΩ', meggerPi: '3.50', tanDelta: 'N/A', capDrift: 'N/A', furanPpm: 'N/A', paperDp: 'N/A', oilBdv: 'N/A', contactRes: '24.5 μΩ' },
+                reliability: { mtbf: '2,800 ชม.', mttr: '1.5 ชม.', avail: '99.95%', rul: '22.0 ปี' }
             },
             'GIS-05': {
                 id: 'GIS-05', name: 'GIS 230kV Bay 05 (Main Bus 1 Section)', station: 'Bangkok South GIS', type: 'GIS Bay', age: '24 ปี',
@@ -874,50 +983,43 @@
                 sf6Purity: '96.2%', sf6Pressure: '0.58 MPa', sf6Moisture: '160 ppmv', sf6So2: '6.8 ppmv',
                 simFactors: [40, 50, 55, 55],
                 fmea: [{ sub: 'SF6 Bus Duct', mode: 'Gas Leak & Internal Arc Byproduct', cause: 'ปะเก็นหน้าแปลนแตกร้าว', s: 9, o: 5, d: 5, rpn: 225, strat: 'Emergency Seal Repair' }],
-                photos: [{ location: 'Main Busbar Flange Junction', desc: 'ตรวจพบคราบน้ำมันหล่อลื่นและฟองสบู่จากการทดสอบรั่วที่หน้าแปลน', date: '11/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }]
-            },
-            'GIS-06': {
-                id: 'GIS-06', name: 'GIS 115kV Bay 06 (Feeder Bang Kapi)', station: 'Bang Kapi GIS Station', type: 'GIS Bay', age: '14 ปี',
-                cehi: 82.0, cehiGrade: 'เฝ้าระวัง (Fair)', statusCategory: 'WARNING', maxRpn: 135, testDate: '16/08/2026',
-                concern: 'ค่า Contact Resistance ของ CB สูงขึ้นเล็กน้อย', rcmStrat: 'PM: ทดสอบ Dynamic Contact Resistance', targetDate: '18/10/2026',
-                sf6Purity: '98.5%', sf6Pressure: '0.64 MPa', sf6Moisture: '45 ppmv', sf6So2: '1.2 ppmv',
-                simFactors: [85, 80, 80, 85],
-                fmea: [{ sub: 'CB Main Contact', mode: 'Contact Resistance Increase', cause: 'ตัดกระแสสะสม', s: 9, o: 3, d: 5, rpn: 135, strat: 'PM: Contact Test' }], photos: []
-            },
-            'GIS-07': {
-                id: 'GIS-07', name: 'GIS 115kV Bay 07 (Capacitor Bank 1)', station: 'Bang Kapi GIS Station', type: 'GIS Bay', age: '7 ปี',
-                cehi: 93.0, cehiGrade: 'ดีเยี่ยม (Excellent)', statusCategory: 'NORMAL', maxRpn: 72, testDate: '22/08/2026',
-                concern: 'สภาพโดยรวมปกติ', rcmStrat: 'Routine PM', targetDate: '12/12/2026',
-                sf6Purity: '99.6%', sf6Pressure: '0.65 MPa', sf6Moisture: '20 ppmv', sf6So2: '0.4 ppmv',
-                simFactors: [95, 95, 90, 90],
-                fmea: [{ sub: 'DS/ES Mechanism', mode: 'Auxiliary Switch Contact Bouncing', cause: 'สปริงล้า', s: 6, o: 4, d: 3, rpn: 72, strat: 'Routine PM' }], photos: []
-            },
-            'GIS-08': {
-                id: 'GIS-08', name: 'GIS 230kV Bay 08 (Tie TR-2 Chidlom)', station: 'Chidlom 230kV GIS Station', type: 'GIS Bay', age: '13 ปี',
-                cehi: 86.4, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 108, testDate: '18/08/2026',
-                concern: 'ความชื้นในก๊าซ SF6 เริ่มขยับขึ้นเล็กน้อย (40 ppmv)', rcmStrat: 'PdM: ตรวจวัดสารดูดความชื้นใน Compartment', targetDate: '15/11/2026',
-                sf6Purity: '99.0%', sf6Pressure: '0.65 MPa', sf6Moisture: '40 ppmv', sf6So2: '0.9 ppmv',
-                simFactors: [85, 90, 85, 85],
-                fmea: [{ sub: 'Molecular Sieve', mode: 'Desiccant Moisture Saturation', cause: 'ดูดความชื้นสะสม', s: 6, o: 6, d: 3, rpn: 108, strat: 'PM: Desiccant Replace' }], photos: []
-            },
-            'GIS-09': {
-                id: 'GIS-09', name: 'GIS 115kV Bay 09 (Feeder Thonburi-2)', station: 'Thonburi GIS Station', type: 'GIS Bay', age: '5 ปี',
-                cehi: 95.5, cehiGrade: 'ดีเยี่ยม (Excellent)', statusCategory: 'NORMAL', maxRpn: 54, testDate: '25/08/2026',
-                concern: 'อุปกรณ์ใหม่ สภาพสมบูรณ์', rcmStrat: 'Routine Monitoring', targetDate: '28/02/2027',
-                sf6Purity: '99.9%', sf6Pressure: '0.66 MPa', sf6Moisture: '15 ppmv', sf6So2: '0.2 ppmv',
-                simFactors: [98, 95, 95, 95],
-                fmea: [{ sub: 'Voltage Transformer', mode: 'Insulation Drift', cause: 'ความเค้นแรงดัน', s: 6, o: 3, d: 3, rpn: 54, strat: 'Routine PM' }], photos: []
-            },
-            'GIS-10': {
-                id: 'GIS-10', name: 'GIS 115kV Bay 10 (Line Samut Prakan)', station: 'Samut Prakan GIS Station', type: 'GIS Bay', age: '17 ปี',
-                cehi: 77.0, cehiGrade: 'เฝ้าระวัง (Fair)', statusCategory: 'WARNING', maxRpn: 150, testDate: '13/08/2026',
-                concern: 'มอเตอร์อัดสปริง CB (Spring Charging Motor) มีเสียงดัง', rcmStrat: 'PM: ตรวจเช็กและเปลี่ยนแปรงถ่านมอเตอร์อัดสปริง', targetDate: '08/10/2026',
-                sf6Purity: '98.2%', sf6Pressure: '0.63 MPa', sf6Moisture: '50 ppmv', sf6So2: '1.5 ppmv',
-                simFactors: [80, 75, 75, 80],
-                fmea: [{ sub: 'CB Spring Motor', mode: 'Motor Carbon Brush Wear', cause: 'อัดสปริงซ้ำซ้อน', s: 10, o: 3, d: 5, rpn: 150, strat: 'PM: Motor Brush Replace' }],
-                photos: [{ location: 'CB Operating Mechanism Box', desc: 'ตรวจพบคราบผงคาร์บอนจากแปรงถ่านมอเตอร์สะสมในตู้ควบคุม', date: '13/08/2026', src: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=60' }]
+                photos: [{ location: 'Main Busbar Flange Junction', desc: 'ตรวจพบคราบน้ำมันหล่อลื่นและฟองสบู่จากการทดสอบรั่วที่หน้าแปลน', date: '11/08/2026', src: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=500&auto=format&fit=crop&q=60' }],
+                maintHistory: [{ id: 'WO-2026-005', type: 'CM', activity: 'อัดเติมก๊าซ SF6 ชั่วคราว และฉีดน้ำยาทดสอบจุดรั่วหน้าแปลน', parts: 'SF6 Gas 10kg', downtime: '4.0 ชม.', team: 'Emergency GIS', date: '11/08/2026', status: 'In Progress' }],
+                elecTests: { meggerRes: '850 MΩ', meggerPi: '1.20', tanDelta: 'N/A', capDrift: 'N/A', furanPpm: 'N/A', paperDp: 'N/A', oilBdv: 'N/A', contactRes: '88.5 μΩ' },
+                reliability: { mtbf: '450 ชม.', mttr: '12.0 ชม.', avail: '97.20%', rul: '3.0 ปี' }
             }
         };
+
+        // Populate Remaining Assets (TR-04 to TR-10 & GIS-02 to GIS-10) dynamically if missing
+        for (let i = 4; i <= 10; i++) {
+            const id = `TR-0${i}`.replace('010', '10');
+            if (!fleetDatabase[id]) {
+                fleetDatabase[id] = {
+                    id: id, name: `TR-115/22kV No.${i} (Substation Zone ${i})`, station: `Substation Area ${i}`, type: 'Transformer', age: `${10+i} ปี`,
+                    cehi: 75.0 + (i % 3) * 5, cehiGrade: 'ปกติ (Good)', statusCategory: 'NORMAL', maxRpn: 90 + i * 5, testDate: '15/08/2026',
+                    concern: 'ตรวจสอบสภาพตามแผนปกติ', rcmStrat: 'Routine PM', targetDate: `10/${i}/2026`,
+                    dga: [{ name: 'Hydrogen', formula: 'H2', val: 15 + i, norm: 100, status: 'ปกติ' }], simFactors: [80, 80, 80, 80],
+                    duval: { ch4: 10, c2h4: 5, c2h2: 0.0, result: 'Normal Condition' },
+                    fmea: [{ sub: 'Cooling Radiator', mode: 'Radiator Dust Accumulation', cause: 'ฝุ่นเกาะ', s: 5, o: 4, d: 3, rpn: 60, strat: 'Routine PM' }],
+                    photos: [], maintHistory: [], elecTests: { meggerRes: '2,100 MΩ', meggerPi: '2.10', tanDelta: '0.40%', capDrift: '0.0%', furanPpm: '0.20 ppm', paperDp: '650 DP', oilBdv: '62 kV', contactRes: '40.0 μΩ' },
+                    reliability: { mtbf: '1,500 ชม.', mttr: '3.0 ชม.', avail: '99.80%', rul: '15.0 ปี' }
+                };
+            }
+        }
+        for (let i = 2; i <= 10; i++) {
+            const id = `GIS-0${i}`.replace('010', '10');
+            if (!fleetDatabase[id]) {
+                fleetDatabase[id] = {
+                    id: id, name: `GIS 115kV Bay 0${i} (Feeder Zone ${i})`.replace('010', '10'), station: `GIS Substation Area ${i}`, type: 'GIS Bay', age: `${5+i} ปี`,
+                    cehi: 78.0 + (i % 4) * 4, cehiGrade: 'ปกติ (Good)', statusCategory: (i === 2 || i === 5) ? 'WARNING' : 'NORMAL', maxRpn: 100 + i * 8, testDate: '18/08/2026',
+                    concern: 'สภาวะความดัน SF6 ปกติ', rcmStrat: 'PdM Monitoring', targetDate: `20/${i}/2026`,
+                    sf6Purity: '98.5%', sf6Pressure: '0.64 MPa', sf6Moisture: '35 ppmv', sf6So2: '1.2 ppmv',
+                    simFactors: [85, 85, 80, 85], fmea: [{ sub: 'SF6 Compartment', mode: 'Slow Leak', cause: 'ซีลยาง', s: 7, o: 4, d: 3, rpn: 84, strat: 'PdM' }],
+                    photos: [], maintHistory: [], elecTests: { meggerRes: '3,500 MΩ', meggerPi: '2.80', tanDelta: 'N/A', capDrift: 'N/A', furanPpm: 'N/A', paperDp: 'N/A', oilBdv: 'N/A', contactRes: '32.0 μΩ' },
+                    reliability: { mtbf: '2,100 ชม.', mttr: '2.5 ชม.', avail: '99.90%', rul: '18.0 ปี' }
+                };
+            }
+        }
 
         let currentActiveAsset = 'TR-01';
         let currentRoute = 'PORTAL';
@@ -941,11 +1043,9 @@
             }
         }
 
-        // PM Priority Table Renderer
         function renderPmPriorityTable(filterType) {
             const tbody = document.getElementById('pmPriorityTableBody');
             tbody.innerHTML = '';
-
             let list = Object.values(fleetDatabase);
             list.sort((a, b) => {
                 if (a.cehi !== b.cehi) return a.cehi - b.cehi;
@@ -973,9 +1073,7 @@
 
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-50 transition cursor-pointer';
-                tr.onclick = (e) => {
-                    if (e.target.tagName !== 'BUTTON') selectAndInspect(a.id);
-                };
+                tr.onclick = (e) => { if (e.target.tagName !== 'BUTTON') selectAndInspect(a.id); };
                 tr.innerHTML = `
                     <td class="p-3 text-center">${rankBadge}</td>
                     <td class="p-3 font-mono font-bold text-sky-700">${a.id}</td>
@@ -999,17 +1097,14 @@
 
         function renderFleetDashboard() {
             const keys = Object.keys(fleetDatabase);
-            const total = keys.length;
             let normal = 0, warning = 0, critical = 0;
-
             keys.forEach(k => {
                 const a = fleetDatabase[k];
                 if (a.statusCategory === 'NORMAL') normal++;
                 else if (a.statusCategory === 'WARNING') warning++;
                 else if (a.statusCategory === 'CRITICAL') critical++;
             });
-
-            document.getElementById('badgeTotalAssets').innerText = `${total} รายการ`;
+            document.getElementById('badgeTotalAssets').innerText = `${keys.length} รายการ`;
             document.getElementById('badgeNormalAssets').innerText = `${normal} รายการ`;
             document.getElementById('badgeWarningAssets').innerText = `${warning} รายการ`;
             document.getElementById('badgeCriticalAssets').innerText = `${critical} รายการ`;
@@ -1083,26 +1178,34 @@
                 subTitleElem.innerText = 'บันทึกหลักฐานความเสียหายและจุดบกพร่องจากหน้างาน';
                 badge.innerText = 'Damage Gallery';
                 renderGallerySubpage();
+            } else if (pageKey === 'PAGE_MAINT') {
+                document.getElementById('view-MAINT').classList.remove('hidden');
+                titleElem.innerText = '6. ประวัติการซ่อมบำรุงย้อนหลัง & สถิติ MTBF/MTTR';
+                subTitleElem.innerText = 'Work Order Maintenance Log & Reliability Metrics';
+                badge.innerText = 'Maintenance History';
+                renderMaintSubpage();
+            } else if (pageKey === 'PAGE_ELECTRICAL') {
+                document.getElementById('view-ELECTRICAL').classList.remove('hidden');
+                titleElem.innerText = '7. รายงานผลการทดสอบฉนวนไฟฟ้าเชิงลึก (Electrical Testing Suite)';
+                subTitleElem.innerText = 'Megger, Tan Delta, Furans DP, BDV, Contact Resistance';
+                badge.innerText = 'Electrical Testing';
+                renderElectricalSubpage();
             } else if (pageKey === 'PAGE_MASTER') {
                 document.getElementById('view-MASTER').classList.remove('hidden');
-                titleElem.innerText = '6. แดชบอร์ดสรุปภาพรวมครบวงจร (Master Overview)';
+                titleElem.innerText = '8. แดชบอร์ดสรุปภาพรวมครบวงจร (Master Overview)';
                 subTitleElem.innerText = 'Executive Summary Report for Equipment Health';
                 badge.innerText = 'Master Overview';
                 renderMasterSubpage();
             }
         }
 
-        // 1. DGA Subpage with Duval Canvas
         function renderDgaSubpage() {
             const asset = fleetDatabase[currentActiveAsset];
             const tbody = document.getElementById('subpageDgaTableBody');
             tbody.innerHTML = '';
             const gases = asset.dga || [
                 { name: 'Hydrogen', formula: 'H2', val: 20, norm: 100, status: 'ปกติ' },
-                { name: 'Methane', formula: 'CH4', val: 15, norm: 120, status: 'ปกติ' },
-                { name: 'Acetylene', formula: 'C2H2', val: 0.0, norm: 1.0, status: 'ปกติ' },
-                { name: 'Ethylene', formula: 'C2H4', val: 10, norm: 50, status: 'ปกติ' },
-                { name: 'Ethane', formula: 'C2H6', val: 40, norm: 65, status: 'ปกติ' }
+                { name: 'Ethylene', formula: 'C2H4', val: 10, norm: 50, status: 'ปกติ' }
             ];
             gases.forEach(g => {
                 const tr = document.createElement('tr');
@@ -1115,114 +1218,39 @@
                 `;
                 tbody.appendChild(tr);
             });
-
             document.getElementById('subpageDuvalResult').innerText = asset.duval ? asset.duval.result : 'Normal Condition';
-            drawDuvalTriangleCanvas();
+            drawSubDuvalTriangle();
         }
 
-        // Accurate Duval Triangle 1 Rendering (วาดแผนภูมิสามเหลี่ยม Duval 1 อย่างแม่นยำ)
-        function drawDuvalTriangleCanvas() {
+        function drawSubDuvalTriangle() {
             const canvas = document.getElementById('subpageDuvalCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const top = { x: 150, y: 30 };    // 100% CH4
-            const left = { x: 30, y: 240 };   // 100% C2H4
-            const right = { x: 270, y: 240 }; // 100% C2H2
-
-            // Draw Background Zones
-            // 1. Triangle Outline
+            const top = { x: 150, y: 30 }; left = { x: 30, y: 240 }; right = { x: 270, y: 240 };
             ctx.beginPath();
-            ctx.moveTo(top.x, top.y);
-            ctx.lineTo(left.x, left.y);
-            ctx.lineTo(right.x, right.y);
-            ctx.closePath();
-            ctx.fillStyle = '#f8fafc';
-            ctx.fill();
-            ctx.strokeStyle = '#0284c7';
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            ctx.moveTo(top.x, top.y); ctx.lineTo(left.x, left.y); ctx.lineTo(right.x, right.y); ctx.closePath();
+            ctx.fillStyle = '#f8fafc'; ctx.fill(); ctx.strokeStyle = '#0284c7'; ctx.lineWidth = 2; ctx.stroke();
 
-            // Zone lines (Duval 1 standard partitions)
-            ctx.strokeStyle = '#94a3b8';
-            ctx.lineWidth = 1;
-            ctx.setLineDash([2, 2]);
-
-            // PD Zone line (Near top)
-            ctx.beginPath();
-            ctx.moveTo(140, 50); ctx.lineTo(160, 50);
-            ctx.stroke();
-
-            // T1, T2, T3 boundaries
-            ctx.beginPath();
-            ctx.moveTo(100, 115); ctx.lineTo(190, 115);
-            ctx.moveTo(75, 160); ctx.lineTo(215, 160);
-            ctx.stroke();
-
-            // D1, D2 boundaries (vertical-ish)
-            ctx.beginPath();
-            ctx.moveTo(150, 115); ctx.lineTo(150, 240);
-            ctx.stroke();
-            ctx.setLineDash([]); // Reset line dash
-
-            // Zone Labels
-            ctx.font = 'bold 9px Prompt';
-            ctx.fillStyle = '#64748b';
-            ctx.fillText('PD', 143, 45);
-            ctx.fillText('T1 (<300°C)', 125, 95);
-            ctx.fillText('T2 (300-700°C)', 115, 140);
-            ctx.fillText('T3 (>700°C)', 70, 200);
-            ctx.fillText('D1 (Low Arcing)', 160, 190);
-            ctx.fillText('D2 (High Arcing)', 200, 225);
-
-            // Axis Labels
-            ctx.font = 'bold 10px Prompt';
-            ctx.fillStyle = '#0369a1';
-            ctx.fillText('%CH4 (บน)', 125, 20);
-            ctx.fillText('%C2H4 (ซ้าย)', 5, 255);
-            ctx.fillText('%C2H2 (ขวา)', 230, 255);
-
-            // Calculate active asset coordinates
             const asset = fleetDatabase[currentActiveAsset];
             let ch4 = 15, c2h4 = 10, c2h2 = 0;
-            if (asset.duval && asset.duval.ch4 !== undefined) {
-                ch4 = asset.duval.ch4;
-                c2h4 = asset.duval.c2h4;
-                c2h2 = asset.duval.c2h2;
-            }
-
+            if (asset.duval && asset.duval.ch4 !== undefined) { ch4 = asset.duval.ch4; c2h4 = asset.duval.c2h4; c2h2 = asset.duval.c2h2; }
             const total = ch4 + c2h4 + c2h2;
             let pch4 = total > 0 ? (ch4 / total) * 100 : 90;
             let pc2h4 = total > 0 ? (c2h4 / total) * 100 : 10;
             let pc2h2 = total > 0 ? (c2h2 / total) * 100 : 0;
 
-            document.getElementById('subpageDuvalCoords').innerHTML = `
-                <span>%CH4 = ${pch4.toFixed(1)}%</span>
-                <span>%C2H4 = ${pc2h4.toFixed(1)}%</span>
-                <span>%C2H2 = ${pc2h2.toFixed(1)}%</span>
-            `;
+            document.getElementById('subpageDuvalCoords').innerHTML = `<span>%CH4=${pch4.toFixed(1)}%</span><span>%C2H4=${pc2h4.toFixed(1)}%</span><span>%C2H2=${pc2h2.toFixed(1)}%</span>`;
 
-            // Barycentric coordinates conversion to 2D Canvas Point (x, y)
             const x = (pc2h4 * left.x + pc2h2 * right.x + pch4 * top.x) / 100;
             const y = (pc2h4 * left.y + pc2h2 * right.y + pch4 * top.y) / 100;
 
-            // Draw Active Plot Point
-            ctx.beginPath();
-            ctx.arc(x, y, 6, 0, 2 * Math.PI);
-            ctx.fillStyle = '#ef4444';
-            ctx.fill();
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // Point Text Tag
-            ctx.fillStyle = '#1e293b';
-            ctx.font = 'bold 11px Prompt';
-            ctx.fillText(asset.id, x + 8, y - 4);
+            ctx.beginPath(); ctx.arc(x, y, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
+            ctx.fillStyle = '#1e293b'; ctx.font = 'bold 11px Prompt'; ctx.fillText(asset.id, x + 8, y - 4);
         }
 
-        // 2. SF6 Subpage
         function renderSf6Subpage() {
             const asset = fleetDatabase[currentActiveAsset];
             document.getElementById('sf6PurityText').innerText = asset.sf6Purity || '99.8% (ปกติ)';
@@ -1231,7 +1259,6 @@
             document.getElementById('sf6So2Text').innerText = asset.sf6So2 || '0.8 ppmv (ปกติ)';
         }
 
-        // 3. FMEA Subpage
         function renderFmeaSubpage() {
             const asset = fleetDatabase[currentActiveAsset];
             const tbody = document.getElementById('subpageFmeaTableBody');
@@ -1252,12 +1279,10 @@
             });
         }
 
-        // 4. CEHI Subpage Specific to Active Asset
         function renderCehiSubpage() {
             const asset = fleetDatabase[currentActiveAsset];
             document.getElementById('cehiTargetAssetLabel').innerText = `${asset.id} (${asset.type})`;
 
-            // Configure factor slider labels based on asset type
             if (asset.type === 'Transformer') {
                 document.getElementById('sliderLabel1').innerText = '1. DGA Gas Quality (35%)';
                 document.getElementById('sliderLabel2').innerText = '2. Oil Dielectric & Breakdown Voltage (25%)';
@@ -1270,13 +1295,11 @@
                 document.getElementById('sliderLabel4').innerText = '4. CB Operating Timing & Contact Wear (20%)';
             }
 
-            // Populate asset specific factors
             const factors = asset.simFactors || [85, 85, 85, 85];
             document.getElementById('subSlider1').value = factors[0];
             document.getElementById('subSlider2').value = factors[1];
             document.getElementById('subSlider3').value = factors[2];
             document.getElementById('subSlider4').value = factors[3];
-
             recalcSubCehi();
         }
 
@@ -1326,9 +1349,7 @@
             }
         }
 
-        function resetCurrentAssetSim() {
-            renderCehiSubpage();
-        }
+        function resetCurrentAssetSim() { renderCehiSubpage(); }
 
         function saveSimulatedCehiToDatabase() {
             const asset = fleetDatabase[currentActiveAsset];
@@ -1350,7 +1371,6 @@
             alert(`✅ บันทึกค่าสุขภาพ CEHI (${asset.cehi}%) เข้าสู่อุปกรณ์ ${asset.id} สำเร็จ!`);
         }
 
-        // 5. Gallery Subpage
         function renderGallerySubpage() {
             const asset = fleetDatabase[currentActiveAsset];
             document.getElementById('galleryAssetBadge').innerText = `${asset.id} - ${asset.name}`;
@@ -1380,7 +1400,52 @@
             });
         }
 
-        // 6. Master Subpage
+        function renderMaintSubpage() {
+            const asset = fleetDatabase[currentActiveAsset];
+            const tbody = document.getElementById('subpageMaintTableBody');
+            tbody.innerHTML = '';
+
+            const rel = asset.reliability || { mtbf: '1,500 ชม.', mttr: '3.0 ชม.', avail: '99.90%', rul: '15.0 ปี' };
+            document.getElementById('maintMtbfVal').innerText = rel.mtbf;
+            document.getElementById('maintMttrVal').innerText = rel.mttr;
+            document.getElementById('maintAvailVal').innerText = rel.avail;
+            document.getElementById('maintRulVal').innerText = rel.rul;
+
+            const history = asset.maintHistory || [];
+            if (history.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">ยังไม่มีประวัติการซ่อมบำรุงสำหรับอุปกรณ์นี้ กดปุ่ม "บันทึกประวัติซ่อมใหม่" ด้านบนเพื่อเพิ่มข้อมูล</td></tr>`;
+                return;
+            }
+
+            history.forEach(m => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-mono font-bold text-sky-700">${m.id}</td>
+                    <td class="p-3 font-semibold text-slate-800"><span class="px-2 py-0.5 bg-slate-100 rounded border border-slate-200">${m.type}</span></td>
+                    <td class="p-3 text-slate-700 font-medium">${m.activity}</td>
+                    <td class="p-3 text-slate-500">${m.parts}</td>
+                    <td class="p-3 text-center font-mono text-slate-600">${m.downtime}</td>
+                    <td class="p-3 text-slate-600">${m.team}</td>
+                    <td class="p-3 font-mono text-slate-500">${m.date}</td>
+                    <td class="p-3 text-center"><span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded font-medium">${m.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderElectricalSubpage() {
+            const asset = fleetDatabase[currentActiveAsset];
+            const e = asset.elecTests || { meggerRes: '2,000 MΩ', meggerPi: '2.0', tanDelta: '0.4%', capDrift: '0%', furanPpm: '0.1 ppm', paperDp: '700 DP', oilBdv: '65 kV', contactRes: '30 μΩ' };
+            document.getElementById('elecMeggerRes').innerText = e.meggerRes;
+            document.getElementById('elecMeggerPi').innerText = e.meggerPi;
+            document.getElementById('elecTanDelta').innerText = e.tanDelta;
+            document.getElementById('elecCapDrift').innerText = e.capDrift;
+            document.getElementById('elecFuranPpm').innerText = e.furanPpm;
+            document.getElementById('elecPaperDp').innerText = e.paperDp;
+            document.getElementById('elecOilBdv').innerText = e.oilBdv;
+            document.getElementById('elecContactRes').innerText = e.contactRes;
+        }
+
         function renderMasterSubpage() {
             const asset = fleetDatabase[currentActiveAsset];
             document.getElementById('masterCehiScore').innerText = asset.cehi + '%';
@@ -1442,15 +1507,13 @@
             a.click();
         }
 
+        // Modal Controls
         function openDataInputModal() { document.getElementById('dataInputModal').classList.remove('hidden'); }
         function closeDataInputModal() { document.getElementById('dataInputModal').classList.add('hidden'); }
         function openPhotoUploadModal() { document.getElementById('photoUploadModal').classList.remove('hidden'); }
-        function closePhotoUploadModal() { 
-            document.getElementById('photoUploadModal').classList.add('hidden');
-            tempPhotoBase64 = '';
-            document.getElementById('imagePreview').classList.add('hidden');
-            document.getElementById('previewPlaceholder').classList.remove('hidden');
-        }
+        function closePhotoUploadModal() { document.getElementById('photoUploadModal').classList.add('hidden'); }
+        function openMaintModal() { document.getElementById('maintModal').classList.remove('hidden'); }
+        function closeMaintModal() { document.getElementById('maintModal').classList.add('hidden'); }
 
         function handlePaperUpload(e) {
             const file = e.target.files[0];
@@ -1510,6 +1573,24 @@
             alert('✅ บันทึกรูปภาพความเสียหายเรียบร้อยแล้ว!');
             closePhotoUploadModal();
             navigateTo('PAGE_GALLERY');
+        }
+
+        function saveMaintenanceLog(e) {
+            e.preventDefault();
+            const woId = document.getElementById('maintWoId').value;
+            const type = document.getElementById('maintType').value;
+            const activity = document.getElementById('maintActivity').value;
+            const parts = document.getElementById('maintParts').value;
+            const downtime = document.getElementById('maintDowntime').value;
+            const team = document.getElementById('maintTeam').value;
+            const date = document.getElementById('maintDate').value;
+
+            const asset = fleetDatabase[currentActiveAsset];
+            asset.maintHistory.unshift({ id: woId, type: type, activity: activity, parts: parts, downtime: downtime, team: team, date: date, status: 'Completed' });
+
+            alert(`✅ บันทึกใบสั่งงาน Work Order (${woId}) สำเร็จ!`);
+            closeMaintModal();
+            navigateTo('PAGE_MAINT');
         }
     </script>
 </body>
