@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="w-full h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +42,7 @@
             box-sizing: border-box;
         }
         html, body {
-            width: 100%;
+            width: 100vw;
             min-height: 100vh;
             margin: 0;
             padding: 0;
@@ -165,52 +165,55 @@
     <!-- RIGHT MAIN CONTENT AREA -->
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto custom-scrollbar w-full">
         
-        <!-- TOPBAR -->
-        <header id="topBar" class="bg-white/95 backdrop-blur border-b border-blue-100 sticky top-0 z-30 px-6 py-3 flex flex-wrap items-center justify-between gap-4 shadow-xs hidden">
+        <!-- TOPBAR (Minimal Dropdown Menus) -->
+        <header id="topBar" class="bg-white/95 backdrop-blur border-b border-blue-100 sticky top-0 z-30 px-6 py-3 flex flex-wrap items-center justify-between gap-4 shadow-xs hidden w-full">
             <div class="flex items-center gap-2">
                 <span id="currentPageBadge" class="text-xs bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1 rounded-full font-prompt font-semibold">หน้าหลัก (Portal Overview)</span>
             </div>
 
-            <!-- Action Controls -->
-            <div class="flex items-center flex-wrap gap-2">
-                <div class="flex items-center gap-2 bg-blue-50/60 border border-blue-200/80 px-3 py-1.5 rounded-xl text-xs font-prompt">
+            <!-- Action Controls (Minimal Dropdowns) -->
+            <div class="flex items-center flex-wrap gap-2 text-xs font-prompt">
+                <div class="flex items-center gap-2 bg-blue-50/60 border border-blue-200/80 px-3 py-1.5 rounded-xl">
                     <span class="text-blue-900 font-bold"><i class="fa-solid fa-industry text-blue-600 mr-1"></i>อุปกรณ์:</span>
                     <select id="assetSelectDropdown" onchange="onAssetChange(this.value)" class="bg-transparent text-blue-900 font-bold focus:outline-none cursor-pointer">
                     </select>
                 </div>
 
-                <button onclick="openMaintModal()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
-                    <i class="fa-solid fa-screwdriver-wrench text-slate-300"></i> บันทึกซ่อม
-                </button>
+                <!-- Action Dropdown Menu -->
+                <div class="relative">
+                    <button onclick="toggleActionDropdown()" class="bg-slate-900 hover:bg-black text-white font-medium px-4 py-1.5 rounded-xl transition shadow-xs flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-sliders text-slate-300"></i> จัดการข้อมูล <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div id="actionDropdownMenu" class="absolute right-0 mt-2 w-48 bg-white border border-slate-100 rounded-2xl shadow-xl py-1 hidden z-50">
+                        <button onclick="openMaintModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-screwdriver-wrench w-4 text-purple-600"></i> บันทึกซ่อม</button>
+                        <button onclick="openDataInputModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-file-arrow-up w-4 text-emerald-600"></i> นำเข้าผลตรวจ</button>
+                        <button onclick="openPhotoUploadModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-camera w-4 text-amber-600"></i> แนบรูปความเสียหาย</button>
+                    </div>
+                </div>
 
-                <button onclick="openDataInputModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-arrow-up"></i> นำเข้าผลตรวจ
-                </button>
-
-                <button onclick="openPhotoUploadModal()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
-                    <i class="fa-solid fa-camera"></i> แนบรูป
-                </button>
-
-                <button onclick="downloadDirectPDF()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-pdf"></i> โหลด PDF
-                </button>
-
-                <button onclick="exportToCSV()" class="bg-white hover:bg-blue-50 text-slate-700 text-xs font-medium px-3.5 py-1.5 rounded-xl transition border border-blue-200 flex items-center gap-1.5 shadow-xs">
-                    <i class="fa-solid fa-file-csv text-emerald-600"></i> CSV
-                </button>
+                <!-- Export Dropdown Menu -->
+                <div class="relative">
+                    <button onclick="toggleExportDropdown()" class="bg-white hover:bg-blue-50 text-slate-700 font-medium px-4 py-1.5 rounded-xl transition border border-slate-200 flex items-center gap-2 cursor-pointer shadow-xs">
+                        <i class="fa-solid fa-download text-sky-600"></i> ส่งออกรายงาน <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div id="exportDropdownMenu" class="absolute right-0 mt-2 w-44 bg-white border border-slate-100 rounded-2xl shadow-xl py-1 hidden z-50">
+                        <button onclick="downloadDirectPDF(); closeExportDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-file-pdf w-4 text-rose-600"></i> ดาวน์โหลด PDF</button>
+                        <button onclick="exportToCSV(); closeExportDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-file-csv w-4 text-emerald-600"></i> ส่งออก CSV</button>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <!-- MAIN VIEWPORT -->
+        <!-- MAIN VIEWPORT Container -->
         <div class="flex-1 flex flex-col w-full">
 
-            <!-- PAGE -1: WELCOME LANDING COVER -->
+            <!-- PAGE -1: WELCOME LANDING COVER (Full Width 100%) -->
             <section id="page-PAGE_LANDING" class="w-full min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-white p-8 sm:p-14 flex flex-col justify-between relative overflow-hidden">
                 
                 <div class="absolute top-1/4 left-1/3 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="absolute bottom-10 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                <div class="relative z-10 flex justify-between items-center border-b border-slate-800 pb-6">
+                <div class="relative z-10 w-full flex justify-between items-center border-b border-slate-800 pb-6">
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white shadow-md text-xl">
                             <i class="fa-solid fa-bolt-lightning"></i>
@@ -226,7 +229,7 @@
                     </div>
                 </div>
 
-                <div class="relative z-10 my-10 max-w-4xl space-y-6">
+                <div class="relative z-10 my-10 max-w-5xl space-y-6 w-full">
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-blue-900/40 text-cyan-300 border border-blue-800/50 rounded-full text-xs font-medium font-prompt">
                         <i class="fa-solid fa-shield-halved text-cyan-400"></i> Reliability-Centered Maintenance Core Platform
                     </div>
@@ -239,7 +242,7 @@
                         วิเคราะห์ผลการตรวจวัดก๊าซ DGA, แผนภูมิ Duval Triangle 1, ก๊าซฉนวน SF6, การประเมินความเสี่ยง FMEA/RPN และการคำนวณดัชนีสุขภาพ CEHI รวมเพื่อการจัดลำดับการบำรุงรักษาอย่างมีประสิทธิภาพสูงสุด
                     </p>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2 w-full">
                         <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl backdrop-blur">
                             <span class="text-xs text-slate-400 block font-prompt">หม้อแปลง & GIS</span>
                             <span class="text-2xl font-bold font-mono text-cyan-400">20 อุปกรณ์</span>
@@ -268,13 +271,13 @@
                     </div>
                 </div>
 
-                <div class="relative z-10 border-t border-slate-800 pt-4 flex flex-wrap justify-between items-center text-xs text-slate-400 font-prompt">
+                <div class="relative z-10 w-full border-t border-slate-800 pt-4 flex flex-wrap justify-between items-center text-xs text-slate-400 font-prompt">
                     <span>© 2026 RCM CORE - Enterprise Asset Intelligence Suite</span>
                     <span class="text-cyan-400">Power Grid Substation Maintenance Division</span>
                 </div>
             </section>
 
-            <!-- PAGE 0: PORTAL HUB -->
+            <!-- PAGE 0: PORTAL HUB (ตารางหน้าแรก ซ่อนคอลัมน์ไม่จำเป็น) -->
             <section id="page-PORTAL" class="p-6 space-y-6 hidden w-full">
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -323,7 +326,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white border border-blue-100 p-6 rounded-2xl shadow-xs space-y-4">
+                <div class="bg-white border border-blue-100 p-6 rounded-2xl shadow-xs space-y-4 w-full">
                     <div class="flex flex-wrap justify-between items-center gap-3 border-b border-blue-50 pb-4">
                         <div>
                             <h3 class="text-base font-bold text-slate-800 font-prompt flex items-center gap-2">
@@ -342,20 +345,18 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto custom-scrollbar">
+                    <div class="overflow-x-auto custom-scrollbar w-full">
                         <table class="w-full text-left text-xs">
                             <thead class="bg-blue-50/60 text-blue-900 font-prompt border-b border-blue-100 uppercase">
                                 <tr>
                                     <th class="p-3 text-center font-bold">ลำดับ</th>
                                     <th class="p-3 font-semibold">รหัสอุปกรณ์</th>
                                     <th class="p-3 font-semibold">ชื่ออุปกรณ์ / สถานีไฟฟ้า</th>
-                                    <th class="p-3 font-semibold">ประเภท</th>
                                     <th class="p-3 text-center font-semibold">ดัชนี CEHI</th>
                                     <th class="p-3 text-center font-semibold">ค่า RPN</th>
                                     <th class="p-3 font-semibold">สาเหตุความเสี่ยงหลัก</th>
                                     <th class="p-3 font-semibold text-center">ขั้นตอนงาน (Stage)</th>
                                     <th class="p-3 font-semibold">กำหนดการ</th>
-                                    <th class="p-3 text-center font-semibold">รูปภาพ</th>
                                     <th class="p-3 text-center font-semibold">การกระทำ</th>
                                 </tr>
                             </thead>
@@ -401,10 +402,10 @@
                 </div>
 
                 <!-- EXPORTABLE REPORT WRAPPER -->
-                <div id="reportContentToExport" class="space-y-6">
+                <div id="reportContentToExport" class="space-y-6 w-full">
 
                     <!-- ALL TESTS OVERVIEW -->
-                    <div id="view-ALL_TESTS" class="subview space-y-6 hidden">
+                    <div id="view-ALL_TESTS" class="subview space-y-6 hidden w-full">
                         <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-blue-100 shadow-xs">
                             <div>
                                 <h3 class="text-sm font-bold text-slate-800 font-prompt flex items-center gap-2">
@@ -415,7 +416,7 @@
                             <span class="text-xs font-semibold px-3 py-1 bg-blue-50 text-blue-800 rounded-lg border border-blue-200">Full Diagnostics</span>
                         </div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                             
                             <!-- 1. DGA Summary -->
                             <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
@@ -542,8 +543,8 @@
                     </div>
 
                     <!-- SUB-PAGE 1: DGA VIEW -->
-                    <div id="view-DGA" class="subview space-y-6 hidden">
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div id="view-DGA" class="subview space-y-6 hidden w-full">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
                             <div class="lg:col-span-2 bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
                                 <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-blue-50 pb-3 font-prompt">
                                     <i class="fa-solid fa-vials text-sky-600"></i> ตารางความเข้มข้นก๊าซ DGA ในน้ำมัน (ppm)
@@ -593,8 +594,8 @@
                     </div>
 
                     <!-- SUB-PAGE 2: SF6 VIEW -->
-                    <div id="view-SF6" class="subview space-y-6 hidden">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div id="view-SF6" class="subview space-y-6 hidden w-full">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                             <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
                                 <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-blue-50 pb-3 font-prompt">
                                     <i class="fa-solid fa-wind text-blue-600"></i> คุณภาพก๊าซฉนวน SF6 ใน Compartment
@@ -634,12 +635,12 @@
                     </div>
 
                     <!-- SUB-PAGE 3: FMEA VIEW -->
-                    <div id="view-FMEA" class="subview space-y-6 hidden">
-                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                    <div id="view-FMEA" class="subview space-y-6 hidden w-full">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4 w-full">
                             <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-blue-50 pb-3 font-prompt">
                                 <i class="fa-solid fa-table-list text-amber-600"></i> ตารางวิเคราะห์ FMEA & คำนวณคะแนน RPN Score
                             </h3>
-                            <div class="overflow-x-auto custom-scrollbar">
+                            <div class="overflow-x-auto custom-scrollbar w-full">
                                 <table class="w-full text-left text-xs text-slate-700">
                                     <thead class="bg-blue-50/60 text-blue-900 font-prompt border-b border-blue-100 uppercase">
                                         <tr>
@@ -660,8 +661,8 @@
                     </div>
 
                     <!-- SUB-PAGE 4: CEHI VIEW -->
-                    <div id="view-CEHI" class="subview space-y-6 hidden">
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div id="view-CEHI" class="subview space-y-6 hidden w-full">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
                             <div class="lg:col-span-2 bg-white border border-blue-100 p-6 rounded-2xl shadow-xs space-y-5">
                                 <div class="flex flex-wrap justify-between items-center border-b border-blue-50 pb-3 gap-2">
                                     <div>
@@ -730,8 +731,8 @@
                     </div>
 
                     <!-- SUB-PAGE 5: DAMAGE GALLERY -->
-                    <div id="view-GALLERY" class="subview space-y-6 hidden">
-                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                    <div id="view-GALLERY" class="subview space-y-6 hidden w-full">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4 w-full">
                             <div class="flex justify-between items-center border-b border-blue-50 pb-3">
                                 <div>
                                     <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 font-prompt">
@@ -744,13 +745,13 @@
                                 </button>
                             </div>
 
-                            <div id="damageGalleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                            <div id="damageGalleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full"></div>
                         </div>
                     </div>
 
                     <!-- SUB-PAGE 6: MAINTENANCE HISTORY -->
-                    <div id="view-MAINT" class="subview space-y-6 hidden">
-                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div id="view-MAINT" class="subview space-y-6 hidden w-full">
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 w-full">
                             <div class="bg-white border border-blue-100 p-4 rounded-xl shadow-xs">
                                 <span class="text-xs text-slate-400">MTBF (เฉลี่ยการทำงาน)</span>
                                 <h4 id="maintMtbfVal" class="text-lg font-bold text-blue-900 font-mono mt-1">1,450 ชม.</h4>
@@ -769,7 +770,7 @@
                             </div>
                         </div>
 
-                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4 w-full">
                             <div class="flex justify-between items-center border-b border-blue-50 pb-3">
                                 <div>
                                     <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 font-prompt">
@@ -782,7 +783,7 @@
                                 </button>
                             </div>
 
-                            <div class="overflow-x-auto custom-scrollbar">
+                            <div class="overflow-x-auto custom-scrollbar w-full">
                                 <table class="w-full text-left text-xs text-slate-700">
                                     <thead class="bg-blue-50/60 text-blue-900 font-prompt border-b border-blue-100 uppercase">
                                         <tr>
@@ -803,13 +804,13 @@
                     </div>
 
                     <!-- SUB-PAGE 7: ELECTRICAL TESTS -->
-                    <div id="view-ELECTRICAL" class="subview space-y-6 hidden">
-                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4">
+                    <div id="view-ELECTRICAL" class="subview space-y-6 hidden w-full">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-4 w-full">
                             <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-blue-50 pb-3 font-prompt">
                                 <i class="fa-solid fa-bolt text-teal-600"></i> รายงานผลการทดสอบฉนวนไฟฟ้าเชิงลึก (Electrical Testing Suite)
                             </h3>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs w-full">
                                 <div class="p-4 bg-blue-50/30 rounded-xl space-y-2 border border-blue-50">
                                     <span class="font-bold text-blue-900 flex items-center gap-1.5"><i class="fa-solid fa-gauge text-sky-600"></i> Megger Insulation & PI</span>
                                     <div class="flex justify-between border-b border-blue-100 pb-1"><span class="text-slate-400">Insulation Res (10 min):</span><span id="elecMeggerRes" class="font-bold font-mono text-slate-800">2,450 MΩ</span></div>
@@ -838,8 +839,8 @@
                     </div>
 
                     <!-- SUB-PAGE 8: MASTER VIEW -->
-                    <div id="view-MASTER" class="subview space-y-6 hidden">
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div id="view-MASTER" class="subview space-y-6 hidden w-full">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
                             <div class="bg-white border border-blue-100 p-4 rounded-xl shadow-xs">
                                 <span class="text-xs text-slate-400">ดัชนีสุขภาพ CEHI</span>
                                 <h4 id="masterCehiScore" class="text-2xl font-bold text-emerald-600 mt-1">88.4%</h4>
@@ -854,7 +855,7 @@
                             </div>
                         </div>
 
-                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-3">
+                        <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs space-y-3 w-full">
                             <h4 class="text-xs font-bold text-slate-800 flex items-center gap-2 font-prompt uppercase tracking-wider">
                                 <i class="fa-solid fa-camera text-orange-500"></i> รูปภาพตรวจสภาพล่าสุด
                             </h4>
@@ -1382,7 +1383,7 @@
                 const stageBadge = getStageBadgeHTML(a.stage || 1, a.stageText || '1. ตรวจพบ');
 
                 const photoBtn = a.photos.length > 0
-                    ? `<button onclick="event.stopPropagation(); openLightbox('${a.photos[0].src}', '${a.id} - ${a.photos[0].location}', '${a.photos[0].desc}', '${a.photos[0].date}')" class="text-amber-600 hover:text-amber-700 font-semibold flex items-center gap-1 mx-auto"><i class="fa-solid fa-image"></i> ดูรูป (${a.photos.length})</button>`
+                    ? `<button onclick="event.stopPropagation(); openLightbox('${a.photos[0].src}', '${a.id} - ${a.photos[0].location}', '${a.photos[0].desc}', '${a.photos[0].date}')" class="text-amber-600 hover:text-amber-700 font-semibold flex items-center gap-1 mx-auto"><i class="fa-solid fa-image"></i> (${a.photos.length})</button>`
                     : `<span class="text-slate-400">-</span>`;
 
                 const tr = document.createElement('tr');
@@ -1398,7 +1399,6 @@
                     <td class="p-3 text-center">${rankBadge}</td>
                     <td class="p-3 font-mono font-bold text-blue-900">${a.id}</td>
                     <td class="p-3 font-medium text-slate-800">${a.name}</td>
-                    <td class="p-3 text-slate-500">${a.type}</td>
                     <td class="p-3 text-center font-mono ${cehiClass}">${a.cehi}%</td>
                     <td class="p-3 text-center font-mono font-bold text-amber-600">${a.maxRpn}</td>
                     <td class="p-3 text-slate-600 font-medium max-w-xs truncate" title="${a.concern}">${a.concern}</td>
@@ -1472,6 +1472,30 @@
         function onAssetChange(assetId) {
             currentActiveAsset = assetId;
             if (currentRoute !== 'PORTAL' && currentRoute !== 'PAGE_LANDING') navigateTo(currentRoute);
+        }
+
+        // Action & Export Dropdown Toggles
+        function toggleActionDropdown() {
+            const menu = document.getElementById('actionDropdownMenu');
+            menu.classList.toggle('hidden');
+            document.getElementById('exportDropdownMenu').classList.add('hidden');
+        }
+        function closeActionDropdown() {
+            document.getElementById('actionDropdownMenu').classList.add('hidden');
+        }
+        function toggleExportDropdown() {
+            const menu = document.getElementById('exportDropdownMenu');
+            menu.classList.toggle('hidden');
+            document.getElementById('actionDropdownMenu').classList.add('hidden');
+        }
+        function closeExportDropdown() {
+            document.getElementById('exportDropdownMenu').classList.add('hidden');
+        }
+        window.onclick = function(e) {
+            if (!e.target.closest('button')) {
+                closeActionDropdown();
+                closeExportDropdown();
+            }
         }
 
         function navigateTo(pageKey) {
@@ -2161,4 +2185,3 @@
     </script>
 </body>
 </html>
-```eof
