@@ -56,7 +56,7 @@
             <span class="text-sm font-bold font-prompt">RCM CORE</span>
         </div>
         <div class="flex items-center gap-2">
-            <button onclick="openMobileMenu()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-prompt flex items-center gap-1.5 shadow-xs">
+            <button onclick="openMobileMenu()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-prompt flex items-center gap-1.5 shadow-xs cursor-pointer">
                 <i class="fa-solid fa-bars"></i> เมนู
             </button>
         </div>
@@ -71,25 +71,25 @@
                         <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-700 to-sky-500 flex items-center justify-center text-white text-sm"><i class="fa-solid fa-bolt-lightning"></i></div>
                         <h2 class="text-xs font-bold text-slate-900 font-prompt">RCM CORE Suite</h2>
                     </div>
-                    <button onclick="closeMobileMenu()" class="text-slate-400 hover:text-slate-700 text-lg p-1"><i class="fa-solid fa-xmark"></i></button>
+                    <button onclick="closeMobileMenu()" class="text-slate-400 hover:text-slate-700 text-lg p-1 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <nav class="p-3 space-y-1 text-xs font-prompt">
                     <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">ระบบหลัก</div>
-                    <button onclick="navigateTo('PAGE_LANDING'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-circle-left w-4 text-blue-600"></i> หน้าต้อนรับ (Landing)</button>
-                    <button onclick="navigateTo('PORTAL'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-blue-800 bg-blue-50"><i class="fa-solid fa-house w-4"></i> ตารางจัดลำดับความเสี่ยง</button>
-                    <button onclick="navigateTo('PAGE_SLD'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-network-wired w-4 text-cyan-600"></i> แผนผังเส้นทางระบบไฟฟ้า (SLD)</button>
-                    <button onclick="navigateTo('PAGE_ALL_TESTS'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-folder-open w-4 text-sky-600"></i> ผลตรวจรวมทั้งหมด</button>
-                    <button onclick="navigateTo('PAGE_TREND'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-chart-line w-4 text-indigo-600"></i> กราฟแนวโน้มย้อนหลัง</button>
+                    <button onclick="navigateTo('PAGE_LANDING'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-circle-left w-4 text-blue-600"></i> หน้าต้อนรับ (Landing)</button>
+                    <button onclick="navigateTo('PORTAL'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-blue-800 bg-blue-50 cursor-pointer"><i class="fa-solid fa-house w-4"></i> ตารางจัดลำดับความเสี่ยง</button>
+                    <button onclick="navigateTo('PAGE_SLD'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-map-location-dot w-4 text-cyan-600"></i> แผนผังตำแหน่งสถานี (Yard Map)</button>
+                    <button onclick="navigateTo('PAGE_ALL_TESTS'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-folder-open w-4 text-sky-600"></i> ผลตรวจรวมทั้งหมด</button>
+                    <button onclick="navigateTo('PAGE_TREND'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-chart-line w-4 text-indigo-600"></i> กราฟแนวโน้มย้อนหลัง</button>
 
                     <div class="pt-2 px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">รายงานแยกตามการทดสอบ</div>
-                    <button onclick="navigateTo('PAGE_DGA'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-flask-vial w-4 text-sky-600"></i> 1. ก๊าซ DGA & Duval</button>
-                    <button onclick="navigateTo('PAGE_SF6'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-wind w-4 text-blue-600"></i> 2. ก๊าซฉนวน SF6 ใน GIS</button>
-                    <button onclick="navigateTo('PAGE_FMEA'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-table-list w-4 text-amber-600"></i> 3. วิเคราะห์ FMEA & RPN</button>
-                    <button onclick="navigateTo('PAGE_CEHI'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-heart-pulse w-4 text-emerald-600"></i> 4. จำลองดัชนีสุขภาพ CEHI</button>
-                    <button onclick="navigateTo('PAGE_GALLERY'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-images w-4 text-orange-600"></i> 5. คลังรูปความเสียหาย</button>
-                    <button onclick="navigateTo('PAGE_MAINT'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-clock-rotate-left w-4 text-purple-600"></i> 6. ประวัติการซ่อม & MTBF</button>
-                    <button onclick="navigateTo('PAGE_ELECTRICAL'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-bolt w-4 text-teal-600"></i> 7. ผลทดสอบฉนวนไฟฟ้า</button>
-                    <button onclick="navigateTo('PAGE_MASTER'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-chart-pie w-4 text-indigo-600"></i> 8. แดชบอร์ดภาพรวม</button>
+                    <button onclick="navigateTo('PAGE_DGA'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-flask-vial w-4 text-sky-600"></i> 1. ก๊าซ DGA & Duval</button>
+                    <button onclick="navigateTo('PAGE_SF6'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-wind w-4 text-blue-600"></i> 2. ก๊าซฉนวน SF6 ใน GIS</button>
+                    <button onclick="navigateTo('PAGE_FMEA'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-table-list w-4 text-amber-600"></i> 3. วิเคราะห์ FMEA & RPN</button>
+                    <button onclick="navigateTo('PAGE_CEHI'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-heart-pulse w-4 text-emerald-600"></i> 4. จำลองดัชนีสุขภาพ CEHI</button>
+                    <button onclick="navigateTo('PAGE_GALLERY'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-images w-4 text-orange-600"></i> 5. คลังรูปความเสียหาย</button>
+                    <button onclick="navigateTo('PAGE_MAINT'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-clock-rotate-left w-4 text-purple-600"></i> 6. ประวัติการซ่อม & MTBF</button>
+                    <button onclick="navigateTo('PAGE_ELECTRICAL'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-bolt w-4 text-teal-600"></i> 7. ผลทดสอบฉนวนไฟฟ้า</button>
+                    <button onclick="navigateTo('PAGE_MASTER'); closeMobileMenu();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-chart-pie w-4 text-indigo-600"></i> 8. แดชบอร์ดภาพรวม</button>
                 </nav>
             </div>
             <div class="p-3 border-t border-blue-50 bg-blue-50/40 text-xs text-blue-900 font-semibold flex items-center justify-between">
@@ -114,28 +114,28 @@
 
             <nav class="p-3 space-y-1 text-xs font-prompt">
                 <div class="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">ระบบหลัก</div>
-                <button onclick="navigateTo('PAGE_LANDING')" id="menu-PAGE_LANDING" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-circle-left w-4 text-center text-blue-600"></i><span>หน้าต้อนรับ (Landing)</span></button>
-                <button onclick="navigateTo('PORTAL')" id="menu-PORTAL" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-blue-800 bg-blue-50/80 shadow-xs border-l-4 border-blue-600"><i class="fa-solid fa-house w-4 text-center"></i><span>ตารางจัดลำดับความเสี่ยง</span></button>
-                <button onclick="navigateTo('PAGE_SLD')" id="menu-PAGE_SLD" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-network-wired w-4 text-center text-cyan-600"></i><span>แผนผังเส้นทางระบบไฟฟ้า (SLD)</span></button>
-                <button onclick="navigateTo('PAGE_ALL_TESTS')" id="menu-PAGE_ALL_TESTS" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-folder-open w-4 text-center text-sky-600"></i><span>ผลตรวจรวมทั้งหมด</span></button>
-                <button onclick="navigateTo('PAGE_TREND')" id="menu-PAGE_TREND" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-chart-line w-4 text-center text-indigo-600"></i><span>กราฟแนวโน้มย้อนหลัง</span></button>
+                <button onclick="navigateTo('PAGE_LANDING')" id="menu-PAGE_LANDING" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-circle-left w-4 text-center text-blue-600"></i><span>หน้าต้อนรับ (Landing)</span></button>
+                <button onclick="navigateTo('PORTAL')" id="menu-PORTAL" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-blue-800 bg-blue-50/80 shadow-xs border-l-4 border-blue-600 cursor-pointer"><i class="fa-solid fa-house w-4 text-center"></i><span>ตารางจัดลำดับความเสี่ยง</span></button>
+                <button onclick="navigateTo('PAGE_SLD')" id="menu-PAGE_SLD" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-map-location-dot w-4 text-center text-cyan-600"></i><span>แผนผังตำแหน่งสถานี (Yard Map)</span></button>
+                <button onclick="navigateTo('PAGE_ALL_TESTS')" id="menu-PAGE_ALL_TESTS" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-folder-open w-4 text-center text-sky-600"></i><span>ผลตรวจรวมทั้งหมด</span></button>
+                <button onclick="navigateTo('PAGE_TREND')" id="menu-PAGE_TREND" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-chart-line w-4 text-center text-indigo-600"></i><span>กราฟแนวโน้มย้อนหลัง</span></button>
 
                 <div class="pt-3 px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">รายงานแยกตามการทดสอบ</div>
-                <button onclick="navigateTo('PAGE_DGA')" id="menu-PAGE_DGA" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-flask-vial w-4 text-center text-sky-600"></i><span>1. ก๊าซ DGA & Duval</span></button>
-                <button onclick="navigateTo('PAGE_SF6')" id="menu-PAGE_SF6" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-wind w-4 text-center text-blue-600"></i><span>2. ก๊าซฉนวน SF6 ใน GIS</span></button>
-                <button onclick="navigateTo('PAGE_FMEA')" id="menu-PAGE_FMEA" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-table-list w-4 text-center text-amber-600"></i><span>3. วิเคราะห์ FMEA & RPN</span></button>
-                <button onclick="navigateTo('PAGE_CEHI')" id="menu-PAGE_CEHI" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-heart-pulse w-4 text-center text-emerald-600"></i><span>4. จำลองดัชนีสุขภาพ CEHI</span></button>
-                <button onclick="navigateTo('PAGE_GALLERY')" id="menu-PAGE_GALLERY" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-images w-4 text-center text-orange-600"></i><span>5. คลังรูปความเสียหาย</span></button>
-                <button onclick="navigateTo('PAGE_MAINT')" id="menu-PAGE_MAINT" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-clock-rotate-left w-4 text-center text-purple-600"></i><span>6. ประวัติการซ่อม & MTBF</span></button>
-                <button onclick="navigateTo('PAGE_ELECTRICAL')" id="menu-PAGE_ELECTRICAL" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-bolt w-4 text-center text-teal-600"></i><span>7. ผลทดสอบฉนวนไฟฟ้า</span></button>
-                <button onclick="navigateTo('PAGE_MASTER')" id="menu-PAGE_MASTER" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50"><i class="fa-solid fa-chart-pie w-4 text-center text-indigo-600"></i><span>8. แดชบอร์ดภาพรวม Master</span></button>
+                <button onclick="navigateTo('PAGE_DGA')" id="menu-PAGE_DGA" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-flask-vial w-4 text-center text-sky-600"></i><span>1. ก๊าซ DGA & Duval</span></button>
+                <button onclick="navigateTo('PAGE_SF6')" id="menu-PAGE_SF6" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-wind w-4 text-center text-blue-600"></i><span>2. ก๊าซฉนวน SF6 ใน GIS</span></button>
+                <button onclick="navigateTo('PAGE_FMEA')" id="menu-PAGE_FMEA" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-table-list w-4 text-center text-amber-600"></i><span>3. วิเคราะห์ FMEA & RPN</span></button>
+                <button onclick="navigateTo('PAGE_CEHI')" id="menu-PAGE_CEHI" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-heart-pulse w-4 text-center text-emerald-600"></i><span>4. จำลองดัชนีสุขภาพ CEHI</span></button>
+                <button onclick="navigateTo('PAGE_GALLERY')" id="menu-PAGE_GALLERY" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-images w-4 text-center text-orange-600"></i><span>5. คลังรูปความเสียหาย</span></button>
+                <button onclick="navigateTo('PAGE_MAINT')" id="menu-PAGE_MAINT" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-clock-rotate-left w-4 text-center text-purple-600"></i><span>6. ประวัติการซ่อม & MTBF</span></button>
+                <button onclick="navigateTo('PAGE_ELECTRICAL')" id="menu-PAGE_ELECTRICAL" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-bolt w-4 text-center text-teal-600"></i><span>7. ผลทดสอบฉนวนไฟฟ้า</span></button>
+                <button onclick="navigateTo('PAGE_MASTER')" id="menu-PAGE_MASTER" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer"><i class="fa-solid fa-chart-pie w-4 text-center text-indigo-600"></i><span>8. แดชบอร์ดภาพรวม Master</span></button>
             </nav>
         </div>
 
         <div class="p-4 border-t border-blue-50 bg-blue-50/40">
             <div class="flex items-center justify-between text-xs">
                 <span class="text-blue-900 font-semibold"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block mr-1"></span> 20 Assets</span>
-                <button onclick="openRoleModal()" id="userRoleBtn" class="px-2.5 py-1 bg-blue-800 text-white rounded-lg font-bold text-[10px] hover:bg-blue-900 transition">Role: Engineer</button>
+                <button onclick="openRoleModal()" id="userRoleBtn" class="px-2.5 py-1 bg-blue-800 text-white rounded-lg font-bold text-[10px] hover:bg-blue-900 transition cursor-pointer">Role: Engineer</button>
             </div>
         </div>
     </aside>
@@ -167,9 +167,9 @@
                         <i class="fa-solid fa-sliders text-slate-300"></i> <span class="hidden sm:inline">จัดการข้อมูล</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
                     </button>
                     <div id="actionDropdownMenu" class="absolute right-0 mt-2 w-48 bg-white border border-slate-100 rounded-2xl shadow-xl py-1 hidden z-50">
-                        <button onclick="openMaintModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-screwdriver-wrench w-4 text-purple-600"></i> บันทึกซ่อม</button>
-                        <button onclick="openDataInputModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-file-arrow-up w-4 text-emerald-600"></i> นำเข้าผลตรวจ</button>
-                        <button onclick="openPhotoUploadModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-camera w-4 text-amber-600"></i> แนบรูปความเสียหาย</button>
+                        <button onclick="openMaintModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-screwdriver-wrench w-4 text-purple-600"></i> บันทึกซ่อม</button>
+                        <button onclick="openDataInputModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-file-arrow-up w-4 text-emerald-600"></i> นำเข้าผลตรวจ</button>
+                        <button onclick="openPhotoUploadModal(); closeActionDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-camera w-4 text-amber-600"></i> แนบรูปความเสียหาย</button>
                     </div>
                 </div>
 
@@ -178,8 +178,8 @@
                         <i class="fa-solid fa-download text-sky-600"></i> <span class="hidden sm:inline">ส่งออกรายงาน</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
                     </button>
                     <div id="exportDropdownMenu" class="absolute right-0 mt-2 w-44 bg-white border border-slate-100 rounded-2xl shadow-xl py-1 hidden z-50">
-                        <button onclick="downloadDirectPDF(); closeExportDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-file-pdf w-4 text-rose-600"></i> ดาวน์โหลด PDF</button>
-                        <button onclick="exportToCSV(); closeExportDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2"><i class="fa-solid fa-file-csv w-4 text-emerald-600"></i> ส่งออก CSV</button>
+                        <button onclick="downloadDirectPDF(); closeExportDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-file-pdf w-4 text-rose-600"></i> ดาวน์โหลด PDF</button>
+                        <button onclick="exportToCSV(); closeExportDropdown();" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-file-csv w-4 text-emerald-600"></i> ส่งออก CSV</button>
                     </div>
                 </div>
             </div>
@@ -215,14 +215,14 @@
                         ระบบประเมินความน่าเชื่อถือ<br><span class="bg-gradient-to-r from-sky-400 via-cyan-300 to-blue-300 bg-clip-text text-transparent">หม้อแปลงไฟฟ้า & GIS</span>
                     </h1>
                     <p class="text-xs sm:text-base text-slate-300 leading-relaxed font-normal max-w-3xl">
-                        วิเคราะห์ผลการตรวจวัดก๊าซ DGA, แผนภูมิ Duval Triangle 1, ก๊าซฉนวน SF6, การประเมินความเสี่ยง FMEA/RPN พร้อมแผนผังเส้นทางระบบไฟฟ้า (SLD) และกราฟแนวโน้มย้อนหลัง
+                        วิเคราะห์ผลการตรวจวัดก๊าซ DGA, แผนภูมิ Duval Triangle 1, ก๊าซฉนวน SF6, การประเมินความเสี่ยง FMEA/RPN พร้อมแผนผังตำแหน่งลานสถานี (Yard Map) และกราฟแนวโน้มย้อนหลัง
                     </p>
                     <div class="pt-4 sm:pt-6 flex flex-col sm:flex-row gap-3 font-prompt">
                         <button onclick="navigateTo('PORTAL')" class="w-full sm:w-auto px-6 py-3.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-2xl transition shadow-xl flex items-center justify-center gap-2.5 text-xs cursor-pointer">
                             <i class="fa-solid fa-gauge-high text-base"></i> เข้าสู่แดชบอร์ดตารางจัดลำดับความเสี่ยง
                         </button>
                         <button onclick="navigateTo('PAGE_SLD')" class="w-full sm:w-auto px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl transition border border-white/20 backdrop-blur flex items-center justify-center gap-2.5 text-xs cursor-pointer">
-                            <i class="fa-solid fa-network-wired text-cyan-300 text-base"></i> ดูแผนผังเส้นทางระบบไฟฟ้า (SLD)
+                            <i class="fa-solid fa-map-location-dot text-cyan-300 text-base"></i> ดูแผนผังตำแหน่งสถานี (Yard Map)
                         </button>
                     </div>
                 </div>
@@ -280,7 +280,7 @@
                         </div>
                         <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
                             <span class="text-xs text-slate-500 font-medium">ตัวกรอง:</span>
-                            <select onchange="filterPmTable(this.value)" class="bg-blue-50/50 border border-blue-200/80 text-xs text-slate-700 px-3 py-1.5 rounded-lg focus:outline-none">
+                            <select onchange="filterPmTable(this.value)" class="bg-blue-50/50 border border-blue-200/80 text-xs text-slate-700 px-3 py-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="ALL">ทั้งหมด (20 รายการ)</option>
                                 <option value="CRITICAL">เฉพาะกลุ่มวิกฤต (High Priority)</option>
                                 <option value="Transformer">เฉพาะหม้อแปลง</option>
@@ -320,7 +320,7 @@
 
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white border border-blue-100 p-4 rounded-2xl shadow-xs">
                     <div class="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-start">
-                        <button onclick="navigateTo('PORTAL')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-semibold transition flex items-center gap-1.5 border border-blue-200">
+                        <button onclick="navigateTo('PORTAL')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-semibold transition flex items-center gap-1.5 border border-blue-200 cursor-pointer">
                             <i class="fa-solid fa-chevron-left"></i> กลับหน้าหลัก
                         </button>
                         <div class="text-right lg:text-left">
@@ -338,7 +338,7 @@
                             <span class="text-slate-400">CEHI: </span>
                             <span id="subpageTargetCehi" class="font-bold text-emerald-600">88.4%</span>
                         </div>
-                        <button onclick="openAssetDossierModal()" class="bg-blue-800 hover:bg-blue-900 text-white font-medium px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5">
+                        <button onclick="openAssetDossierModal()" class="bg-blue-800 hover:bg-blue-900 text-white font-medium px-3.5 py-1.5 rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer">
                             <i class="fa-solid fa-circle-info text-cyan-300"></i> เนมเพลต & แผนงาน
                         </button>
                     </div>
@@ -346,49 +346,44 @@
 
                 <div id="reportContentToExport" class="space-y-6 w-full">
 
-                    <!-- NEW: INTERACTIVE NETWORK FLOW SLD MAP -->
+                    <!-- NEW: SUBSTATION PHYSICAL YARD MAP VIEW -->
                     <div id="view-SLD" class="subview space-y-6 hidden w-full">
                         <div class="bg-white border border-blue-100 p-6 rounded-2xl shadow-xs space-y-6">
                             <div class="border-b border-blue-50 pb-3 flex justify-between items-center">
                                 <div>
                                     <h3 class="text-sm font-bold text-slate-800 font-prompt flex items-center gap-2">
-                                        <i class="fa-solid fa-network-wired text-cyan-600"></i> แผนผังเส้นทางระบบไฟฟ้าและสถานี (Substation Network Flow SLD)
+                                        <i class="fa-solid fa-map-location-dot text-cyan-600"></i> แผนผังตำแหน่งสถานีไฟฟ้า (Substation Physical Yard Map Layout)
                                     </h3>
-                                    <p class="text-xs text-slate-400">แสดงเส้นทางพลังงานจากสายส่งแรงสูงเข้าสู่หม้อแปลงหลักและกระจายไปยังเบรกเกอร์ GIS ทางขวา คลิกการ์ดเพื่อดูรายละเอียด</p>
+                                    <p class="text-xs text-slate-400">แสดงโซนพื้นที่ทางกายภาพของสถานี (ลานหม้อแปลงโซน A, อาคาร GIS ในร่ม, และลานสวิตช์ยาร์ด) เพื่อส่งพิกัดให้ช่างซ่อมบำรุง</p>
                                 </div>
-                                <span class="text-xs bg-cyan-50 text-cyan-800 border border-cyan-200 px-3 py-1 rounded-lg font-semibold">Single Line Flow</span>
+                                <span class="text-xs bg-cyan-50 text-cyan-800 border border-cyan-200 px-3 py-1 rounded-lg font-semibold">Physical Yard Map</span>
                             </div>
 
-                            <!-- NETWORK FLOW DIAGRAM WRAPPER -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-slate-900 p-6 rounded-3xl border border-slate-800 text-white">
+                            <!-- SUBSTATION YARD LAYOUT CONTAINER -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 
-                                <!-- STEP 1: HV Source -->
-                                <div class="space-y-3">
-                                    <div class="text-[11px] font-bold text-cyan-300 uppercase tracking-wider font-prompt flex items-center gap-1.5">
-                                        <i class="fa-solid fa-tower-broadcast"></i> 1. แหล่งจ่ายแรงดันสูง (HV Feed)
+                                <!-- ZONE A: Outdoor Transformer Yard -->
+                                <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 text-white space-y-4">
+                                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                                        <span class="text-xs font-prompt text-amber-400 font-bold uppercase tracking-wider">
+                                            <i class="fa-solid fa-industry mr-1.5"></i> โซน A: ลานหม้อแปลงกลางแจ้ง (Outdoor Transformer Yard)
+                                        </span>
+                                        <span class="text-[10px] bg-slate-800 px-2.5 py-1 rounded-md text-slate-300">10 Transformers</span>
                                     </div>
-                                    <div class="p-4 bg-slate-800/80 rounded-2xl border border-slate-700 space-y-2">
-                                        <div class="flex justify-between text-xs text-slate-300"><span>สายส่ง 230kV / 115kV</span><span class="text-emerald-400 font-bold">Normal</span></div>
-                                        <div class="text-[11px] text-slate-400">Main Grid Substation Transmission Line</div>
-                                    </div>
-                                </div>
-
-                                <!-- STEP 2: Main Transformers -->
-                                <div class="space-y-3">
-                                    <div class="text-[11px] font-bold text-cyan-300 uppercase tracking-wider font-prompt flex items-center gap-1.5">
-                                        <i class="fa-solid fa-cubes"></i> 2. หม้อแปลงกำลังหลัก (Main Transformers)
-                                    </div>
-                                    <div class="space-y-2.5" id="sldTransformerListContainer">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-1" id="yardTransformerContainer">
                                         <!-- Populated via JS -->
                                     </div>
                                 </div>
 
-                                <!-- STEP 3: GIS Bays (Feeders) -->
-                                <div class="space-y-3">
-                                    <div class="text-[11px] font-bold text-cyan-300 uppercase tracking-wider font-prompt flex items-center gap-1.5">
-                                        <i class="fa-solid fa-bolt-lightning"></i> 3. ชุดสวิตช์เกียร์ก๊าซ (GIS Feeder Bays)
+                                <!-- ZONE B: Indoor GIS Building -->
+                                <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 text-white space-y-4">
+                                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                                        <span class="text-xs font-prompt text-cyan-400 font-bold uppercase tracking-wider">
+                                            <i class="fa-solid fa-building mr-1.5"></i> โซน B: อาคารสวิตช์เกียร์ก๊าซในร่ม (Indoor GIS Building)
+                                        </span>
+                                        <span class="text-[10px] bg-slate-800 px-2.5 py-1 rounded-md text-slate-300">10 GIS Bays</span>
                                     </div>
-                                    <div class="space-y-2.5" id="sldGisListContainer">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-1" id="yardGisContainer">
                                         <!-- Populated via JS -->
                                     </div>
                                 </div>
@@ -441,7 +436,7 @@
                                 <div>
                                     <div class="flex justify-between items-center border-b border-blue-50 pb-2.5">
                                         <h4 class="text-xs sm:text-sm font-bold text-slate-800 font-prompt flex items-center gap-2"><i class="fa-solid fa-flask-vial text-sky-600"></i> 1. ผลวิเคราะห์ก๊าซ (DGA & Gas State)</h4>
-                                        <button onclick="navigateTo('PAGE_DGA')" class="text-xs text-sky-600 hover:underline font-semibold">ดูรายงาน &gt;</button>
+                                        <button onclick="navigateTo('PAGE_DGA')" class="text-xs text-sky-600 hover:underline font-semibold cursor-pointer">ดูรายงาน &gt;</button>
                                     </div>
                                     <div class="mt-3 space-y-2 text-xs">
                                         <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl"><span class="text-slate-400">ก๊าซหลัก:</span><span id="allTestGasMain" class="font-bold text-slate-800">Hydrogen (H2) 25 ppm</span></div>
@@ -449,14 +444,14 @@
                                         <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl"><span class="text-slate-400">สถานะก๊าซ SF6:</span><span id="allTestSf6Purity" class="font-bold text-emerald-600">99.8%</span></div>
                                     </div>
                                 </div>
-                                <button onclick="navigateTo('PAGE_DGA')" class="w-full py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-blue-900 font-semibold text-xs rounded-xl border border-blue-200/60 transition">เปิดดูตารางก๊าซ</button>
+                                <button onclick="navigateTo('PAGE_DGA')" class="w-full py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-blue-900 font-semibold text-xs rounded-xl border border-blue-200/60 transition cursor-pointer">เปิดดูตารางก๊าซ</button>
                             </div>
 
                             <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
                                 <div>
                                     <div class="flex justify-between items-center border-b border-blue-50 pb-2.5">
                                         <h4 class="text-xs sm:text-sm font-bold text-slate-800 font-prompt flex items-center gap-2"><i class="fa-solid fa-bolt text-teal-600"></i> 2. ผลทดสอบฉนวนไฟฟ้า</h4>
-                                        <button onclick="navigateTo('PAGE_ELECTRICAL')" class="text-xs text-teal-600 hover:underline font-semibold">ดูรายงาน &gt;</button>
+                                        <button onclick="navigateTo('PAGE_ELECTRICAL')" class="text-xs text-teal-600 hover:underline font-semibold cursor-pointer">ดูรายงาน &gt;</button>
                                     </div>
                                     <div class="mt-3 space-y-2 text-xs">
                                         <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl"><span class="text-slate-400">Megger & PI:</span><span id="allTestMegger" class="font-bold text-slate-800">2,850 MΩ</span></div>
@@ -464,14 +459,14 @@
                                         <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl"><span class="text-slate-400">กระดาษฉนวน (DP):</span><span id="allTestPaperDp" class="font-bold text-sky-700">720 DP</span></div>
                                     </div>
                                 </div>
-                                <button onclick="navigateTo('PAGE_ELECTRICAL')" class="w-full py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-teal-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition">เปิดดูฉนวนไฟฟ้า</button>
+                                <button onclick="navigateTo('PAGE_ELECTRICAL')" class="w-full py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-teal-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition cursor-pointer">เปิดดูฉนวนไฟฟ้า</button>
                             </div>
 
                             <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
                                 <div>
                                     <div class="flex justify-between items-center border-b border-blue-50 pb-2.5">
                                         <h4 class="text-xs sm:text-sm font-bold text-slate-800 font-prompt flex items-center gap-2"><i class="fa-solid fa-table-list text-amber-600"></i> 3. ประเมินความเสี่ยง FMEA & RPN</h4>
-                                        <button onclick="navigateTo('PAGE_FMEA')" class="text-xs text-amber-600 hover:underline font-semibold">ดูรายงาน &gt;</button>
+                                        <button onclick="navigateTo('PAGE_FMEA')" class="text-xs text-amber-600 hover:underline font-semibold cursor-pointer">ดูรายงาน &gt;</button>
                                     </div>
                                     <div class="mt-3 space-y-2 text-xs">
                                         <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl"><span class="text-slate-400">คะแนน Max RPN:</span><span id="allTestMaxRpn" class="font-bold text-amber-600 font-mono">168</span></div>
@@ -479,14 +474,14 @@
                                         <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl"><span class="text-slate-400">กลยุทธ์ RCM:</span><span id="allTestRcmStrat" class="font-bold text-sky-700">PM Overhaul</span></div>
                                     </div>
                                 </div>
-                                <button onclick="navigateTo('PAGE_FMEA')" class="w-full py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-amber-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition">เปิดดูตาราง FMEA</button>
+                                <button onclick="navigateTo('PAGE_FMEA')" class="w-full py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-amber-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition cursor-pointer">เปิดดูตาราง FMEA</button>
                             </div>
 
                             <div class="bg-white border border-blue-100 p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4">
                                 <div>
                                     <div class="flex justify-between items-center border-b border-blue-50 pb-2.5">
                                         <h4 class="text-xs sm:text-sm font-bold text-slate-800 font-prompt flex items-center gap-2"><i class="fa-solid fa-heart-pulse text-emerald-600"></i> 4. ดัชนีสุขภาพ CEHI & ประวัติซ่อม</h4>
-                                        <button onclick="navigateTo('PAGE_CEHI')" class="text-xs text-emerald-600 hover:underline font-semibold">ดูรายงาน &gt;</button>
+                                        <button onclick="navigateTo('PAGE_CEHI')" class="text-xs text-emerald-600 hover:underline font-semibold cursor-pointer">ดูรายงาน &gt;</button>
                                     </div>
                                     <div class="mt-3 space-y-2 text-xs">
                                         <div class="flex justify-between p-2.5 bg-blue-50/40 rounded-xl"><span class="text-slate-400">ดัชนี CEHI:</span><span id="allTestCehiScore" class="font-bold text-emerald-600 font-mono">88.4%</span></div>
@@ -495,8 +490,8 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button onclick="navigateTo('PAGE_CEHI')" class="flex-1 py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-emerald-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition">จำลอง CEHI</button>
-                                    <button onclick="navigateTo('PAGE_MAINT')" class="flex-1 py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-purple-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition">ประวัติซ่อม</button>
+                                    <button onclick="navigateTo('PAGE_CEHI')" class="flex-1 py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-emerald-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition cursor-pointer">จำลอง CEHI</button>
+                                    <button onclick="navigateTo('PAGE_MAINT')" class="flex-1 py-2.5 bg-blue-50/60 hover:bg-blue-100/60 text-purple-800 font-semibold text-xs rounded-xl border border-blue-200/60 transition cursor-pointer">ประวัติซ่อม</button>
                                 </div>
                             </div>
                         </div>
@@ -563,7 +558,7 @@
                                     </h3>
                                     <p class="text-[11px] text-slate-400">วิเคราะห์โหมดความเสียหายสำหรับ <span id="fmeaAssetLabel" class="text-blue-900 font-bold"></span></p>
                                 </div>
-                                <button onclick="openFmeaModal()" class="w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium px-3.5 py-2 rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 permission-restricted">
+                                <button onclick="openFmeaModal()" class="w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium px-3.5 py-2 rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 permission-restricted cursor-pointer">
                                     <i class="fa-solid fa-plus"></i> เพิ่มรายการความเสี่ยงใหม่ (FMEA)
                                 </button>
                             </div>
@@ -589,7 +584,7 @@
                                         </h3>
                                         <p class="text-[11px] text-slate-400">ปรับพารามิเตอร์ 4 ด้านเฉพาะอุปกรณ์ตัวนี้</p>
                                     </div>
-                                    <button onclick="resetCurrentAssetSim()" class="text-xs text-sky-600 hover:underline"><i class="fa-solid fa-rotate-left mr-1"></i> คืนค่าเดิม</button>
+                                    <button onclick="resetCurrentAssetSim()" class="text-xs text-sky-600 hover:underline cursor-pointer"><i class="fa-solid fa-rotate-left mr-1"></i> คืนค่าเดิม</button>
                                 </div>
                                 <div class="space-y-4">
                                     <div>
@@ -610,7 +605,7 @@
                                     </div>
                                 </div>
                                 <div class="pt-3 border-t border-blue-50 flex justify-end">
-                                    <button onclick="saveSimulatedCehiToDatabase()" class="w-full sm:w-auto bg-blue-900 hover:bg-blue-950 text-white text-xs font-medium px-4 py-2 rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 permission-restricted">
+                                    <button onclick="saveSimulatedCehiToDatabase()" class="w-full sm:w-auto bg-blue-900 hover:bg-blue-950 text-white text-xs font-medium px-4 py-2 rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 permission-restricted cursor-pointer">
                                         <i class="fa-solid fa-floppy-disk"></i> บันทึกค่าที่จำลองเข้าฐานข้อมูล
                                     </button>
                                 </div>
@@ -639,7 +634,7 @@
                                     </h3>
                                     <p class="text-[11px] text-slate-400">ภาพถ่ายความเสียหายของอุปกรณ์ <span id="galleryAssetBadge" class="text-blue-900 font-bold"></span></p>
                                 </div>
-                                <button onclick="openPhotoUploadModal()" class="w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium px-3.5 py-2 rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs permission-restricted">
+                                <button onclick="openPhotoUploadModal()" class="w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium px-3.5 py-2 rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs permission-restricted cursor-pointer">
                                     <i class="fa-solid fa-upload"></i> อัปโหลดรูปภาพใหม่
                                 </button>
                             </div>
@@ -663,7 +658,7 @@
                                     </h3>
                                     <p class="text-[11px] text-slate-400">ประวัติงานซ่อม PM, PdM, Overhaul และการเปลี่ยนอะไหล่</p>
                                 </div>
-                                <button onclick="openMaintModal()" class="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3.5 py-2 rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 permission-restricted">
+                                <button onclick="openMaintModal()" class="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3.5 py-2 rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 permission-restricted cursor-pointer">
                                     <i class="fa-solid fa-plus"></i> เพิ่มบันทึกงานซ่อม
                                 </button>
                             </div>
@@ -735,11 +730,11 @@
                 <h3 class="text-sm font-bold text-slate-800 font-prompt flex items-center gap-2">
                     <i class="fa-solid fa-bell text-amber-600"></i> ระบบแจ้งเตือนอัจฉริยะ (System Alarms Log)
                 </h3>
-                <button onclick="toggleAlarmModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="toggleAlarmModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-4 overflow-y-auto max-h-[60vh] space-y-3 custom-scrollbar text-xs" id="alarmListContainer"></div>
             <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
-                <button onclick="toggleAlarmModal()" class="px-4 py-1.5 bg-slate-900 text-white rounded-xl text-xs font-medium">ปิดหน้าต่าง</button>
+                <button onclick="toggleAlarmModal()" class="px-4 py-1.5 bg-slate-900 text-white rounded-xl text-xs font-medium cursor-pointer">ปิดหน้าต่าง</button>
             </div>
         </div>
     </div>
@@ -749,12 +744,12 @@
         <div class="bg-white border border-blue-100 rounded-2xl max-w-sm w-full flex flex-col shadow-2xl overflow-hidden">
             <div class="p-4 border-b border-blue-50 bg-blue-50/30 flex justify-between items-center">
                 <h3 class="text-xs font-bold text-slate-800 font-prompt">เลือกสิทธิ์การใช้งาน (User Role)</h3>
-                <button onclick="closeRoleModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeRoleModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-4 space-y-2 text-xs font-prompt">
-                <button onclick="setUserRole('Admin')" class="w-full text-left p-3 rounded-xl border border-blue-100 hover:bg-blue-50 flex justify-between items-center"><span class="font-bold text-blue-900">Admin (สิทธิ์สูงสุด)</span><i class="fa-solid fa-shield-halved text-blue-600"></i></button>
-                <button onclick="setUserRole('Engineer')" class="w-full text-left p-3 rounded-xl border border-blue-100 hover:bg-blue-50 flex justify-between items-center"><span class="font-bold text-emerald-800">Engineer (วิศวกรทดสอบ)</span><i class="fa-solid fa-wrench text-emerald-600"></i></button>
-                <button onclick="setUserRole('Viewer')" class="w-full text-left p-3 rounded-xl border border-blue-100 hover:bg-blue-50 flex justify-between items-center"><span class="font-bold text-slate-700">Viewer (ผู้บริหารดูอย่างเดียว)</span><i class="fa-solid fa-eye text-slate-500"></i></button>
+                <button onclick="setUserRole('Admin')" class="w-full text-left p-3 rounded-xl border border-blue-100 hover:bg-blue-50 flex justify-between items-center cursor-pointer"><span class="font-bold text-blue-900">Admin (สิทธิ์สูงสุด)</span><i class="fa-solid fa-shield-halved text-blue-600"></i></button>
+                <button onclick="setUserRole('Engineer')" class="w-full text-left p-3 rounded-xl border border-blue-100 hover:bg-blue-50 flex justify-between items-center cursor-pointer"><span class="font-bold text-emerald-800">Engineer (วิศวกรทดสอบ)</span><i class="fa-solid fa-wrench text-emerald-600"></i></button>
+                <button onclick="setUserRole('Viewer')" class="w-full text-left p-3 rounded-xl border border-blue-100 hover:bg-blue-50 flex justify-between items-center cursor-pointer"><span class="font-bold text-slate-700">Viewer (ผู้บริหารดูอย่างเดียว)</span><i class="fa-solid fa-eye text-slate-500"></i></button>
             </div>
         </div>
     </div>
@@ -764,7 +759,7 @@
         <div class="bg-white border border-slate-100 rounded-2xl max-w-lg w-full flex flex-col shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                 <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-prompt flex items-center gap-2"><i class="fa-solid fa-table-list text-amber-600"></i> เพิ่มรายการความเสี่ยง FMEA ใหม่</h3>
-                <button onclick="closeFmeaModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeFmeaModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form onsubmit="saveNewFmeaItem(event)" class="p-4 sm:p-6 space-y-4 text-xs">
                 <div><label class="text-slate-500 block mb-1">ระบบย่อย:</label><input type="text" id="fmeaSubInput" required class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800 font-medium"></div>
@@ -781,8 +776,8 @@
                 </div>
                 <div><label class="text-slate-500 block mb-1">กลยุทธ์ RCM แนะนำ:</label><input type="text" id="fmeaStratInput" required class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2 text-slate-800 font-medium"></div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                    <button type="button" onclick="closeFmeaModal()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl">ยกเลิก</button>
-                    <button type="submit" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-medium shadow-xs">บันทึก FMEA</button>
+                    <button type="button" onclick="closeFmeaModal()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl cursor-pointer">ยกเลิก</button>
+                    <button type="submit" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-medium shadow-xs cursor-pointer">บันทึก FMEA</button>
                 </div>
             </form>
         </div>
@@ -799,7 +794,7 @@
                         <p id="dossierModalSub" class="text-[11px] text-slate-400">TR-01</p>
                     </div>
                 </div>
-                <button onclick="closeAssetDossierModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeAssetDossierModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-4 sm:p-6 overflow-y-auto space-y-5 custom-scrollbar text-xs">
                 <div class="bg-blue-50/30 border border-blue-100 p-4 rounded-2xl space-y-3">
@@ -818,7 +813,7 @@
                 </div>
             </div>
             <div class="p-4 bg-slate-50/80 border-t border-slate-100 flex justify-end">
-                <button onclick="closeAssetDossierModal()" class="px-4 py-1.5 bg-slate-900 text-white rounded-xl text-xs font-medium">ปิด</button>
+                <button onclick="closeAssetDossierModal()" class="px-4 py-1.5 bg-slate-900 text-white rounded-xl text-xs font-medium cursor-pointer">ปิด</button>
             </div>
         </div>
     </div>
@@ -828,10 +823,10 @@
         <div class="bg-white rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl flex flex-col">
             <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
                 <div><h3 id="lightboxTitle" class="text-xs font-bold text-slate-800 font-prompt">รูปภาพ</h3><p id="lightboxSubtitle" class="text-[11px] text-slate-400"></p></div>
-                <button onclick="closeLightbox()" class="text-slate-400 text-base"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeLightbox()" class="text-slate-400 text-base cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-4 bg-black flex items-center justify-center max-h-[60vh] overflow-hidden"><img id="lightboxImg" src="" class="max-h-full max-w-full object-contain"></div>
-            <div class="p-3.5 bg-slate-50 text-xs text-slate-500 border-t border-slate-100 flex justify-between items-center"><span id="lightboxDate"></span><button onclick="closeLightbox()" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 rounded-lg text-xs">ปิด</button></div>
+            <div class="p-3.5 bg-slate-50 text-xs text-slate-500 border-t border-slate-100 flex justify-between items-center"><span id="lightboxDate"></span><button onclick="closeLightbox()" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 rounded-lg text-xs cursor-pointer">ปิด</button></div>
         </div>
     </div>
 
@@ -840,7 +835,7 @@
         <div class="bg-white border border-slate-100 rounded-2xl max-w-lg w-full flex flex-col shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                 <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-prompt"><i class="fa-solid fa-screwdriver-wrench text-slate-700 mr-2"></i> บันทึกใบสั่งงานซ่อมบำรุง</h3>
-                <button onclick="closeMaintModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeMaintModal()" class="text-slate-400 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form onsubmit="saveMaintenanceLog(event)" class="p-4 sm:p-6 space-y-4 text-xs">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -853,8 +848,8 @@
                 </div>
                 <div><label class="text-slate-500 block mb-1">กิจกรรม:</label><input type="text" id="maintActivity" required class="w-full bg-slate-50 border border-blue-100 rounded-xl p-2"></div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                    <button type="button" onclick="closeMaintModal()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl">ยกเลิก</button>
-                    <button type="submit" class="px-4 py-1.5 bg-blue-900 text-white rounded-xl font-medium">บันทึก</button>
+                    <button type="button" onclick="closeMaintModal()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl cursor-pointer">ยกเลิก</button>
+                    <button type="submit" class="px-4 py-1.5 bg-blue-900 text-white rounded-xl font-medium cursor-pointer">บันทึก</button>
                 </div>
             </form>
         </div>
@@ -865,12 +860,12 @@
         <div class="bg-white border border-slate-100 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                 <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-prompt">นำเข้าผลการทดสอบ & สแกนแล็บ</h3>
-                <button onclick="closeDataInputModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeDataInputModal()" class="text-slate-400 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form onsubmit="saveTestDataForm(event)" class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs">
                 <div class="p-3.5 bg-blue-50/50 border border-blue-100 rounded-xl space-y-1">
                     <label class="text-blue-900 font-bold block">เลือกอุปกรณ์เป้าหมาย:</label>
-                    <select id="modalTargetAssetSelect" class="w-full bg-white border border-blue-200 rounded-lg p-2 font-semibold text-slate-800"></select>
+                    <select id="modalTargetAssetSelect" class="w-full bg-white border border-blue-200 rounded-lg p-2 font-semibold text-slate-800 cursor-pointer"></select>
                 </div>
                 <div class="p-4 bg-slate-50 rounded-xl space-y-3 border border-slate-100">
                     <span class="text-blue-900 font-bold block">กรอกค่าก๊าซ DGA (ppm):</span>
@@ -881,8 +876,8 @@
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                    <button type="button" onclick="closeDataInputModal()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl">ยกเลิก</button>
-                    <button type="submit" class="px-4 py-1.5 bg-blue-900 text-white rounded-xl font-medium">บันทึก</button>
+                    <button type="button" onclick="closeDataInputModal()" class="px-4 py-1.5 bg-slate-100 text-slate-600 rounded-xl cursor-pointer">ยกเลิก</button>
+                    <button type="submit" class="px-4 py-1.5 bg-blue-900 text-white rounded-xl font-medium cursor-pointer">บันทึก</button>
                 </div>
             </form>
         </div>
@@ -893,14 +888,14 @@
         <div class="bg-white border border-slate-100 rounded-2xl max-w-lg w-full flex flex-col shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                 <h3 class="text-xs sm:text-sm font-bold text-slate-800 font-prompt"><i class="fa-solid fa-camera text-amber-600 mr-2"></i> อัปโหลดรูปความเสียหาย</h3>
-                <button onclick="closePhotoUploadModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closePhotoUploadModal()" class="text-slate-400 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form onsubmit="saveDamagePhoto(event)" class="p-4 sm:p-6 space-y-4 text-xs">
                 <div><label class="block mb-1">เลือกรูป:</label><input type="file" id="damagePhotoFile" accept="image/*" required onchange="previewDamageImage(event)" class="w-full"></div>
                 <div id="imagePreviewContainer" class="w-full h-36 bg-slate-50 rounded-xl border flex items-center justify-center"><img id="imagePreview" class="max-h-full object-contain hidden"><span id="previewPlaceholder" class="text-slate-400">ตัวอย่างรูปภาพ</span></div>
                 <div><label class="block mb-1">ตำแหน่ง:</label><input type="text" id="photoLocationInput" required class="w-full bg-slate-50 border rounded-xl p-2"></div>
                 <div><label class="block mb-1">รายละเอียด:</label><textarea id="photoDescInput" rows="2" required class="w-full bg-slate-50 border rounded-xl p-2"></textarea></div>
-                <div class="flex justify-end gap-2 pt-2 border-t"><button type="button" onclick="closePhotoUploadModal()" class="px-4 py-1.5 bg-slate-100 rounded-xl">ยกเลิก</button><button type="submit" class="px-4 py-1.5 bg-amber-600 text-white rounded-xl">บันทึก</button></div>
+                <div class="flex justify-end gap-2 pt-2 border-t"><button type="button" onclick="closePhotoUploadModal()" class="px-4 py-1.5 bg-slate-100 rounded-xl cursor-pointer">ยกเลิก</button><button type="submit" class="px-4 py-1.5 bg-amber-600 text-white rounded-xl cursor-pointer">บันทึก</button></div>
             </form>
         </div>
     </div>
@@ -1051,49 +1046,51 @@
                 criticalList.forEach(a => {
                     const div = document.createElement('div');
                     div.className = `p-3.5 rounded-xl border flex justify-between items-center ${a.statusCategory === 'CRITICAL' ? 'bg-rose-50 border-rose-200 text-rose-900' : 'bg-amber-50 border-amber-200 text-amber-900'}`;
-                    div.innerHTML = `<div><span class="font-bold font-prompt text-xs flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> ${a.id} - ${a.name}</span><p class="text-[11px] text-slate-600 mt-0.5">สถานะ: ${a.cehiGrade} | ปัญหา: ${a.concern}</p></div><button onclick="selectAndInspect('${a.id}'); toggleAlarmModal();" class="px-3 py-1 bg-slate-900 text-white rounded-lg text-[11px] font-medium shrink-0">ตรวจสอบ</button>`;
+                    div.innerHTML = `<div><span class="font-bold font-prompt text-xs flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> ${a.id} - ${a.name}</span><p class="text-[11px] text-slate-600 mt-0.5">สถานะ: ${a.cehiGrade} | ปัญหา: ${a.concern}</p></div><button onclick="selectAndInspect('${a.id}'); toggleAlarmModal();" class="px-3 py-1 bg-slate-900 text-white rounded-lg text-[11px] font-medium shrink-0 cursor-pointer">ตรวจสอบ</button>`;
                     container.appendChild(div);
                 });
             }
             modal.classList.toggle('hidden');
         }
 
-        function renderSldNetworkFlow() {
-            const transContainer = document.getElementById('sldTransformerListContainer');
-            const gisContainer = document.getElementById('sldGisListContainer');
+        function renderSubstationYardMap() {
+            const transContainer = document.getElementById('yardTransformerContainer');
+            const gisContainer = document.getElementById('yardGisContainer');
             transContainer.innerHTML = '';
             gisContainer.innerHTML = '';
 
-            // Render Transformers (Step 2)
-            Object.values(fleetDatabase).filter(a => a.type === 'Transformer').slice(0, 4).forEach(a => {
-                let borderCol = 'border-emerald-500/50 bg-emerald-950/20 text-emerald-400';
-                if (a.statusCategory === 'CRITICAL') borderCol = 'border-rose-500/80 bg-rose-950/30 text-rose-400';
-                else if (a.statusCategory === 'WARNING') borderCol = 'border-amber-500/80 bg-amber-950/30 text-amber-400';
+            // Render Transformers in Yard Zone A
+            Object.values(fleetDatabase).filter(a => a.type === 'Transformer').forEach(a => {
+                let statusBg = 'border-emerald-500/50 bg-emerald-950/20 text-emerald-400';
+                let dotCol = 'bg-emerald-500';
+                if (a.statusCategory === 'CRITICAL') { statusBg = 'border-rose-500/80 bg-rose-950/30 text-rose-400 animate-pulse'; dotCol = 'bg-rose-500 animate-ping'; }
+                else if (a.statusCategory === 'WARNING') { statusBg = 'border-amber-500/80 bg-amber-950/30 text-amber-400'; dotCol = 'bg-amber-500'; }
 
                 const div = document.createElement('div');
-                div.className = `p-3.5 rounded-xl border ${borderCol} cursor-pointer hover:scale-[1.02] transition shadow-md space-y-1`;
+                div.className = `p-3.5 rounded-2xl border ${statusBg} cursor-pointer hover:scale-[1.02] transition shadow-md space-y-2`;
                 div.onclick = () => selectAndInspect(a.id);
                 div.innerHTML = `
-                    <div class="flex justify-between items-center"><span class="font-mono font-bold text-white text-xs">${a.id}</span><span class="px-2 py-0.5 rounded text-[9px] font-bold ${a.statusCategory === 'CRITICAL' ? 'bg-rose-500 text-white' : 'bg-emerald-500 text-slate-950'}">${a.cehiGrade}</span></div>
-                    <div class="text-[10px] text-slate-300 truncate">${a.name}</div>
-                    <div class="flex justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-700"><span>CEHI: <b>${a.cehi}%</b></span><span>RPN: <b>${a.maxRpn}</b></span></div>
+                    <div class="flex justify-between items-center"><span class="font-mono font-bold text-white text-xs flex items-center gap-1.5"><span class="w-2 h-2 rounded-full ${dotCol}"></span>${a.id}</span><span class="px-2 py-0.5 rounded text-[9px] font-bold ${a.statusCategory === 'CRITICAL' ? 'bg-rose-500 text-white' : 'bg-emerald-500 text-slate-950'}">${a.cehiGrade}</span></div>
+                    <div class="text-[11px] text-slate-200 font-medium truncate">${a.name}</div>
+                    <div class="flex justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800"><span>CEHI: <b>${a.cehi}%</b></span><span>พิกัดลาน: <b>โซน A (Pad-${a.id})</b></span></div>
                 `;
                 transContainer.appendChild(div);
             });
 
-            // Render GIS Bays (Step 3)
-            Object.values(fleetDatabase).filter(a => a.type === 'GIS Bay').slice(0, 4).forEach(a => {
-                let borderCol = 'border-emerald-500/50 bg-emerald-950/20 text-emerald-400';
-                if (a.statusCategory === 'CRITICAL') borderCol = 'border-rose-500/80 bg-rose-950/30 text-rose-400';
-                else if (a.statusCategory === 'WARNING') borderCol = 'border-amber-500/80 bg-amber-950/30 text-amber-400';
+            // Render GIS Bays in Yard Zone B
+            Object.values(fleetDatabase).filter(a => a.type === 'GIS Bay').forEach(a => {
+                let statusBg = 'border-emerald-500/50 bg-emerald-950/20 text-emerald-400';
+                let dotCol = 'bg-emerald-500';
+                if (a.statusCategory === 'CRITICAL') { statusBg = 'border-rose-500/80 bg-rose-950/30 text-rose-400 animate-pulse'; dotCol = 'bg-rose-500 animate-ping'; }
+                else if (a.statusCategory === 'WARNING') { statusBg = 'border-amber-500/80 bg-amber-950/30 text-amber-400'; dotCol = 'bg-amber-500'; }
 
                 const div = document.createElement('div');
-                div.className = `p-3.5 rounded-xl border ${borderCol} cursor-pointer hover:scale-[1.02] transition shadow-md space-y-1`;
+                div.className = `p-3.5 rounded-2xl border ${statusBg} cursor-pointer hover:scale-[1.02] transition shadow-md space-y-2`;
                 div.onclick = () => selectAndInspect(a.id);
                 div.innerHTML = `
-                    <div class="flex justify-between items-center"><span class="font-mono font-bold text-white text-xs">${a.id}</span><span class="px-2 py-0.5 rounded text-[9px] font-bold ${a.statusCategory === 'CRITICAL' ? 'bg-rose-500 text-white' : 'bg-emerald-500 text-slate-950'}">${a.cehiGrade}</span></div>
-                    <div class="text-[10px] text-slate-300 truncate">${a.name}</div>
-                    <div class="flex justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-700"><span>CEHI: <b>${a.cehi}%</b></span><span>SF6: <b>${a.sf6Pressure || '0.65MPa'}</b></span></div>
+                    <div class="flex justify-between items-center"><span class="font-mono font-bold text-white text-xs flex items-center gap-1.5"><span class="w-2 h-2 rounded-full ${dotCol}"></span>${a.id}</span><span class="px-2 py-0.5 rounded text-[9px] font-bold ${a.statusCategory === 'CRITICAL' ? 'bg-rose-500 text-white' : 'bg-emerald-500 text-slate-950'}">${a.cehiGrade}</span></div>
+                    <div class="text-[11px] text-slate-200 font-medium truncate">${a.name}</div>
+                    <div class="flex justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800"><span>CEHI: <b>${a.cehi}%</b></span><span>อาคาร: <b>GIS ชั้น 1 (${a.id})</b></span></div>
                 `;
                 gisContainer.appendChild(div);
             });
@@ -1165,7 +1162,7 @@
                     <td class="p-3 text-slate-600 truncate max-w-xs">${a.concern}</td>
                     <td class="p-3 text-center font-medium"><span class="px-2.5 py-1 bg-sky-50 text-sky-700 border border-sky-200 rounded-lg text-[11px]">${a.stageText}</span></td>
                     <td class="p-3 font-mono text-slate-600">${a.targetDate}</td>
-                    <td class="p-3 text-center"><button onclick="selectAndInspect('${a.id}')" class="bg-blue-800 text-white text-[11px] px-2.5 py-1 rounded">ดูผลตรวจ</button></td>
+                    <td class="p-3 text-center"><button onclick="selectAndInspect('${a.id}')" class="bg-blue-800 text-white text-[11px] px-2.5 py-1 rounded cursor-pointer">ดูผลตรวจ</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1204,9 +1201,9 @@
             const landingPage = document.getElementById('page-PAGE_LANDING'), portalPage = document.getElementById('page-PORTAL'), subpageWrapper = document.getElementById('subpage-wrapper');
             const badge = document.getElementById('currentPageBadge');
 
-            document.querySelectorAll('.sidebar-btn').forEach(btn => { btn.className = 'sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50'; });
+            document.querySelectorAll('.sidebar-btn').forEach(btn => { btn.className = 'sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-600 hover:bg-blue-50 cursor-pointer'; });
             const activeBtn = document.getElementById(`menu-${pageKey}`);
-            if (activeBtn) activeBtn.className = 'sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-blue-800 bg-blue-50/80 shadow-xs border-l-4 border-blue-600';
+            if (activeBtn) activeBtn.className = 'sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-blue-800 bg-blue-50/80 shadow-xs border-l-4 border-blue-600 cursor-pointer';
 
             if (pageKey === 'PAGE_LANDING') {
                 body.style.backgroundColor = '#0f172a'; sidebar.classList.add('hidden'); topbar.classList.add('hidden');
@@ -1229,8 +1226,8 @@
 
             if (pageKey === 'PAGE_SLD') {
                 document.getElementById('view-SLD').classList.remove('hidden');
-                document.getElementById('subpageTitle').innerText = 'แผนผังเส้นทางระบบไฟฟ้า (SLD)'; badge.innerText = 'SLD Flow';
-                renderSldNetworkFlow();
+                document.getElementById('subpageTitle').innerText = 'แผนผังตำแหน่งสถานี (Yard Map)'; badge.innerText = 'Yard Map';
+                renderSubstationYardMap();
             } else if (pageKey === 'PAGE_TREND') {
                 document.getElementById('view-TREND').classList.remove('hidden');
                 document.getElementById('subpageTitle').innerText = 'กราฟแนวโน้มย้อนหลัง 5 ปี'; badge.innerText = 'Trend Analysis';
