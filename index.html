@@ -47,8 +47,8 @@
 </head>
 <body id="appBody" class="min-h-screen flex flex-col lg:flex-row antialiased font-sarabun w-full">
 
-    <!-- MOBILE TOP HEADER -->
-    <header class="lg:hidden bg-slate-900 text-white px-4 py-3 flex items-center justify-between border-b border-slate-800 sticky top-0 z-50">
+    <!-- MOBILE TOP HEADER (ปรับตำแหน่งลงมานิดนึงเพื่อพ้นแถบ GitHub Hosting) -->
+    <header class="lg:hidden bg-slate-900 text-white px-4 py-3 flex items-center justify-between border-b border-slate-800 sticky top-0 z-40 shadow-md">
         <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('PAGE_LANDING')">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white text-sm shadow-md">
                 <i class="fa-solid fa-bolt-lightning"></i>
@@ -56,8 +56,9 @@
             <span class="text-sm font-bold font-prompt">RCM CORE</span>
         </div>
         <div class="flex items-center gap-2">
-            <button onclick="openMobileMenu()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-prompt flex items-center gap-1.5 shadow-xs cursor-pointer">
-                <i class="fa-solid fa-bars"></i> เมนู
+            <!-- ปุ่มเมนูหลัก (ปรับให้กดง่ายและอยู่ในชั้น Z-Index ที่สูงกว่า) -->
+            <button type="button" onclick="openMobileMenu()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white rounded-xl text-xs font-prompt flex items-center gap-2 shadow-md cursor-pointer transition">
+                <i class="fa-solid fa-bars text-sm"></i> <span class="font-bold">เมนูหลัก</span>
             </button>
         </div>
     </header>
@@ -71,7 +72,7 @@
                         <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-700 to-sky-500 flex items-center justify-center text-white text-sm"><i class="fa-solid fa-bolt-lightning"></i></div>
                         <h2 class="text-xs font-bold text-slate-900 font-prompt">RCM CORE Suite</h2>
                     </div>
-                    <button onclick="closeMobileMenu()" class="text-slate-400 hover:text-slate-700 text-lg p-1 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" onclick="closeMobileMenu()" class="text-slate-400 hover:text-slate-700 text-lg p-2 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <nav class="p-3 space-y-1 text-xs font-prompt">
                     <div class="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">ระบบหลัก</div>
@@ -346,7 +347,7 @@
 
                 <div id="reportContentToExport" class="space-y-6 w-full">
 
-                    <!-- NEW: SUBSTATION PHYSICAL YARD MAP VIEW -->
+                    <!-- SUBSTATION PHYSICAL YARD MAP VIEW -->
                     <div id="view-SLD" class="subview space-y-6 hidden w-full">
                         <div class="bg-white border border-blue-100 p-6 rounded-2xl shadow-xs space-y-6">
                             <div class="border-b border-blue-50 pb-3 flex justify-between items-center">
@@ -359,10 +360,7 @@
                                 <span class="text-xs bg-cyan-50 text-cyan-800 border border-cyan-200 px-3 py-1 rounded-lg font-semibold">Physical Yard Map</span>
                             </div>
 
-                            <!-- SUBSTATION YARD LAYOUT CONTAINER -->
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                
-                                <!-- ZONE A: Outdoor Transformer Yard -->
                                 <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 text-white space-y-4">
                                     <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                                         <span class="text-xs font-prompt text-amber-400 font-bold uppercase tracking-wider">
@@ -370,12 +368,9 @@
                                         </span>
                                         <span class="text-[10px] bg-slate-800 px-2.5 py-1 rounded-md text-slate-300">10 Transformers</span>
                                     </div>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-1" id="yardTransformerContainer">
-                                        <!-- Populated via JS -->
-                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-1" id="yardTransformerContainer"></div>
                                 </div>
 
-                                <!-- ZONE B: Indoor GIS Building -->
                                 <div class="bg-slate-900 p-5 rounded-3xl border border-slate-800 text-white space-y-4">
                                     <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                                         <span class="text-xs font-prompt text-cyan-400 font-bold uppercase tracking-wider">
@@ -383,11 +378,8 @@
                                         </span>
                                         <span class="text-[10px] bg-slate-800 px-2.5 py-1 rounded-md text-slate-300">10 GIS Bays</span>
                                     </div>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-1" id="yardGisContainer">
-                                        <!-- Populated via JS -->
-                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-1" id="yardGisContainer"></div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -1059,7 +1051,6 @@
             transContainer.innerHTML = '';
             gisContainer.innerHTML = '';
 
-            // Render Transformers in Yard Zone A
             Object.values(fleetDatabase).filter(a => a.type === 'Transformer').forEach(a => {
                 let statusBg = 'border-emerald-500/50 bg-emerald-950/20 text-emerald-400';
                 let dotCol = 'bg-emerald-500';
@@ -1077,7 +1068,6 @@
                 transContainer.appendChild(div);
             });
 
-            // Render GIS Bays in Yard Zone B
             Object.values(fleetDatabase).filter(a => a.type === 'GIS Bay').forEach(a => {
                 let statusBg = 'border-emerald-500/50 bg-emerald-950/20 text-emerald-400';
                 let dotCol = 'bg-emerald-500';
@@ -1269,6 +1259,14 @@
                 document.getElementById('subpageTitle').innerText = '8. แดชบอร์ดภาพรวม Master'; badge.innerText = 'Master Overview';
                 renderMasterSubpage();
             }
+        }
+
+        // Functions for mobile drawer
+        function openMobileMenu() {
+            document.getElementById('mobileDrawer').classList.remove('hidden');
+        }
+        function closeMobileMenu() {
+            document.getElementById('mobileDrawer').classList.add('hidden');
         }
 
         function openAssetDossierModal() {
